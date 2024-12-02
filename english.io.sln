@@ -3,6 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{1FD5F6C5-7BAD-4CC6-8428-4B6E442E6DDF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{8A7929D2-27E4-438F-9A14-DBFE659411A2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "authentication", "authentication", "{1046671B-B5E2-41E9-BA80-746E44F98E2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.API", "api\services\authentication\Authentication.API\Authentication.API.csproj", "{C340E3F4-62B2-413C-8E8B-406C427B1DC3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -10,5 +18,16 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8A7929D2-27E4-438F-9A14-DBFE659411A2} = {1FD5F6C5-7BAD-4CC6-8428-4B6E442E6DDF}
+		{1046671B-B5E2-41E9-BA80-746E44F98E2D} = {8A7929D2-27E4-438F-9A14-DBFE659411A2}
+		{C340E3F4-62B2-413C-8E8B-406C427B1DC3} = {1046671B-B5E2-41E9-BA80-746E44F98E2D}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C340E3F4-62B2-413C-8E8B-406C427B1DC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C340E3F4-62B2-413C-8E8B-406C427B1DC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C340E3F4-62B2-413C-8E8B-406C427B1DC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C340E3F4-62B2-413C-8E8B-406C427B1DC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
