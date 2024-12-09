@@ -9,18 +9,20 @@ public class Result<T>
     public HttpStatusCode StatusCode { get; }
     public T Data { get; }
     public string? Location { get; }
+    public bool Success { get; }
 
-    private Result(string description, HttpStatusCode statusCode, T data, string? location = null)
+    private Result(string description, HttpStatusCode statusCode, T data, bool success, string? location = null)
     {
         Description = description;
         StatusCode = statusCode;
         Data = data;
+        Success = success;
         Location = location;
     }
 
     public static Result<T> Ok(T data)
     {
-        return new Result<T>(ErrorMessages.NoError(), HttpStatusCode.OK, data);
+        return new Result<T>(ErrorMessages.NoError(), HttpStatusCode.OK, data, true);
     }
 
     public static Result<T> NoContent()
@@ -30,17 +32,17 @@ public class Result<T>
 
     public static Result<T> Created(string location, T value)
     {
-        return new Result<T>(ErrorMessages.NoError(), HttpStatusCode.Created, value, location);
+        return new Result<T>(ErrorMessages.NoError(), HttpStatusCode.Created, value, true, location);
     }
 
     public static Result<T> BadRequest(string reason)
     {
-        return new Result<T>(ErrorMessages.BadRequest(reason), HttpStatusCode.BadRequest, default!);
+        return new Result<T>(ErrorMessages.BadRequest(reason), HttpStatusCode.BadRequest,default!,false);
     }
 
     public static Result<T> NotFound(object key)
     {
-        return new Result<T>(ErrorMessages.NotFound<T>(key), HttpStatusCode.NotFound, default!);
+        return new Result<T>(ErrorMessages.NotFound<T>(key), HttpStatusCode.NotFound, default!, false);
     }
 
     public IActionResult ToApiResponse()
