@@ -1,6 +1,8 @@
 using System.Text;
 using Authentication.API.Data;
 using Authentication.API.Models;
+using Authentication.API.Services.AuthService;
+using Authentication.API.Services.TokenGenerator;
 using Authentication.API.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -39,6 +41,9 @@ builder.Services.AddDbContext<AuthDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString(AuthDbContext.DefaultConnectionStringPosition));
 });
+
+builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
