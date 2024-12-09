@@ -16,6 +16,8 @@ builder.Services.AddOptions<JwtSettings>()
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
+builder.Services.AddControllers();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -49,5 +51,7 @@ var app = builder.Build();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();
