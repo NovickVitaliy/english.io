@@ -1,0 +1,12 @@
+services:
+  auth.db:
+    container_name: auth.db
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=12345 # for dev only, change for next stages
+      - POSTGRES_USER=auth.api
+      - POSTGRES_DB=auth.db
+    ports:
+      - "5432:5432"
+    volumes:
+      - auth.db.volume:/var/lib/postgresql/data
