@@ -18,18 +18,12 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterUserRequest request)
     {
-        var result = await _authService.RegisterUser(request);
-        //TODO: check if result is success
-
-        return result.ToApiResponse();
+        return (await _authService.RegisterUser(request)).ToApiResponse();
     }
     
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginUserRequest request)
     {
-        var result = await _authService.LoginUser(request);
-        //TODO: check if result is success
-
-        return result.ToApiResponse();
+        return  (await _authService.LoginUser(request)).ToApiResponse();
     }
 }
