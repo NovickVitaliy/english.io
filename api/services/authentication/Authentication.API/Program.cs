@@ -20,7 +20,16 @@ builder.Services.AddOptions<JwtSettings>()
 
 builder.Services.AddControllers();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddIdentity<User, Role>()
+    .AddEntityFrameworkStores<AuthDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
     .AddJwtBearer(options =>
     {
         var jwtSettings = builder.Configuration.GetSection(JwtSettings.ConfigurationKey).Get<JwtSettings>() ?? throw new InvalidOperationException("JWT settings are not configured.");
@@ -31,15 +40,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateIssuer = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
-            ClockSkew = TimeSpan.Zero
+            ClockSkew = TimeSpan.Zero,
+            TokenDecryptionKey = jwtSettings.GetEcryptingKey()
         };
     });
 
 builder.Services.AddAuthorization();
-
-builder.Services.AddIdentity<User, Role>()
-    .AddEntityFrameworkStores<AuthDbContext>()
-    .AddDefaultTokenProviders();
 
 builder.Services.AddDbContext<AuthDbContext>(options =>
 {

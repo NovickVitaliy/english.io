@@ -33,6 +33,7 @@ public class TokenGenerator : ITokenGenerator
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Aud, _jwtSettings.Audience),
             new Claim(JwtRegisteredClaimNames.Iss, _jwtSettings.Issuer),
+            ..claims,
             ..roles.Select(r => new Claim(ClaimTypes.Role, r))
         ]);
 
@@ -43,7 +44,7 @@ public class TokenGenerator : ITokenGenerator
         var encryptingCredentials = new EncryptingCredentials(
             _jwtSettings.GetEcryptingKey(),
             JwtConstants.DirectKeyUseAlg,
-            SecurityAlgorithms.Aes256CbcHmacSha512);
+            SecurityAlgorithms.Aes128CbcHmacSha256);
 
         var dateIssued = DateTime.UtcNow;
         
