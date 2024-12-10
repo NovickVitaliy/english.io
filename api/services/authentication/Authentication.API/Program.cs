@@ -1,5 +1,7 @@
+using System.Security.Cryptography;
 using System.Text;
 using Authentication.API.Data;
+using Authentication.API.Data.Seed;
 using Authentication.API.Models;
 using Authentication.API.Services.AuthService;
 using Authentication.API.Services.TokenGenerator;
@@ -48,6 +50,11 @@ builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    await app.SeedRolesAsync();
+}
 
 app.UseAuthentication();
 app.UseAuthorization();
