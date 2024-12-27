@@ -1,0 +1,29 @@
+@using MudBlazor
+
+<MudContainer id="contact" MaxWidth="MaxWidth.Large" Class="text-center py-8">
+    <MudText Typo="Typo.h3" GutterBottom Class="mb-4">
+        Get in Touch
+    </MudText>
+    <MudText Typo="Typo.body1" Class="mb-6">
+        Have questions or suggestions? Feel free to reach out to us!
+    </MudText>
+
+    <MudPaper Class="pa-6 mb-4" Elevation="2">
+        <MudGrid Spacing="3">
+            <MudItem xs="12" sm="12">
+                <MudText Variant="h6">📧 Email</MudText>
+                <MudText Typo="Typo.body2">novickvitaliy@gmail.com</MudText>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+
+    <MudPaper Class="pa-6" Elevation="2">
+        <MudText Typo="Typo.h5">Contact form</MudText>
+        <MudForm>
+            <MudTextField T="string" Label="Your Name" Required="true" Class="mb-3"/>
+            <MudTextField T="string" Label="Your Email" Required="true" Class="mb-3"/>
+            <MudTextField T="string" Label="Your Message" Required="true" Multiline="true" Rows="4" Class="mb-3"/>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary">Send Message</MudButton>
+        </MudForm>
+    </MudPaper>
+</MudContainer>
