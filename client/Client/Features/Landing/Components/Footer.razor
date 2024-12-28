@@ -1,0 +1,29 @@
+@using MudBlazor
+
+<MudPaper id="footer" Class="pa-4 text-center" Elevation="0" Square="true">
+    <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+        <MudGrid AlignItems="center">
+            <MudItem xs="12" sm="6" Class="mb-2 mb-sm-0">
+                <MudText Variant="h6">
+                    🧠 English.IO
+                </MudText>
+            </MudItem>
+
+            <MudItem xs="12" sm="6">
+                <MudLink Href="https://facebook.com" Target="_blank" Class="mx-1">
+                    <MudIcon Icon="@Icons.Custom.Brands.Facebook"/>
+                </MudLink>
+                <MudLink Href="https://twitter.com" Target="_blank" Class="mx-1">
+                    <MudIcon Icon="@Icons.Custom.Brands.Twitter"/>
+                </MudLink>
+                <MudLink Href="https://instagram.com" Target="_blank" Class="mx-1">
+                    <MudIcon Icon="@Icons.Custom.Brands.Instagram"/>
+                </MudLink>
+            </MudItem>
+        </MudGrid>
+        <MudDivider Class="my-2"/>
+        <MudText Typo="Typo.caption" Class="text-center">
+            © @DateTime.Now.Year English.IO. All Rights Reserved.
+        </MudText>
+    </MudContainer>
+</MudPaper>
