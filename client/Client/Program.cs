@@ -1,19 +1,13 @@
 using System.Net;
 using Client.Components;
+using Client.Extensions;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.Listen(IPAddress.Loopback, 4998);
-    options.Listen(IPAddress.Parse("192.168.1.225"), 4998);
-});
-
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
-
-builder.Services.AddMudServices();
+builder.ConfigureBlazorCore();
+builder.Services.ConfigureBlazor();
+builder.Services.ConfigureModules(builder.Configuration);
 
 var app = builder.Build();
 
