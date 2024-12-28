@@ -6,17 +6,20 @@
                 <MudText Typo="Typo.h4" Align="Align.Center">Register</MudText>
             </MudCardHeader>
             <MudCardContent>
-                <MudForm Model="_registerRequest" bind-IsValid="_isValid">
+                <MudForm Model="_registerRequest" @bind-IsValid="_isValid">
                     <MudTextField
+                        Required="true"
                         Label="Email"
                         For="() => _registerRequest.Email"
                         @bind-Value="_registerRequest.Email"></MudTextField>
                     <MudTextField
+                        Required="true"
                         InputType="InputType.Password"
                         Label="Password"
                         For="() => _registerRequest.Password"
                         @bind-Value="_registerRequest.Password"></MudTextField>
                     <MudTextField
+                        Required="true"
                         InputType="InputType.Password"
                         Label="Confirm Password"
                         For="() => _registerRequest.ConfirmPassword"

@@ -11,6 +11,14 @@ public partial class RegisterForm : ComponentBase
 
     private async Task Submit()
     {
-        Console.WriteLine(JsonSerializer.Serialize(_registerRequest));
+        if (_isValid)
+        {
+            Console.WriteLine("Form is valid");
+            Console.WriteLine(JsonSerializer.Serialize(_registerRequest));
+        }
+        else
+        {
+            Console.WriteLine("Form is not valid");
+        }
     }
 }
