@@ -1,0 +1,37 @@
+@using MudBlazor
+<MudGrid Class="d-flex justify-center align-center mt-20">
+    <MudItem xs="12" sm="8" md="4">
+        <MudCard>
+            <MudCardHeader>
+                <MudText Typo="Typo.h4" Align="Align.Center">Login</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudForm Model="_loginRequest" @bind-isValid="_isValid">
+                    <MudTextField
+                        Required="true"
+                        Label="Email"
+                        For="() => _loginRequest.Email"
+                        @bind-Value="_loginRequest.Email"></MudTextField>
+                    <MudTextField
+                        Required="true"
+                        InputType="InputType.Password"
+                        Label="Password"
+                        For="() => _loginRequest.Password"
+                        @bind-Value="_loginRequest.Password"></MudTextField>
+                </MudForm>
+            </MudCardContent>
+            <MudCardContent Class="d-flex justify-end">
+                <MudButton Variant="Variant.Text" Color="Color.Primary" Href="/register">Don't have an account?
+                </MudButton>
+            </MudCardContent>
+            <MudCardActions>
+                <div Class="d-flex gap-1 ml-auto">
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" Href="/">Cancel</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(async () => await Submit())">
+                        Login
+                    </MudButton>
+                </div>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+</MudGrid>
