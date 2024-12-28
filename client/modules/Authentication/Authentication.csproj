@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RazorLangVersion>7.0</RazorLangVersion>
+        <RazorCompileOnBuild>true</RazorCompileOnBuild>
+        <RazorComponentLibrary>true</RazorComponentLibrary>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+        <SupportedPlatform Include="browser"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.3"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\background.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\exampleJsInterop.js" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Authentication\Login\Components\" />
+      <Folder Include="Authentication\Login\Models\" />
+    </ItemGroup>
+
+</Project>
