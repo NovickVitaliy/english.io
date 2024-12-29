@@ -1,7 +1,9 @@
+@inject IStringLocalizer<App> Localizer
+@using Microsoft.Extensions.Localization
 @using MudBlazor
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="d-flex justify-content-center align-items-center flex-column">
     <MudText Typo="Typo.h1" Align="Align.Center" Class="mt-5">
-        Learn English with AI
+        Learn English with AI @Localizer["Hello World"]
     </MudText>
     <MudText Typo="Typo.h5" Align="Align.Center" GutterBottom="true">
         Improve your English skills through interactive AI-based learning
