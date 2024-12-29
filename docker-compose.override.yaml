@@ -1,4 +1,18 @@
 services:
+  authentication.api:
+    container_name: authentication.api
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__Default=Host=auth.db;Database=auth.db;Username=auth.api;Password=12345
+      - USER_SECRETS_ID=93d3b966-816a-431a-bdae-8afd6b6285cc
+    ports:
+      - "5001:8080"
+    volumes:
+      - $APPDATA/Microsoft/UserSecrets/$USER_SECRETS_ID:/root/.microsoft/usersecrets/$USER_SECRETS_ID
+      - $HOME/.microsoft/usersecrets/$USER_SECRETS_ID:/root/.microsoft/usersecrets/$USER_SECRETS_ID
+    
   auth.db:
     container_name: auth.db
     restart: always
