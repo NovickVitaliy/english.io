@@ -1,0 +1,18 @@
+@using MudBlazor
+<MudAppBar Color="Color.Transparent">
+    <MudText Typo="Typo.h4">English.IO</MudText>
+    
+    <MudContainer Class="gap-5 ml-0 d-md-flex d-none" MaxWidth="MaxWidth.False">
+        <MudButton Variant="Variant.Text" Class="text-black" Href="#features" Underline="Underline.None">Features</MudButton>
+        <MudButton Variant="Variant.Text" Class="text-black" Href="#faq" Underline="Underline.None">FAQ</MudButton>
+        <MudButton Variant="Variant.Text" Class="text-black" Href="#about" Underline="Underline.None">About</MudButton>
+        <MudButton Variant="Variant.Text" Class="text-black" Href="#contact" Underline="Underline.None">Contact</MudButton>
+    </MudContainer>
+
+    <MudMenu Icon="@Icons.Material.Filled.Menu" IconColor="Color.Default" Class="d-md-none d-block ml-auto" MaxWidth="MaxWidth.False">
+        <MudMenuItem Href="#features" Underline="Underline.None">Features</MudMenuItem>
+        <MudMenuItem Href="#faq" Underline="Underline.None">FAQ</MudMenuItem>
+        <MudMenuItem Href="#about" Underline="Underline.None">About</MudMenuItem>
+        <MudMenuItem Href="#contact" Underline="Underline.None">Contact</MudMenuItem>
+    </MudMenu>
+</MudAppBar>
