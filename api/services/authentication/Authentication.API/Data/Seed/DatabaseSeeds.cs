@@ -28,4 +28,12 @@ public static class DatabaseSeeds
             await context.SaveChangesAsync();
         }
     }
+
+    public static async Task MigrateDatabaseAsync(this WebApplication app)
+    {
+        await using var scope = app.Services.CreateAsyncScope();
+
+        await using var context = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
+        await context.Database.MigrateAsync();
+    }
 }
