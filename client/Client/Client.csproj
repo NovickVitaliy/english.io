@@ -16,7 +16,13 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Components\Layout\" />
       <Folder Include="wwwroot\images\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\modules\Authentication\Authentication.csproj" />
+      <ProjectReference Include="..\Shared\Shared.csproj" />
     </ItemGroup>
 
 </Project>

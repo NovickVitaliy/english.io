@@ -1,0 +1,40 @@
+@using MudBlazor
+<MudGrid Class="d-flex justify-center align-center mt-20">
+    <MudItem xs="12" sm="8" md="4">
+        <MudCard>
+            <MudCardHeader>
+                <MudText Typo="Typo.h4" Align="Align.Center">Register</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudForm @ref="_form" Model="_registerRequest" @bind-IsValid="_isValid">
+                    <MudTextField
+                        Required="true"
+                        Label="Email"
+                        For="() => _registerRequest.Email"
+                        @bind-Value="_registerRequest.Email"></MudTextField>
+                    <MudTextField
+                        Required="true"
+                        InputType="InputType.Password"
+                        Label="Password"
+                        For="() => _registerRequest.Password"
+                        @bind-Value="_registerRequest.Password"></MudTextField>
+                    <MudTextField
+                        Required="true"
+                        InputType="InputType.Password"
+                        Label="Confirm Password"
+                        For="() => _registerRequest.ConfirmPassword"
+                        @bind-Value="_registerRequest.ConfirmPassword"></MudTextField>
+                </MudForm>
+            </MudCardContent>
+            <MudCardContent Class="d-flex justify-end">
+                <MudButton Variant="Variant.Text" Color="Color.Primary" Href="/login">Already have an account?</MudButton>
+            </MudCardContent>
+            <MudCardActions>
+                <div Class="d-flex gap-1 ml-auto">
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" Href="/">Cancel</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(async () => await Submit())">Register</MudButton>
+                </div>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+</MudGrid>
