@@ -6,7 +6,7 @@
                 <MudText Typo="Typo.h4" Align="Align.Center">Register</MudText>
             </MudCardHeader>
             <MudCardContent>
-                <MudForm Model="_registerRequest" @bind-IsValid="_isValid">
+                <MudForm @ref="_form" Model="_registerRequest" @bind-IsValid="_isValid">
                     <MudTextField
                         Required="true"
                         Label="Email"

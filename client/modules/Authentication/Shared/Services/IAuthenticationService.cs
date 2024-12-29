@@ -9,9 +9,9 @@ public interface IAuthenticationService
 {
     const string ApiUrlKey = "Authentication";
     
-    [Post("/register")]
+    [Post("/auth/register")]
     Task<AuthResponse> RegisterAsync(RegisterRequest request);
 
-    [Post("/login")]
+    [Post("/auth/login")]
     Task<AuthResponse> LoginAsync(LoginRequest request);
 }

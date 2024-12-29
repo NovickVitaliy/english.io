@@ -1,6 +1,6 @@
 namespace Authentication.Shared.Models;
 
-public class AuthResponse(
+public record AuthResponse(
     string Username,
     string Email,
     string[] Role,

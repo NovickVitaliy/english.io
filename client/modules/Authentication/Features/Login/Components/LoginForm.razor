@@ -6,7 +6,7 @@
                 <MudText Typo="Typo.h4" Align="Align.Center">Login</MudText>
             </MudCardHeader>
             <MudCardContent>
-                <MudForm Model="_loginRequest" @bind-isValid="_isValid">
+                <MudForm @ref="_form" Model="_loginRequest">
                     <MudTextField
                         Required="true"
                         Label="Email"
