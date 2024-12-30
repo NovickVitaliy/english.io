@@ -1,13 +1,16 @@
 using System.ComponentModel.DataAnnotations;
+using Authentication.Features.Login.Components;
+using Authentication.Features.Register.Components;
+using Shared.LocalizedDataAnnotations;
 
 namespace Authentication.Features.Login.Models;
 
 public class LoginRequest
 {
-    [EmailAddress(ErrorMessage = "Email should be in valid format")]
-    [Required(ErrorMessage = "Email is required")]
+    [LocalizedEmailAddress(Constants.Localization.LoginFormBaseName, Constants.ValidationErrorsName.Login.EmailMustBeInValidFormat, typeof(LoginForm))]
+    [LocalizedRequired(Constants.Localization.LoginFormBaseName, Constants.ValidationErrorsName.Login.EmailIsRequired, typeof(LoginForm))]
     public string Email { get; set; } = null!;
 
-    [Required(ErrorMessage = "Password is required")]
+    [LocalizedRequired(Constants.Localization.LoginFormBaseName, Constants.ValidationErrorsName.Login.PasswordIsRequired, typeof(RegisterForm))]
     public string Password { get; set; } = null!;
 }
