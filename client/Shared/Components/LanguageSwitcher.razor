@@ -1,7 +1,9 @@
 @using Microsoft.Extensions.Configuration
+@using Microsoft.Extensions.Localization
 @using MudBlazor
 @inject NavigationManager NavigationManager
 @inject IConfiguration Configuration
+@inject IStringLocalizer<LanguageSwitcher> Localizer
 
 @if (_cultures is not null)
 {
@@ -13,11 +15,11 @@
                 {
                     if (culture.Value == _selectedCulture)
                     {
-                        <MudSelectItem Value="culture.Key" selected>@culture.Value</MudSelectItem>
+                        <MudSelectItem Value="culture.Key" selected>@Localizer[culture.Value]</MudSelectItem>
                     }
                     else
                     {
-                        <MudSelectItem Value="culture.Key">@culture.Value</MudSelectItem>
+                        <MudSelectItem Value="culture.Key">@Localizer[culture.Value]</MudSelectItem>
                     }
                 }
             </MudSelect>
@@ -35,7 +37,7 @@
         _cultures = Configuration.GetSection("Cultures")
             .GetChildren().ToDictionary(x => x.Key, x => x.Value)!;
 
-        _selectedCulture = _cultures[_selectedCultureCode];
+        _selectedCulture = Localizer[_cultures[_selectedCultureCode]];
     }
 
     private void RequestCultureChange(string locCode)
