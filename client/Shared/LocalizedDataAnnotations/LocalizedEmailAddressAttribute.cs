@@ -1,30 +1,22 @@
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.Resources;
+
 namespace Shared.LocalizedDataAnnotations;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
-public class LocalizedEmailAddressAttribute : BaseLocalizedAttribute
+public class LocalizedEmailAddressAttribute : ValidationAttribute
 {
+    private readonly EmailAddressAttribute _innerValidator;
     public LocalizedEmailAddressAttribute(string baseName, string errorName, Type resourceType) 
-        : base(baseName, errorName, resourceType)
     {
+        var resourceManager = new ResourceManager(baseName, resourceType.Assembly);
+        ErrorMessage = resourceManager.GetString(errorName, CultureInfo.CurrentCulture);
+        _innerValidator = new EmailAddressAttribute();
     }
-    
+
     public override bool IsValid(object? value)
     {
-        if (value == null)
-        {
-            return true;
-        }
-
-        if (!(value is string valueAsString))
-        {
-            return false;
-        }
-
-        int index = valueAsString.IndexOf('@');
-
-        return
-            index > 0 &&
-            index != valueAsString.Length - 1 &&
-            index == valueAsString.LastIndexOf('@');
+        return _innerValidator.IsValid(value);
     }
 }

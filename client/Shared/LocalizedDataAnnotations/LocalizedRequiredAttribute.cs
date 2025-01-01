@@ -5,23 +5,11 @@ using Microsoft.Extensions.Localization;
 
 namespace Shared.LocalizedDataAnnotations;
 
-[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
-public class LocalizedRequiredAttribute : BaseLocalizedAttribute
+public class LocalizedRequiredAttribute : RequiredAttribute
 {
     public LocalizedRequiredAttribute(string baseName, string errorName, Type resourceType) 
-        : base(baseName, errorName, resourceType)
     {
-    }
-    
-    public bool AllowEmptyStrings { get; set; }
-
-    public override bool IsValid(object? value)
-    {
-        if (value is null)
-        {
-            return false;
-        }
-
-        return AllowEmptyStrings || value is not string stringValue || !string.IsNullOrWhiteSpace(stringValue);
+        var resourceManager = new ResourceManager(baseName, resourceType.Assembly);
+        ErrorMessage = resourceManager.GetString(errorName, CultureInfo.CurrentCulture);
     }
 }

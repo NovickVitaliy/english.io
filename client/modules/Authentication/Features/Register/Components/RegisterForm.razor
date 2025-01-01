@@ -1,38 +1,40 @@
+@using Microsoft.Extensions.Localization
 @using MudBlazor
+@inject IStringLocalizer<RegisterForm> Localizer
 <MudGrid Class="d-flex justify-center align-center mt-20">
     <MudItem xs="12" sm="8" md="4">
         <MudCard>
             <MudCardHeader>
-                <MudText Typo="Typo.h4" Align="Align.Center">Register</MudText>
+                <MudText Typo="Typo.h4" Align="Align.Center">@Localizer["Header"]</MudText>
             </MudCardHeader>
             <MudCardContent>
                 <MudForm @ref="_form" Model="_registerRequest" @bind-IsValid="_isValid">
                     <MudTextField
                         Required="true"
-                        Label="Email"
+                        Label="@Localizer["Email_Label"]"
                         For="() => _registerRequest.Email"
                         @bind-Value="_registerRequest.Email"></MudTextField>
                     <MudTextField
                         Required="true"
                         InputType="InputType.Password"
-                        Label="Password"
+                        Label="@Localizer["Password_Label"]"
                         For="() => _registerRequest.Password"
                         @bind-Value="_registerRequest.Password"></MudTextField>
                     <MudTextField
                         Required="true"
                         InputType="InputType.Password"
-                        Label="Confirm Password"
+                        Label="@Localizer["ConfirmPassword_Label"]"
                         For="() => _registerRequest.ConfirmPassword"
                         @bind-Value="_registerRequest.ConfirmPassword"></MudTextField>
                 </MudForm>
             </MudCardContent>
             <MudCardContent Class="d-flex justify-end">
-                <MudButton Variant="Variant.Text" Color="Color.Primary" Href="/login">Already have an account?</MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Primary" Href="/login">@Localizer["Already_Have_An_Account_Prompt"]</MudButton>
             </MudCardContent>
             <MudCardActions>
                 <div Class="d-flex gap-1 ml-auto">
-                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" Href="/">Cancel</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(async () => await Submit())">Register</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" Href="/">@Localizer["Cancel_Button"]</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(async () => await Submit())">@Localizer["Register_Button"]</MudButton>
                 </div>
             </MudCardActions>
         </MudCard>
