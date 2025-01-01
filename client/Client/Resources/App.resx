@@ -120,4 +120,148 @@
   <data name="Hello World" xml:space="preserve">
     <value>Hello World 123</value>
   </data>
+  <data name="About_Header" xml:space="preserve">
+    <value>About us</value>
+  </data>
+  <data name="About_Text1" xml:space="preserve">
+    <value>Or maybe I should have written "About me". Currently, there is only one developer, and it is me - Vitalii.</value>
+  </data>
+  <data name="About_Text2" xml:space="preserve">
+    <value>        I am Vitalii. 19 y.o student from Ukraine. I am passionate about .NET development and software engineering in
+        general.
+        It has been 1 year and half since I started learning .NET and to be honest I`ve made huge progress since that
+        time.
+        This project is my next stepping stone.</value>
+  </data>
+  <data name="Get_In_Touch_Header" xml:space="preserve">
+    <value>Get in Touch</value>
+  </data>
+  <data name="Get_In_Touch_Prompt" xml:space="preserve">
+    <value>Have questions or suggestions? Feel free to reach out to us!</value>
+  </data>
+  <data name="GIT_Email_Label" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="GIT_Contact_Form" xml:space="preserve">
+    <value>Contact Form</value>
+  </data>
+  <data name="CF_Name" xml:space="preserve">
+    <value>Your name</value>
+  </data>
+  <data name="CF_Email" xml:space="preserve">
+    <value>Your email</value>
+  </data>
+  <data name="CF_Message" xml:space="preserve">
+    <value>Your message</value>
+  </data>
+  <data name="CF_Submit" xml:space="preserve">
+    <value>Send Message</value>
+  </data>
+  <data name="FAQ_Header" xml:space="preserve">
+    <value>Frequently Asked Questions</value>
+  </data>
+  <data name="FAQ_Text1" xml:space="preserve">
+    <value>Get insights into the story behind the platform and the developer's journey.</value>
+  </data>
+  <data name="FAQ_Question1" xml:space="preserve">
+    <value>Who is the developer behind this project?</value>
+  </data>
+  <data name="FAQ_Answer1" xml:space="preserve">
+    <value>The platform was developed by an AI enthusiast and experienced software engineer passionate about creating tools that make language learning intuitive and effective.</value>
+  </data>
+  <data name="FAQ_Question2" xml:space="preserve">
+    <value>What inspired the creation of this project?</value>
+  </data>
+  <data name="FAQ_Answer2" xml:space="preserve">
+    <value>The idea originated from personal struggles in learning English efficiently. Combining technology, AI, and modern design, this project aims to offer a personalized and engaging experience for learners.</value>
+  </data>
+  <data name="FAQ_Question3" xml:space="preserve">
+    <value>How does AI improve the learning experience?</value>
+  </data>
+  <data name="FAQ_Answer3" xml:space="preserve">
+    <value>AI analyzes your learning habits, adjusts difficulty levels dynamically, and provides tailored exercises and examples to ensure effective progress.
+</value>
+  </data>
+  <data name="FAQ_Question4" xml:space="preserve">
+    <value>What are the future plans for the project?</value>
+  </data>
+  <data name="FAQ_Answer4" xml:space="preserve">
+    <value>Future plans include integrating voice recognition, advanced analytics, and expanding vocabulary exercises to cover more practical scenarios.
+</value>
+  </data>
+  <data name="Features_Title" xml:space="preserve">
+    <value>Key Features of Our AI-Powered English Learning Platform</value>
+  </data>
+  <data name="Features_Description" xml:space="preserve">
+    <value>Explore the powerful features designed to make your English learning journey structured, engaging, and effective.</value>
+  </data>
+  <data name="Prerequisite_Title" xml:space="preserve">
+    <value>🎯 Prerequisite Configuration</value>
+  </data>
+  <data name="Prerequisite_Description" xml:space="preserve">
+    <value>Customize your learning preferences before you start:</value>
+  </data>
+  <data name="Prerequisite_Option1" xml:space="preserve">
+    <value>Set the number of example sentences per word.</value>
+  </data>
+  <data name="Prerequisite_Option2" xml:space="preserve">
+    <value>Choose daily vocabulary practice limits.</value>
+  </data>
+  <data name="Prerequisite_Option3" xml:space="preserve">
+    <value>Define practice session timings.</value>
+  </data>
+  <data name="VocabularyDeck_Title" xml:space="preserve">
+    <value>📚 Vocabulary Deck</value>
+  </data>
+  <data name="VocabularyDeck_Description" xml:space="preserve">
+    <value>Create personalized decks with topics:</value>
+  </data>
+  <data name="VocabularyDeck_Option1" xml:space="preserve">
+    <value>Strict and Non-Strict deck options.</value>
+  </data>
+  <data name="VocabularyDeck_Option2" xml:space="preserve">
+    <value>Maximum 100 words per deck.</value>
+  </data>
+  <data name="VocabularyDeck_Option3" xml:space="preserve">
+    <value>Organize your vocabulary by themes.</value>
+  </data>
+  <data name="VocabularyPractice_Title" xml:space="preserve">
+    <value>🧠 Vocabulary Practice</value>
+  </data>
+  <data name="VocabularyPractice_Description" xml:space="preserve">
+    <value>Tailored practice sessions:</value>
+  </data>
+  <data name="VocabularyPractice_Option1" xml:space="preserve">
+    <value>Practice N words daily across K sessions.</value>
+  </data>
+  <data name="VocabularyPractice_Option2" xml:space="preserve">
+    <value>Interactive exercises: translations, fill-in-the-gaps, context reading.</value>
+  </data>
+  <data name="VocabularyPractice_Option3" xml:space="preserve">
+    <value>Track your daily progress.</value>
+  </data>
+  <data name="Footer_Copyright" xml:space="preserve">
+    <value>All Rights Reserved.</value>
+  </data>
+  <data name="Menu_Features" xml:space="preserve">
+    <value>Features</value>
+  </data>
+  <data name="Menu_Faq" xml:space="preserve">
+    <value>FAQ</value>
+  </data>
+  <data name="Menu_About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="Menu_Contact" xml:space="preserve">
+    <value>Contact</value>
+  </data>
+  <data name="Title_LearnEnglishWithAI" xml:space="preserve">
+    <value>Learn English with AI</value>
+  </data>
+  <data name="Subtitle_ImproveYourSkills" xml:space="preserve">
+    <value>Improve your English skills through interactive AI-based learning</value>
+  </data>
+  <data name="Button_StartLearningNow" xml:space="preserve">
+    <value>Start Learning Now</value>
+  </data>
 </root>

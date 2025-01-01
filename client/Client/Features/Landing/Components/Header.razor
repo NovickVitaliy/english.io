@@ -1,19 +1,24 @@
+@using Microsoft.Extensions.Localization
 @using MudBlazor
 @using Shared.Components
+@inject IStringLocalizer<App> Localizer
+
 <MudAppBar Color="Color.Transparent">
     <MudText Typo="Typo.h4">English.IO</MudText>
     
     <MudContainer Class="gap-5 ml-0 d-md-flex d-none" MaxWidth="MaxWidth.False">
-        <MudButton Variant="Variant.Text" Class="text-black" Href="#features" Underline="Underline.None">Features</MudButton>
-        <MudButton Variant="Variant.Text" Class="text-black" Href="#faq" Underline="Underline.None">FAQ</MudButton>
-        <MudButton Variant="Variant.Text" Class="text-black" Href="#about" Underline="Underline.None">About</MudButton>
-        <MudButton Variant="Variant.Text" Class="text-black" Href="#contact" Underline="Underline.None">Contact</MudButton>
+        <MudButton Variant="Variant.Text" Class="text-black" Href="#features" Underline="Underline.None">@Localizer["Menu_Features"]</MudButton>
+        <MudButton Variant="Variant.Text" Class="text-black" Href="#faq" Underline="Underline.None">@Localizer["Menu_Faq"]</MudButton>
+        <MudButton Variant="Variant.Text" Class="text-black" Href="#about" Underline="Underline.None">@Localizer["Menu_About"]</MudButton>
+        <MudButton Variant="Variant.Text" Class="text-black" Href="#contact" Underline="Underline.None">@Localizer["Menu_Contact"]</MudButton>
     </MudContainer>
+
     <LanguageSwitcher></LanguageSwitcher>
+
     <MudMenu Icon="@Icons.Material.Filled.Menu" IconColor="Color.Default" Class="d-md-none d-block ml-auto" MaxWidth="MaxWidth.False">
-        <MudMenuItem Href="#features" Underline="Underline.None">Features</MudMenuItem>
-        <MudMenuItem Href="#faq" Underline="Underline.None">FAQ</MudMenuItem>
-        <MudMenuItem Href="#about" Underline="Underline.None">About</MudMenuItem>
-        <MudMenuItem Href="#contact" Underline="Underline.None">Contact</MudMenuItem>
+        <MudMenuItem Href="#features" Underline="Underline.None">@Localizer["Menu_Features"]</MudMenuItem>
+        <MudMenuItem Href="#faq" Underline="Underline.None">@Localizer["Menu_Faq"]</MudMenuItem>
+        <MudMenuItem Href="#about" Underline="Underline.None">@Localizer["Menu_About"]</MudMenuItem>
+        <MudMenuItem Href="#contact" Underline="Underline.None">@Localizer["Menu_Contact"]</MudMenuItem>
     </MudMenu>
 </MudAppBar>

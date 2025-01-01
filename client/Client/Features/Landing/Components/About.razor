@@ -1,20 +1,16 @@
+@using Microsoft.Extensions.Localization
 @using MudBlazor
-
+@inject IStringLocalizer<App> Localizer
 <MudContainer id="about" MaxWidth="MaxWidth.Large" Class="mt-3">
-    <MudText Typo="Typo.h3" Align="Align.Center">About us</MudText>
-    <MudText Class="mb-3" Align="Align.Center">Or maybe I should have written "About me". Currently, there is only one
-        developer,
-        and it is me - Vitalii.
+    <MudText Typo="Typo.h3" Align="Align.Center">@Localizer["About_Header"]</MudText>
+    <MudText Class="mb-3" Align="Align.Center">
+        @Localizer["About_Text1"]
     </MudText>
     <MudContainer Class="d-flex justify-center items-center mb-3">
         <MudImage ObjectFit="ObjectFit.Contain"  Src="images/vitalii.jpg" Width="350" Height="350"
                   Class="rounded-lg px-2"></MudImage>
     </MudContainer>
     <MudText Class="mb-3" Align="Align.Center">
-        I am Vitalii. 19 y.o student from Ukraine. I am passionate about .NET development and software engineering in
-        general.
-        It has been 1 year and half since I started learning .NET and to be honest I`ve made huge progress since that
-        time.
-        This project is my next stepping stone.
+        @Localizer["About_Text2"]
     </MudText>
 </MudContainer>
