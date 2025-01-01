@@ -1,29 +1,30 @@
+@using Microsoft.Extensions.Localization
 @using MudBlazor
-
+@inject IStringLocalizer<App> Localizer
 <MudContainer id="contact" MaxWidth="MaxWidth.Large" Class="text-center py-8">
     <MudText Typo="Typo.h3" GutterBottom Class="mb-4">
-        Get in Touch
+        @Localizer["Get_In_Touch_Header"]
     </MudText>
     <MudText Typo="Typo.body1" Class="mb-6">
-        Have questions or suggestions? Feel free to reach out to us!
+        @Localizer["Get_In_Touch_Prompt"]
     </MudText>
 
     <MudPaper Class="pa-6 mb-4" Elevation="2">
         <MudGrid Spacing="3">
             <MudItem xs="12" sm="12">
-                <MudText Variant="h6">📧 Email</MudText>
+                <MudText Variant="h6">📧 @Localizer["GIT_Email_Label"]</MudText>
                 <MudText Typo="Typo.body2">novickvitaliy@gmail.com</MudText>
             </MudItem>
         </MudGrid>
     </MudPaper>
 
     <MudPaper Class="pa-6" Elevation="2">
-        <MudText Typo="Typo.h5">Contact form</MudText>
+        <MudText Typo="Typo.h5">@Localizer["GIT_Contact_Form"]</MudText>
         <MudForm>
-            <MudTextField T="string" Label="Your Name" Required="true" Class="mb-3"/>
-            <MudTextField T="string" Label="Your Email" InputType="InputType.Email" Required="true" Class="mb-3"/>
-            <MudTextField T="string" Label="Your Message" Required="true" Multiline="true" Rows="4" Class="mb-3"/>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary">Send Message</MudButton>
+            <MudTextField T="string" Label="@Localizer["CF_Name"]" Required="true" Class="mb-3"/>
+            <MudTextField T="string" Label="@Localizer["CF_Email"]" InputType="InputType.Email" Required="true" Class="mb-3"/>
+            <MudTextField T="string" Label="@Localizer["CF_Message"]" Required="true" Multiline="true" Rows="4" Class="mb-3"/>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary">@Localizer["CF_Submit"]</MudButton>
         </MudForm>
     </MudPaper>
 </MudContainer>

@@ -1,5 +1,6 @@
+@using Microsoft.Extensions.Localization
 @using MudBlazor
-
+@inject IStringLocalizer<App> Localizer
 <MudPaper id="footer" Class="pa-4 text-center" Elevation="0" Square="true">
     <MudContainer MaxWidth="MaxWidth.ExtraLarge">
         <MudGrid AlignItems="center">
@@ -23,7 +24,7 @@
         </MudGrid>
         <MudDivider Class="my-2"/>
         <MudText Typo="Typo.caption" Class="text-center">
-            © @DateTime.Now.Year English.IO. All Rights Reserved.
+            © @DateTime.Now.Year English.IO. @Localizer["Footer_Copyright"]
         </MudText>
     </MudContainer>
 </MudPaper>

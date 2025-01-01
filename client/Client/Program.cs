@@ -1,5 +1,5 @@
 using System.Net;
-using Client.Components;
+using Client;
 using Client.Extensions;
 using MudBlazor.Services;
 
@@ -22,7 +22,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
+app.UseRequestLocalization(DependencyInjection.GetLocalizationOptions(app.Configuration));
+
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+app.MapControllers();
 
 app.Run();

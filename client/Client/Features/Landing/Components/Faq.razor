@@ -1,36 +1,37 @@
+@using Microsoft.Extensions.Localization
 @using MudBlazor
+@inject IStringLocalizer<App> Localizer
+<MudContainer id="faq" MaxWidth="MaxWidth.Large" Class="text-center py-8">
+    <MudText Typo="Typo.h3" GutterBottom Class="mb-4">
+        @Localizer["FAQ_Header"]
+    </MudText>
+    <MudText Typo="Typo.body1" Class="mb-6">
+        @Localizer["FAQ_Text1"]
+    </MudText>
 
-    <MudContainer id="faq" MaxWidth="MaxWidth.Large" Class="text-center py-8">
-        <MudText Typo="Typo.h3" GutterBottom Class="mb-4">
-            Frequently Asked Questions
-        </MudText>
-        <MudText Typo="Typo.body1" Class="mb-6">
-            Get insights into the story behind the platform and the developer's journey.
-        </MudText>
+    <MudExpansionPanels>
+        <MudExpansionPanel Text="@Localizer["FAQ_Question1"]">
+            <MudText Typo="Typo.body2">
+                @Localizer["FAQ_Answer1"]
+            </MudText>
+        </MudExpansionPanel>
 
-        <MudExpansionPanels>
-            <MudExpansionPanel Text="Who is the developer behind this project?">
-                <MudText Typo="Typo.body2">
-                    The platform was developed by an AI enthusiast and experienced software engineer passionate about creating tools that make language learning intuitive and effective.
-                </MudText>
-            </MudExpansionPanel>
+        <MudExpansionPanel Text="@Localizer["FAQ_Question2"]">
+            <MudText Typo="Typo.body2">
+                @Localizer["FAQ_Answer2"]
+            </MudText>
+        </MudExpansionPanel>
 
-            <MudExpansionPanel Text="What inspired the creation of this project?">
-                <MudText Typo="Typo.body2">
-                    The idea originated from personal struggles in learning English efficiently. Combining technology, AI, and modern design, this project aims to offer a personalized and engaging experience for learners.
-                </MudText>
-            </MudExpansionPanel>
+        <MudExpansionPanel Text="@Localizer["FAQ_Question3"]">
+            <MudText Typo="Typo.body2">
+                @Localizer["FAQ_Answer3"]
+            </MudText>
+        </MudExpansionPanel>
 
-            <MudExpansionPanel Text="How does AI improve the learning experience?">
-                <MudText Typo="Typo.body2">
-                    AI analyzes your learning habits, adjusts difficulty levels dynamically, and provides tailored exercises and examples to ensure effective progress.
-                </MudText>
-            </MudExpansionPanel>
-
-            <MudExpansionPanel Text="What are the future plans for the project?">
-                <MudText Typo="Typo.body2">
-                    Future plans include integrating voice recognition, advanced analytics, and expanding vocabulary exercises to cover more practical scenarios.
-                </MudText>
-            </MudExpansionPanel>
-        </MudExpansionPanels>
-    </MudContainer>
+        <MudExpansionPanel Text="@Localizer["FAQ_Question4"]">
+            <MudText Typo="Typo.body2">
+                @Localizer["FAQ_Answer4"]
+            </MudText>
+        </MudExpansionPanel>
+    </MudExpansionPanels>
+</MudContainer>

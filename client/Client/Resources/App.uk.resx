@@ -1,0 +1,160 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Hello World" xml:space="preserve">
+        <value>Привіт Світ 1234</value>
+    </data>
+    <data name="About_Header" xml:space="preserve">
+        <value>Про Нас</value>
+    </data>
+    <data name="About_Text1" xml:space="preserve">
+        <value>А може, варто було написати «Про себе». Наразі є лише один розробник, і це я - Віталій.</value>
+    </data>
+    <data name="About_Text2" xml:space="preserve">
+        <value>        Мене звати Віталій. 19-річний студент з України. Я захоплююсь розробкою .NET та програмною інженерією в цілому.
+        взагалі.
+        Пройшло 1,5 роки з тих пір, як я почав вивчати .NET і, чесно кажучи, я зробив величезний прогрес за цей час.
+        часу.
+        Цей проект - моя наступна сходинка.</value>
+    </data>
+    <data name="Get_In_Touch_Header" xml:space="preserve">
+        <value>Зв'яжіться з нами</value>
+    </data>
+    <data name="Get_In_Touch_Prompt" xml:space="preserve">
+        <value>Маєте запитання чи пропозиції? Не соромтеся звертатися до нас!</value>
+    </data>
+    <data name="GIT_Email_Label" xml:space="preserve">
+        <value>Електронна Адреса</value>
+    </data>
+    <data name="GIT_Contact_Form" xml:space="preserve">
+        <value>Контактна форма</value>
+    </data>
+    <data name="CF_Name" xml:space="preserve">
+        <value>Ваше ім'я.</value>
+    </data>
+    <data name="CF_Email" xml:space="preserve">
+        <value>Ваша електронна адреса</value>
+    </data>
+    <data name="CF_Message" xml:space="preserve">
+        <value>Ваше повідомлення</value>
+    </data>
+    <data name="CF_Submit" xml:space="preserve">
+        <value>Надіслати повідомлення</value>
+    </data>
+    <data name="FAQ_Header" xml:space="preserve">
+        <value>Поширені запитання</value>
+    </data>
+    <data name="FAQ_Text1" xml:space="preserve">
+        <value>Дізнайтеся про історію створення платформи та шлях розробника.</value>
+    </data>
+    <data name="FAQ_Question1" xml:space="preserve">
+        <value>Хто є розробником цього проекту?</value>
+    </data>
+    <data name="FAQ_Answer1" xml:space="preserve">
+        <value>Платформа була розроблена ентузіастом ШІ та досвідченим інженером-програмістом, який захоплюється створенням інструментів, що роблять вивчення мов інтуїтивно зрозумілим та ефективним.</value>
+    </data>
+    <data name="FAQ_Answer2" xml:space="preserve">
+        <value>Ідея виникла з особистої боротьби за ефективне вивчення англійської мови. Поєднуючи технології, штучний інтелект і сучасний дизайн, цей проект має на меті запропонувати учням персоналізований і цікавий досвід.</value>
+    </data>
+    <data name="FAQ_Question2" xml:space="preserve">
+        <value>Що надихнуло на створення цього проекту?</value>
+    </data>
+    <data name="FAQ_Question3" xml:space="preserve">
+        <value>Як ШІ покращує процес навчання?</value>
+    </data>
+    <data name="FAQ_Answer3" xml:space="preserve">
+        <value>ШІ аналізує ваші навчальні звички, динамічно налаштовує рівні складності та пропонує індивідуальні вправи і приклади для забезпечення ефективного прогресу.
+</value>
+    </data>
+    <data name="FAQ_Question4" xml:space="preserve">
+        <value>Які плани на майбутнє у проекту?</value>
+    </data>
+    <data name="FAQ_Answer4" xml:space="preserve">
+        <value>У планах на майбутнє - інтеграція розпізнавання голосу, розширеної аналітики та розширення словникових вправ, щоб охопити більше практичних сценаріїв.</value>
+    </data>
+    <data name="Features_Title" xml:space="preserve">
+    <value>Ключові особливості нашої платформи для вивчення англійської на основі штучного інтелекту</value>
+  </data>
+    <data name="Features_Description" xml:space="preserve">
+    <value>Досліджуйте потужні функції, розроблені для того, щоб зробити вашу подорож вивчення англійської структурованою, захопливою та ефективною.</value>
+  </data>
+    <data name="Prerequisite_Title" xml:space="preserve">
+    <value>🎯 Налаштування перед початком</value>
+  </data>
+    <data name="Prerequisite_Description" xml:space="preserve">
+    <value>Налаштуйте свої уподобання для навчання перед початком:</value>
+  </data>
+    <data name="Prerequisite_Option1" xml:space="preserve">
+    <value>Встановіть кількість прикладів речень на слово.</value>
+  </data>
+    <data name="Prerequisite_Option2" xml:space="preserve">
+    <value>Виберіть щоденні обмеження для практики словникового запасу.</value>
+  </data>
+    <data name="Prerequisite_Option3" xml:space="preserve">
+    <value>Визначте час для практичних занять.</value>
+  </data>
+    <data name="VocabularyDeck_Title" xml:space="preserve">
+    <value>📚 Словникові колоди</value>
+  </data>
+    <data name="VocabularyDeck_Description" xml:space="preserve">
+    <value>Створюйте персоналізовані колоди за темами:</value>
+  </data>
+    <data name="VocabularyDeck_Option1" xml:space="preserve">
+    <value>Варіанти суворих та нестрогих колод.</value>
+  </data>
+    <data name="VocabularyDeck_Option2" xml:space="preserve">
+    <value>Максимум 100 слів на колоду.</value>
+  </data>
+    <data name="VocabularyDeck_Option3" xml:space="preserve">
+    <value>Організуйте свій словниковий запас за темами.</value>
+  </data>
+    <data name="VocabularyPractice_Title" xml:space="preserve">
+    <value>🧠 Практика словникового запасу</value>
+  </data>
+    <data name="VocabularyPractice_Description" xml:space="preserve">
+    <value>Індивідуальні практичні сесії:</value>
+  </data>
+    <data name="VocabularyPractice_Option1" xml:space="preserve">
+    <value>Практикуйте N слів щодня протягом K сесій.</value>
+  </data>
+    <data name="VocabularyPractice_Option2" xml:space="preserve">
+    <value>Інтерактивні вправи: переклади, заповнення пропусків, читання в контексті.</value>
+  </data>
+    <data name="VocabularyPractice_Option3" xml:space="preserve">
+    <value>Відстежуйте свій щоденний прогрес.</value>
+  </data>
+    <data name="Footer_Copyright" xml:space="preserve">
+        <value>Всі права захищені.</value>
+    </data>
+    <data name="Menu_Features" xml:space="preserve">
+    <value>Особливості</value>
+  </data>
+    <data name="Menu_Faq" xml:space="preserve">
+    <value>FAQ</value>
+  </data>
+    <data name="Menu_About" xml:space="preserve">
+    <value>Про нас</value>
+  </data>
+    <data name="Menu_Contact" xml:space="preserve">
+    <value>Контакти</value>
+  </data>
+    <data name="Title_LearnEnglishWithAI" xml:space="preserve">
+    <value>Вчіть англійську з AI</value>
+  </data>
+    <data name="Subtitle_ImproveYourSkills" xml:space="preserve">
+    <value>Покращуйте свої навички англійської за допомогою інтерактивного навчання на основі AI</value>
+  </data>
+    <data name="Button_StartLearningNow" xml:space="preserve">
+    <value>Розпочати навчання зараз</value>
+  </data>
+</root>

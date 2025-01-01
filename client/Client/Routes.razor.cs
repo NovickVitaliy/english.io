@@ -1,7 +1,7 @@
 using System.Reflection;
 using Microsoft.AspNetCore.Components;
 
-namespace Client.Components;
+namespace Client;
 
 public partial class Routes : ComponentBase
 {

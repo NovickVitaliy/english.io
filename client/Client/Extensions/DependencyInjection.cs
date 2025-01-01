@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
@@ -17,12 +18,31 @@ public static class DependencyInjection
 
     public static IServiceCollection ConfigureBlazor(this IServiceCollection services)
     {
+        services.AddControllers();
+        services.AddLocalization(options =>
+        {
+            options.ResourcesPath = "Resources";
+        });
         services.AddRazorComponents()
             .AddInteractiveServerComponents();
 
         services.AddMudServices();
 
         return services;
+    }
+
+    public static RequestLocalizationOptions GetLocalizationOptions(IConfiguration configuration)
+    {
+        var cultures = configuration.GetSection("Cultures")
+            .GetChildren().ToDictionary(x => x.Key, x => x.Value);
+
+        var supportedCultures = cultures.Keys.ToArray();
+
+        var requestLocalizationOptions = new RequestLocalizationOptions()
+            .AddSupportedCultures(supportedCultures)
+            .AddSupportedUICultures(supportedCultures);
+
+        return requestLocalizationOptions;
     }
 
     public static WebApplicationBuilder ConfigureBlazorCore(this WebApplicationBuilder builder)

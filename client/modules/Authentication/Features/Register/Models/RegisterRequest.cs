@@ -1,17 +1,20 @@
 using System.ComponentModel.DataAnnotations;
+using Authentication.Features.Register.Components;
+using Shared.LocalizedDataAnnotations;
 
 namespace Authentication.Features.Register.Models;
 
 public class RegisterRequest
 {
-    [Required(ErrorMessage = "Email is required")]
-    [EmailAddress(ErrorMessage = "Email address should be in valid format")] 
+    [LocalizedRequired(Constants.Localization.RegisterFormBaseName, Constants.ValidationErrorsName.Register.EmailIsRequired, typeof(RegisterForm))]
+    [LocalizedEmailAddress(Constants.Localization.RegisterFormBaseName, Constants.ValidationErrorsName.Register.EmailMustBeInValidFormat, typeof(RegisterForm))]
     public string Email { get; set; } = null!;
 
-    [Required(ErrorMessage = "Password is required")]
+    [LocalizedRequired(Constants.Localization.RegisterFormBaseName, Constants.ValidationErrorsName.Register.PasswordIsRequired, typeof(RegisterForm))]
     public string Password { get; set; } = null!;
 
-    [Required]
-    [Compare(nameof(Password), ErrorMessage = "Confirm password should match password")]
+    [LocalizedRequired(Constants.Localization.RegisterFormBaseName, Constants.ValidationErrorsName.Register.ConfirmPasswordIsRequired, typeof(RegisterForm))]
+    [LocalizedCompare(Constants.Localization.RegisterFormBaseName, Constants.ValidationErrorsName.Register.PasswordAndConfirmPasswordMustBeEqual, typeof(RegisterForm),
+        nameof(Password))]
     public string ConfirmPassword { get; set; } = null!;
 }
