@@ -17,9 +17,7 @@ public class JwtSettings
 
     [Required]
     public string Secret { get; init; } = null!;
-
-    [Required]
-    public string EncryptingSecret { get; init; } = null!;
+    
     
     [Required]
     public int LifetimeInMinutes { get; init; }
@@ -27,10 +25,5 @@ public class JwtSettings
     public SecurityKey GetSigninKey()
     {
         return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Secret));
-    }
-    
-    public SecurityKey GetEcryptingKey()
-    {
-        return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(EncryptingSecret));
     }
 }
