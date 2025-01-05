@@ -1,6 +1,6 @@
 namespace Authentication;
 
-public class Marker
+public class AuthenticationMarker
 {
     
 }

@@ -1,7 +1,9 @@
 using System.Net;
+using Authentication;
 using Client;
 using Client.Extensions;
 using MudBlazor.Services;
+using DependencyInjection = Client.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,9 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseRequestLocalization(DependencyInjection.GetLocalizationOptions(app.Configuration));
 

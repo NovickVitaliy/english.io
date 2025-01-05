@@ -1,8 +1,8 @@
-using System.Globalization;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using MudBlazor.Services;
 
 namespace Client.Extensions;
@@ -18,7 +18,9 @@ public static class DependencyInjection
 
     public static IServiceCollection ConfigureBlazor(this IServiceCollection services)
     {
-        services.AddControllers();
+        services.AddRazorPages();
+        services.AddControllers()
+            .AddApplicationPart(typeof(AuthenticationMarker).Assembly);
         services.AddLocalization(options =>
         {
             options.ResourcesPath = "Resources";
@@ -28,6 +30,13 @@ public static class DependencyInjection
 
         services.AddMudServices();
 
+        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.Cookie.MaxAge = TimeSpan.FromMinutes(30);
+            });
+        services.AddAuthorization();
+        services.AddCascadingAuthenticationState();
         return services;
     }
 
