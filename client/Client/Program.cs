@@ -22,6 +22,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseRequestLocalization(DependencyInjection.GetLocalizationOptions(app.Configuration));
 
 app.MapRazorComponents<App>()

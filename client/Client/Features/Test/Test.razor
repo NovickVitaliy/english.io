@@ -1,0 +1,14 @@
+@page "/Test"
+@using Microsoft.AspNetCore.Components.Authorization
+<h3>Test</h3>
+<AuthorizeView>
+    <Authorized>
+        Do you see this?
+    </Authorized>
+    <NotAuthorized>
+        You are not authorized
+    </NotAuthorized>
+</AuthorizeView>
+@code {
+    
+}
