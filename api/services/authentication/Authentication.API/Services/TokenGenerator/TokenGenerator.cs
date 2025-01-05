@@ -30,8 +30,9 @@ public class TokenGenerator : ITokenGenerator
         var roles = (await _userManager.GetRolesAsync(user)).ToList();
         
         claims.AddRange([
+            new Claim(JwtRegisteredClaimNames.Email, user.Email!),
+            new Claim(JwtRegisteredClaimNames.Name, user.UserName!),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(JwtRegisteredClaimNames.Aud, _jwtSettings.Audience),
             new Claim(JwtRegisteredClaimNames.Iss, _jwtSettings.Issuer),
             ..claims,
             ..roles.Select(r => new Claim(ClaimTypes.Role, r))
@@ -40,11 +41,6 @@ public class TokenGenerator : ITokenGenerator
         var signingCredentials = new SigningCredentials(
             _jwtSettings.GetSigninKey(),
             SecurityAlgorithms.HmacSha256);
-
-        var encryptingCredentials = new EncryptingCredentials(
-            _jwtSettings.GetEcryptingKey(),
-            JwtConstants.DirectKeyUseAlg,
-            SecurityAlgorithms.Aes128CbcHmacSha256);
 
         var dateIssued = DateTime.UtcNow;
         
@@ -55,8 +51,7 @@ public class TokenGenerator : ITokenGenerator
             notBefore: dateIssued,
             expires: dateIssued.AddMinutes(_jwtSettings.LifetimeInMinutes),
             issuedAt: dateIssued,
-            signingCredentials: signingCredentials,
-            encryptingCredentials: encryptingCredentials);
+            signingCredentials: signingCredentials);
 
         return Result<string>.Ok(_jwtSecurityTokenHandler.WriteToken(token));
     }
