@@ -40,8 +40,7 @@ builder.Services.AddAuthentication(options =>
             ValidateAudience = true,
             ValidateIssuer = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
-            ClockSkew = TimeSpan.Zero,
-            TokenDecryptionKey = jwtSettings.GetEcryptingKey()
+            ClockSkew = TimeSpan.Zero
         };
     });
 
