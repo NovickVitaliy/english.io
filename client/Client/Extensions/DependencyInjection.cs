@@ -18,7 +18,9 @@ public static class DependencyInjection
 
     public static IServiceCollection ConfigureBlazor(this IServiceCollection services)
     {
-        services.AddControllers();
+        services.AddRazorPages();
+        services.AddControllers()
+            .AddApplicationPart(typeof(AuthenticationMarker).Assembly);
         services.AddLocalization(options =>
         {
             options.ResourcesPath = "Resources";

@@ -4,6 +4,7 @@ using Authentication.Features.Login.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http;
 using MudBlazor;
 using Refit;
@@ -18,7 +19,9 @@ public partial class LoginForm : ComponentBase
     private MudForm _form = null!;
     [Inject] private IAuthenticationService AuthenticationService { get; init; } = null!;
     [Inject] private ISnackbar Snackbar { get; init; } = null!;
-    [CascadingParameter] private HttpContext HttpContext { get; init; } = null!;
+    [Inject] private AuthenticationStateProvider AuthenticationState { get; init; } = null!;
+    [Inject] private NavigationManager NavigationManager { get; init; } = null!;
+    
     private async Task Submit()
     {
         await _form.Validate();
@@ -27,13 +30,14 @@ public partial class LoginForm : ComponentBase
             try
             {
                 var response = await AuthenticationService.LoginAsync(_loginRequest);
+                var uri = new Uri(NavigationManager.Uri)
+                    .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+
+                var query = $"?token={Uri.EscapeDataString(response.AuthToken)}&" +
+                            $"redirectUri={Uri.EscapeDataString(uri)}";
+
+                NavigationManager.NavigateTo("Authentication/Login" + query, forceLoad: true);
                 Snackbar.Add("Successful login. Welcome!", Severity.Success);
-                var claims = _jwtSecurityTokenHandler.ReadJwtToken(response.AuthToken).Claims;
-                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var principal = new ClaimsPrincipal(identity);
-
-                await HttpContext.SignInAsync(principal);
-
             }
             catch (ApiException e)
             {

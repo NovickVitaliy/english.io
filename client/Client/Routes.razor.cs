@@ -6,6 +6,6 @@ namespace Client;
 public partial class Routes : ComponentBase
 {
     public readonly Assembly[] AdditionalAssemblies = [
-        typeof(Authentication.Marker).Assembly
+        typeof(Authentication.AuthenticationMarker).Assembly
     ];
 }

@@ -1,7 +1,9 @@
 using System.Net;
+using Authentication;
 using Client;
 using Client.Extensions;
 using MudBlazor.Services;
+using DependencyInjection = Client.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
