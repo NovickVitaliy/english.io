@@ -30,6 +30,7 @@ app.UseAuthorization();
 app.UseRequestLocalization(DependencyInjection.GetLocalizationOptions(app.Configuration));
 
 app.MapRazorComponents<App>()
+    .AddAdditionalAssemblies(typeof(AuthenticationMarker).Assembly)
     .AddInteractiveServerRenderMode();
 
 app.MapControllers();
