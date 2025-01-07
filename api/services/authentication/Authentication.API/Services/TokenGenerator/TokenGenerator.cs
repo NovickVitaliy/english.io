@@ -30,11 +30,8 @@ public class TokenGenerator : ITokenGenerator
         var roles = (await _userManager.GetRolesAsync(user)).ToList();
         
         claims.AddRange([
-            new Claim(JwtRegisteredClaimNames.Email, user.Email!),
-            new Claim(JwtRegisteredClaimNames.Name, user.UserName!),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Iss, _jwtSettings.Issuer),
-            ..claims,
             ..roles.Select(r => new Claim(ClaimTypes.Role, r))
         ]);
 

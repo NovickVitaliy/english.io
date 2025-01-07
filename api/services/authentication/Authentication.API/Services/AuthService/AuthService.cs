@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Authentication.API.DTOs.Auth.Requests;
 using Authentication.API.DTOs.Auth.Responses;
 using Authentication.API.Models;
@@ -40,6 +41,11 @@ public class AuthService : IAuthService
             return Result<AuthResponse>.BadRequest(result.Errors.First().Description);
         }
         await _userManager.AddToRoleAsync(user, AuthConstants.Roles.User);
+        await _userManager.AddClaimsAsync(user, [
+            new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(Constants.ApplicationClaimTypes.PreferencesConfigured, "false"),
+        ]);
         var tokenResult = await _tokenGenerator.GenerateJwtToken(user);
         return Result<AuthResponse>.Ok(new AuthResponse(user.UserName, user.Email, [AuthConstants.Roles.User], tokenResult.Data));
     }
