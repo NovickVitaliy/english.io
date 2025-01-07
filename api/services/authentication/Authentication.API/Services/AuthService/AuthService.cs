@@ -4,6 +4,7 @@ using Authentication.API.DTOs.Auth.Responses;
 using Authentication.API.Models;
 using Authentication.API.Services.TokenGenerator;
 using Microsoft.AspNetCore.Identity;
+using Shared;
 using Shared.ErrorHandling;
 
 namespace Authentication.API.Services.AuthService;
@@ -44,7 +45,7 @@ public class AuthService : IAuthService
         await _userManager.AddClaimsAsync(user, [
             new Claim(ClaimTypes.Name, user.UserName),
             new Claim(ClaimTypes.Email, user.Email),
-            new Claim(Constants.ApplicationClaimTypes.PreferencesConfigured, "false"),
+            new Claim(GlobalConstants.ApplicationClaimTypes.PreferencesConfigured, "false"),
         ]);
         var tokenResult = await _tokenGenerator.GenerateJwtToken(user);
         return Result<AuthResponse>.Ok(new AuthResponse(user.UserName, user.Email, [AuthConstants.Roles.User], tokenResult.Data));

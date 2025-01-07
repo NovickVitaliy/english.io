@@ -1,6 +1,6 @@
-namespace Authentication.API;
+namespace Shared;
 
-public static class Constants
+public static class GlobalConstants
 {
     public static class ApplicationClaimTypes
     {
