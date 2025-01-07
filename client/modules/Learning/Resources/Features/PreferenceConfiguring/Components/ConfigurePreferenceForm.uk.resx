@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="Preference_Configure_Form_Header" xml:space="preserve">
+    <value>Налаштування вподобань</value>
+  </data>
+    <data name="Example_Sentences_Number" xml:space="preserve">
+    <value>Кількість прикладних речень</value>
+  </data>
+    <data name="Exameple_Sentence_Number_Tooltip" xml:space="preserve">
+    <value>Вкажіть кількість прикладних речень для кожного слова.</value>
+  </data>
+    <data name="Daily_Word_Practice_Limit" xml:space="preserve">
+    <value>Щоденний ліміт слів для практики</value>
+  </data>
+    <data name="Daily_Word_Practice_Limit_Tooltip" xml:space="preserve">
+    <value>Вкажіть максимальну кількість слів для щоденної практики.</value>
+  </data>
+    <data name="Daily_Sessions_Count" xml:space="preserve">
+    <value>Кількість щоденних сеансів</value>
+  </data>
+    <data name="Daily_Sessions_Count_Tooltip" xml:space="preserve">
+    <value>Вкажіть кількість щоденних сеансів практики.</value>
+  </data>
+    <data name="Save" xml:space="preserve">
+    <value>Зберегти</value>
+  </data>
+  <data name="Sessions_Time_Prompt">
+    <value>Введіть час для кожної сесії</value>
+  </data>
+  <data name="Session">
+    <value>Сесія</value>
+  </data>
+</root>

@@ -1,0 +1,12 @@
+@page "/preference-configuration"
+@using Microsoft.AspNetCore.Authorization
+@using Shared.Layout
+@using MudBlazor
+@using Learning.Features.PreferenceConfiguring.Components
+@layout EmptyLayout
+@attribute [Authorize(LearningConstants.AuthorizationPolicies.PreferencesMustNotBeConfigured)]
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    <ConfigurePreferenceForm></ConfigurePreferenceForm>
+</MudContainer>
+

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="Preference_Configure_Form_Header" xml:space="preserve">
+    <value>Configure Preferences</value>
+  </data>
+    <data name="Example_Sentences_Number" xml:space="preserve">
+    <value>Number of Example Sentences</value>
+  </data>
+    <data name="Exameple_Sentence_Number_Tooltip" xml:space="preserve">
+    <value>Set the number of example sentences per word.</value>
+  </data>
+    <data name="Daily_Word_Practice_Limit" xml:space="preserve">
+    <value>Daily Word Practice Limit</value>
+  </data>
+    <data name="Daily_Word_Practice_Limit_Tooltip" xml:space="preserve">
+    <value>Set the maximum number of words to practice daily.</value>
+  </data>
+    <data name="Daily_Sessions_Count" xml:space="preserve">
+    <value>Daily Sessions Count</value>
+  </data>
+    <data name="Daily_Sessions_Count_Tooltip" xml:space="preserve">
+    <value>Set the number of daily practice sessions.</value>
+  </data>
+    <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Sessions_Time_Prompt">
+    <value>Enter time for each session</value>
+  </data>
+  <data name="Session">
+    <value>Session</value>
+  </data>
+</root>

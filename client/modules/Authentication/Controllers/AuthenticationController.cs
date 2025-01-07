@@ -16,7 +16,7 @@ public class AuthenticationController : ControllerBase
         _jwtSecurityTokenHandler = new();
     }
     
-    public async Task<IActionResult> Login(string token, string redirectUri)
+    public async Task<IActionResult> SignToApp(string token, string redirectUri)
     {
         var claims = _jwtSecurityTokenHandler.ReadJwtToken(token).Claims;
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

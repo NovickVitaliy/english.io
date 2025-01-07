@@ -1,0 +1,67 @@
+@using Microsoft.Extensions.Localization
+@using MudBlazor
+@inject IStringLocalizer<ConfigurePreferenceForm> Localizer
+<MudGrid Class="d-flex justify-center align-center mt-20">
+    <MudItem md="4" sm="8" xs="12">
+        <MudCard>
+            <MudCardHeader>
+                <MudText Typo="Typo.h4" Align="Align.Center">@Localizer["Preference_Configure_Form_Header"]</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudForm @ref="_form" Model="_request">
+                    <div class="d-flex align-end">
+                        <MudTextField Required="true"
+                                      InputType="InputType.Number"
+                                      Label="@Localizer["Example_Sentences_Number"]"
+                                      For="() => _request.NumberOfExampleSentencesPerWord"
+                                      @bind-Value="_request.NumberOfExampleSentencesPerWord"></MudTextField>
+                        <MudTooltip Text="@Localizer["Exameple_Sentence_Number_Tooltip"]">
+                            <MudIcon Icon="@Icons.Material.Filled.Info"/>
+                        </MudTooltip>
+                    </div>
+
+                    <div class="d-flex align-end">
+                        <MudTextField Required="true"
+                                      InputType="InputType.Number"
+                                      Label="@Localizer["Daily_Word_Practice_Limit"]"
+                                      For="() => _request.DailyWordPracticeLimit"
+                                      @bind-Value="_request.DailyWordPracticeLimit"></MudTextField>
+                        <MudTooltip Text="@Localizer["Daily_Word_Practice_Limit_Tooltip"]">
+                            <MudIcon Icon="@Icons.Material.Filled.Info"/>
+                        </MudTooltip>
+                    </div>
+
+                    <div class="d-flex align-end">
+                        <MudTextField Required="true"
+                                      InputType="InputType.Number"
+                                      Label="@Localizer["Daily_Sessions_Count"]"
+                                      For="() => _request.DailySessionsCount"
+                                      ValueChanged="@((int sessionsCount) => HandleDailySessionsNumberChange(sessionsCount))"
+                        ></MudTextField>
+                        <MudTooltip Text="@Localizer["Daily_Sessions_Count_Tooltip"]">
+                            <MudIcon Icon="@Icons.Material.Filled.Info"/>
+                        </MudTooltip>
+                    </div>
+
+                    @if (_request.DailySessionsReminderTimes.Count > 0)
+                    {
+                        <MudText Typo="Typo.h5">@Localizer["Sessions_Time_Prompt"]</MudText>
+                        @for (int i = 0; i < _request.DailySessionsReminderTimes.Count; i++)
+                        {
+                            int index = i;
+                            <MudTextField InputType="InputType.Time"
+                                          Label=@(@$"{Localizer["Session"]} - {i + 1}")
+                                          @bind-Value="_request.DailySessionsReminderTimes[index]"
+                                          Required="true">
+                            </MudTextField>
+                        }
+                    }
+                </MudForm>
+            </MudCardContent>
+            <MudCardActions class="d-flex gap-1 ml-auto">
+                <MudButton OnClick="@(async () => await Submit())" Color="Color.Primary"
+                           Variant="Variant.Filled">@Localizer["Save"]</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+</MudGrid>
