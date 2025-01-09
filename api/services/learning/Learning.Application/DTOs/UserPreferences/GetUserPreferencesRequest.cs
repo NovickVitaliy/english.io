@@ -1,11 +1,17 @@
 using Learning.Application.Validation.UserPreferences;
+using Shared.Requests;
 
 namespace Learning.Application.DTOs.UserPreferences;
 
-public class GetUserPreferencesRequest : BaseUserPreferencesRequest
+public record GetUserPreferencesRequest(Guid? Id, string? UserEmail, int? NumberOfExampleSentencesPerWord, int? DailyWordPracticeLimit, TimeSpan[]? DailySessionsReminderTimes)
+    : BaseUserPreferencesRequest(Id, UserEmail, NumberOfExampleSentencesPerWord, DailyWordPracticeLimit, DailySessionsReminderTimes)
 {
-    public override bool IsValid()
+    public override RequestValidationResult IsValid()
     {
-        return new GetUserPreferencesValidator().Validate(this).IsValid;
+        var validationResult = new GetUserPreferencesValidator().Validate(this);
+
+        return validationResult.IsValid
+            ? new RequestValidationResult(true)
+            : new RequestValidationResult(false, validationResult.Errors.FirstOrDefault()!.ErrorMessage);
     }
 }

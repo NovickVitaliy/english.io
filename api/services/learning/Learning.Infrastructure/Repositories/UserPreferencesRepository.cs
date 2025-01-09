@@ -16,11 +16,11 @@ public class UserPreferencesRepository : IUserPreferencesRepository
         _learningDbContext = learningDbContext;
     }
 
-    public async Task<UserPreferences?> GetUserPreferencesAsync(string email)
+    public async Task<UserPreferences?> GetUserPreferencesAsync(Guid id)
     {
         var filter = Builders<UserPreferences>
             .Filter
-            .Eq(x => x.UserEmail, email);
+            .Eq(x => x.Id, id);
         
         var userPreference = await (await _learningDbContext.UserPreferences.FindAsync(filter)).SingleOrDefaultAsync();
 
@@ -40,7 +40,13 @@ public class UserPreferencesRepository : IUserPreferencesRepository
             .Filter
             .Eq(x => x.Id, id);
 
-        await _learningDbContext.UserPreferences.ReplaceOneAsync(filter, userPreferences);
+        var update = Builders<UserPreferences>
+            .Update
+            .Set(x => x.DailySessionsReminderTimes, userPreferences.DailySessionsReminderTimes)
+            .Set(x => x.DailyWordPracticeLimit, userPreferences.DailyWordPracticeLimit)
+            .Set(x => x.NumberOfExampleSentencesPerWord, userPreferences.NumberOfExampleSentencesPerWord);
+        
+        await _learningDbContext.UserPreferences.UpdateOneAsync(filter, update);
         
         return true;
     }
