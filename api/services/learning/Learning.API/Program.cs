@@ -1,4 +1,5 @@
 using Learning.Infrastructure;
+using Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 

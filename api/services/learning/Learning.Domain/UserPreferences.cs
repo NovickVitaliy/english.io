@@ -10,5 +10,5 @@ public class UserPreferences
 
     public int DailyWordPracticeLimit { get; set; }
 
-    public List<TimeSpan> DaiylSessionsReminderTimes { get; set; } = [];
+    public List<TimeSpan> DailySessionsReminderTimes { get; set; } = [];
 }
