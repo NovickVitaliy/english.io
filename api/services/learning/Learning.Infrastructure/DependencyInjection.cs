@@ -1,4 +1,5 @@
 using Learning.Application.Contracts;
+using Learning.Application.Contracts.Repositories;
 using Learning.Domain;
 using Learning.Infrastructure.Database;
 using Learning.Infrastructure.Options;

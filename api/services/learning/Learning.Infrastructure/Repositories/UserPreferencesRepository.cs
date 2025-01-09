@@ -1,4 +1,5 @@
 using Learning.Application.Contracts;
+using Learning.Application.Contracts.Repositories;
 using Learning.Domain;
 using Learning.Infrastructure.Database;
 using MongoDB.Driver;
@@ -15,7 +16,7 @@ public class UserPreferencesRepository : IUserPreferencesRepository
         _learningDbContext = learningDbContext;
     }
 
-    public async Task<Result<UserPreferences>> GetUserPreferencesAsync(string email)
+    public async Task<UserPreferences?> GetUserPreferencesAsync(string email)
     {
         var filter = Builders<UserPreferences>
             .Filter
@@ -23,19 +24,17 @@ public class UserPreferencesRepository : IUserPreferencesRepository
         
         var userPreference = await (await _learningDbContext.UserPreferences.FindAsync(filter)).SingleOrDefaultAsync();
 
-        return userPreference == null
-            ? Result<UserPreferences>.NotFound(email)
-            : Result<UserPreferences>.Ok(userPreference);
+        return userPreference;
     }
 
-    public async Task<Result<Guid>> CreateUserPreferencesAsync(UserPreferences userPreferences)
+    public async Task<Guid> CreateUserPreferencesAsync(UserPreferences userPreferences)
     {
         await _learningDbContext.UserPreferences.InsertOneAsync(userPreferences);
-        
-        return Result<Guid>.Created($"api/user-preferences/{userPreferences.Id}", userPreferences.Id);
+
+        return userPreferences.Id;
     }
     
-    public async Task<Result<bool>> UpdateUserPreferencesAsync(Guid id, UserPreferences userPreferences)
+    public async Task<bool> UpdateUserPreferencesAsync(Guid id, UserPreferences userPreferences)
     {
         var filter = Builders<UserPreferences>
             .Filter
@@ -43,15 +42,15 @@ public class UserPreferencesRepository : IUserPreferencesRepository
 
         await _learningDbContext.UserPreferences.ReplaceOneAsync(filter, userPreferences);
         
-        return Result<bool>.Ok(true);
+        return true;
     }
     
-    public async Task<Result<bool>> DeleteUserPreferencesAsync(Guid id)
+    public async Task<bool> DeleteUserPreferencesAsync(Guid id)
     {
         var filter = Builders<UserPreferences>.Filter.Eq(x => x.Id, id);
 
         await _learningDbContext.UserPreferences.DeleteOneAsync(filter);
-        
-        return Result<bool>.NoContent();
+
+        return true;
     }
 }
