@@ -1,3 +1,6 @@
+using Learning.Application.Contracts;
+using Learning.Domain;
+using Learning.Infrastructure.Database;
 using Learning.Infrastructure.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +24,9 @@ public static class DependencyInjection
 
             return new MongoClient(mongoOptions.ConnectionString);
         });
+
+        services.AddScoped<LearningDbContext>();
+        services.AddScoped<IUserPreferencesRepository, IUserPreferencesRepository>();
         
         return services;
     }
