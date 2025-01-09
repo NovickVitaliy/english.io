@@ -8,5 +8,12 @@
   auth.db:
     image: postgres
     
+  learning.db:
+    image: mongo
+    
+  mongo-ui:
+    image: mongo-express
+    
 volumes:
   auth.db.volume:
+  learning.db.volume:
