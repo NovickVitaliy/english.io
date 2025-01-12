@@ -20,4 +20,10 @@ public class UserPreferencesControllers : ControllerBase
     {
         return (await _userPreferencesService.CreateUserPreferencesAsync(request)).ToApiResponse();
     }
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetAsync([FromRoute] GetUserPreferencesRequest request)
+    {
+        return (await _userPreferencesService.GetUserPreferencesAsync(request)).ToApiResponse();
+    }
 }
