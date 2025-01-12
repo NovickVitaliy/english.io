@@ -14,7 +14,8 @@ public partial class RegisterForm : ComponentBase
     private MudForm _form = null!;
     [Inject] private IAuthenticationService AuthenticationService { get; init; } = null!;
     [Inject] private ISnackbar Snackbar { get; init; } = null!;
-    
+    [Inject] private NavigationManager NavigationManager { get; init; } = null!;
+
     private async Task Submit()
     {
         await _form.Validate();
@@ -24,13 +25,17 @@ public partial class RegisterForm : ComponentBase
             try
             {
                 var response = await AuthenticationService.RegisterAsync(_registerRequest);
+
+                var query = $"?token={Uri.EscapeDataString(response.AuthToken)}&" +
+                            $"redirectUri=/preference-configuration";
+
+                NavigationManager.NavigateTo("Authentication/SignToApp" + query, forceLoad: true);
                 Snackbar.Add("Successful register. Welcome!", Severity.Success);
-                Snackbar.Add(JsonSerializer.Serialize(response), Severity.Info);
             }
             catch (ApiException e)
             {
                 Snackbar.Add(e.Content ?? "Error occured during registration", Severity.Error);
-            }            
+            }
         }
     }
 }

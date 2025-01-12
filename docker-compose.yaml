@@ -5,8 +5,21 @@
       context: .
       dockerfile: api/services/authentication/Authentication.API/Dockerfile
   
+  learning.api:
+    image: learning.api
+    build:
+      context: .
+      dockerfile: api/services/learning/Learning.API/Dockerfile
+  
   auth.db:
     image: postgres
     
+  learning.db:
+    image: mongo
+    
+  mongo-ui:
+    image: mongo-express
+    
 volumes:
   auth.db.volume:
+  learning.db.volume:

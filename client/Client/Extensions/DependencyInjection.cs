@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using Authentication;
+using Learning;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using MudBlazor.Services;
 
@@ -12,7 +13,7 @@ public static class DependencyInjection
     public static IServiceCollection ConfigureModules(this IServiceCollection services, IConfiguration configuration)
     {
         services.RegisterAuthenticationModule(configuration);
-        
+        services.RegisterLearningModule(configuration);
         return services; 
     }
 
@@ -34,6 +35,7 @@ public static class DependencyInjection
             .AddCookie(options =>
             {
                 options.Cookie.MaxAge = TimeSpan.FromMinutes(30);
+                options.LoginPath = "/login";
             });
         services.AddAuthorization();
         services.AddCascadingAuthenticationState();

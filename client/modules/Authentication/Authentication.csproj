@@ -7,6 +7,7 @@
         <RazorLangVersion>7.0</RazorLangVersion>
         <RazorCompileOnBuild>true</RazorCompileOnBuild>
         <RazorComponentLibrary>true</RazorComponentLibrary>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
 
@@ -24,7 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Shared\Shared.csproj" />
+      <ProjectReference Include="..\..\ClientShared\ClientShared.csproj" />
     </ItemGroup>
 
 </Project>

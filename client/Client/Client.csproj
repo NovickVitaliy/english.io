@@ -24,7 +24,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\modules\Authentication\Authentication.csproj" />
-      <ProjectReference Include="..\Shared\Shared.csproj" />
+      <ProjectReference Include="..\modules\Learning\Learning.csproj" />
+      <ProjectReference Include="..\ClientShared\ClientShared.csproj" />
     </ItemGroup>
 
 </Project>

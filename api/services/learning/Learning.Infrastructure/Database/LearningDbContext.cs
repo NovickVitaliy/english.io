@@ -1,0 +1,19 @@
+using Learning.Domain;
+using Learning.Infrastructure.Options;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
+
+namespace Learning.Infrastructure.Database;
+
+public class LearningDbContext
+{
+    private const string UserPreferencesCollectionName = "PreferencesCollection";
+    private readonly IMongoDatabase _mongoDatabase;
+
+    public LearningDbContext(IMongoClient mongoClient, IOptions<MongoOptions> mongoOptions)
+    {
+        _mongoDatabase = mongoClient.GetDatabase(mongoOptions.Value.DatabaseName);
+    }
+
+    public IMongoCollection<UserPreferences> UserPreferences => _mongoDatabase.GetCollection<UserPreferences>(UserPreferencesCollectionName);
+}

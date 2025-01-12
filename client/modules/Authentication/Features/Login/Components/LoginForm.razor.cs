@@ -14,6 +14,7 @@ namespace Authentication.Features.Login.Components;
 
 public partial class LoginForm : ComponentBase
 {
+    [SupplyParameterFromQuery] private string ReturnUrl { get; init; } = null!;
     private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
     private readonly LoginRequest _loginRequest = new LoginRequest();
     private MudForm _form = null!;
@@ -34,9 +35,9 @@ public partial class LoginForm : ComponentBase
                     .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
 
                 var query = $"?token={Uri.EscapeDataString(response.AuthToken)}&" +
-                            $"redirectUri={Uri.EscapeDataString(uri)}";
+                            $"redirectUri={Uri.EscapeDataString(ReturnUrl)}";
 
-                NavigationManager.NavigateTo("Authentication/Login" + query, forceLoad: true);
+                NavigationManager.NavigateTo("Authentication/SignToApp" + query, forceLoad: true);
                 Snackbar.Add("Successful login. Welcome!", Severity.Success);
             }
             catch (ApiException e)
