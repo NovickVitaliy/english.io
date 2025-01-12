@@ -1,15 +1,20 @@
+using Learning.Features.PreferenceConfiguring.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shared;
+using Shared.Extensions;
 
 namespace Learning;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection RegisterLearningModule(this IServiceCollection services)
+    public static IServiceCollection RegisterLearningModule(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddAuthorizationBuilder()
             .AddPolicy(LearningConstants.AuthorizationPolicies.PreferencesMustNotBeConfigured,
                 builder => builder.RequireClaim(GlobalConstants.ApplicationClaimTypes.PreferencesConfigured, "false"));
+
+        services.ConfigureApiService<IUserPreferencesService>(configuration, IUserPreferencesService.ApiUrlKey);
         
         return services;
     }

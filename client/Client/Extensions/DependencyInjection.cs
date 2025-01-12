@@ -13,7 +13,7 @@ public static class DependencyInjection
     public static IServiceCollection ConfigureModules(this IServiceCollection services, IConfiguration configuration)
     {
         services.RegisterAuthenticationModule(configuration);
-        services.RegisterLearningModule();
+        services.RegisterLearningModule(configuration);
         return services; 
     }
 

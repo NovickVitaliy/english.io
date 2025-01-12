@@ -6,23 +6,34 @@ services:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS}
       - ConnectionStrings__Default=${AUTH_DB_CONNECTION_STRING}
-      - USER_SECRETS_ID=${USER_SECRETS_ID}
+      - USER_SECRETS_ID=${AUTH_USER_SECRETS_ID}
     ports:
       - "${AUTH_API_PORT}:${ASPNETCORE_HTTP_PORTS}"
     volumes:
-      - ${USER_SECRETS_HOST_PATH}:${USER_SECRETS_CONTAINER_PATH}
+      - ${AUTH_USER_SECRETS_HOST_PATH}:${AUTH_USER_SECRETS_CONTAINER_PATH}
   
+  learning.api:
+    container_name: learning.api
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS}
+      - MongoOptions__ConnectionString=${MONGO_OPTIONS_CONNECTION_STRING}
+      - MongoOptions__DatabaseName=${MONGO_OPTIONS_DATABASE_NAME}
+    ports:
+      - "${LEARNING_API_PORT}:${ASPNETCORE_HTTP_PORTS}"
+    
   auth.db:
     container_name: auth.db
     restart: always
     environment:
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PASSWORD=${AUTH_POSTGRES_PASSWORD}
+      - POSTGRES_USER=${AUTH_POSTGRES_USER}
+      - POSTGRES_DB=${AUTH_POSTGRES_DB}
     ports:
-      - "${POSTGRES_PORT}:5432"
+      - "${AUTH_POSTGRES_PORT}:5432"
     volumes:
-      - ${AUTH_DB_VOLUME}:/var/lib/postgresql/data
+      - ${AUTH_AUTH_DB_VOLUME}:/var/lib/postgresql/data
   
   learning.db:
     container_name: learning.db

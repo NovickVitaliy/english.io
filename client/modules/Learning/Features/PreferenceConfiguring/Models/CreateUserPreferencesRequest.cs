@@ -1,7 +1,9 @@
 namespace Learning.Features.PreferenceConfiguring.Models;
 
-public class ConfigurePreferenceRequest
+public class CreateUserPreferencesRequest
 {
+    public string UserEmail { get; set; } = null!;
+    
     public int NumberOfExampleSentencesPerWord { get; set; }
     
     public int DailyWordPracticeLimit { get; set; }

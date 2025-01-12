@@ -30,4 +30,7 @@
   <data name="Session">
     <value>Session</value>
   </data>
+  <data name="User_Preferences_Configured">
+    <value>User preferences were successfully created. Navigating you to the learning home page.</value>
+  </data>
 </root>
