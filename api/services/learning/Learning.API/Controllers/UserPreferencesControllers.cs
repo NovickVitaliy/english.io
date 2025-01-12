@@ -37,4 +37,10 @@ public class UserPreferencesControllers : ControllerBase
 
         return (await _userPreferencesService.UpdateUserPreferencesAsync(request)).ToApiResponse();
     }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteAsync([FromRoute] DeleteUserPreferencesRequest request)
+    {
+        return (await _userPreferencesService.DeleteUserPreferencesAsync(request)).ToApiResponse();
+    }
 }
