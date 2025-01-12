@@ -26,4 +26,15 @@ public class UserPreferencesControllers : ControllerBase
     {
         return (await _userPreferencesService.GetUserPreferencesAsync(request)).ToApiResponse();
     }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> UpdateAsync(Guid id, UpdateUserPreferencesRequest request)
+    {
+        request = request with
+        {
+            Id = id
+        };
+
+        return (await _userPreferencesService.UpdateUserPreferencesAsync(request)).ToApiResponse();
+    }
 }
