@@ -4,6 +4,7 @@ using Learning.Application.Contracts.Services;
 using Learning.Domain;
 using Learning.Infrastructure.Database;
 using Learning.Infrastructure.Options;
+using Learning.Infrastructure.Repositories;
 using Learning.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +30,7 @@ public static class DependencyInjection
         });
 
         services.AddScoped<LearningDbContext>();
-        services.AddScoped<IUserPreferencesRepository, IUserPreferencesRepository>();
+        services.AddScoped<IUserPreferencesRepository, UserPreferencesRepository>();
         services.AddScoped<IUserPreferencesService, UserPreferencesService>();
         
         return services;
