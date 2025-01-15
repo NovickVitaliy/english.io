@@ -1,13 +1,15 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text;
-using System.Text.Unicode;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Authentication.API.Settings;
+namespace Shared.Authentication.Models;
 
 public class JwtSettings
 {
-    public const string ConfigurationKey = "JwtSettings";
+    public const string IssuerKey = "JWT_ISSUER";
+    public const string AudienceKey = "JWT_AUDIENCE";
+    public const string LifetimeInMinutesKey = "JWT_LIFETIME_IN_MINUTES";
+    public const string SecretKey = "JWT_SECRET";
     
     [Required]
     public string Audience { get; init; } = null!;

@@ -6,11 +6,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS}
       - ConnectionStrings__Default=${AUTH_DB_CONNECTION_STRING}
-      - USER_SECRETS_ID=${AUTH_USER_SECRETS_ID}
+    env_file:
+      - .env
     ports:
       - "${AUTH_API_PORT}:${ASPNETCORE_HTTP_PORTS}"
-    volumes:
-      - ${AUTH_USER_SECRETS_HOST_PATH}:${AUTH_USER_SECRETS_CONTAINER_PATH}
   
   learning.api:
     container_name: learning.api

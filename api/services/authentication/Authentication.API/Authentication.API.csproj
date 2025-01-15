@@ -4,7 +4,6 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <UserSecretsId>93d3b966-816a-431a-bdae-8afd6b6285cc</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
@@ -19,6 +18,7 @@
     </ItemGroup>
     
     <ItemGroup>
+      <ProjectReference Include="..\..\..\..\shared\Shared.Authentication\Shared.Authentication.csproj" />
       <ProjectReference Include="..\..\..\..\shared\Shared\Shared.csproj" />
     </ItemGroup>
     
