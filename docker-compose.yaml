@@ -20,6 +20,9 @@
   mongo-ui:
     image: mongo-express
     
+  rabbitmq-broker:
+    image: rabbitmq:3-management  
+    
 volumes:
   auth.db.volume:
   learning.db.volume:
