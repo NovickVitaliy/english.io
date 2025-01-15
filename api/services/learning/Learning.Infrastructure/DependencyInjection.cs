@@ -1,3 +1,4 @@
+using System.Reflection;
 using Learning.Application.Contracts;
 using Learning.Application.Contracts.Repositories;
 using Learning.Application.Contracts.Services;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using Shared.MessageBus;
 
 namespace Learning.Infrastructure;
 
@@ -17,6 +19,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection ConfigureInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        services.ConfigureRabbitMq(Assembly.GetExecutingAssembly());
+        
         services.AddOptions<MongoOptions>()
             .BindConfiguration(MongoOptions.ConfigurationKey)
             .ValidateDataAnnotations()

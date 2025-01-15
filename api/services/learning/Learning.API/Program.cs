@@ -1,7 +1,6 @@
 using Learning;
 using Learning.Application;
 using Learning.Infrastructure;
-using Learning.Infrastructure.Database;
 using Shared.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);

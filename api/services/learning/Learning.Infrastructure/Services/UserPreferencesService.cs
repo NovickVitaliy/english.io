@@ -2,17 +2,21 @@ using Learning.Application.Contracts.Repositories;
 using Learning.Application.Contracts.Services;
 using Learning.Application.DTOs.UserPreferences;
 using Learning.Domain;
+using MassTransit;
 using Shared.ErrorHandling;
+using Shared.MessageBus.Events;
 
 namespace Learning.Infrastructure.Services;
 
 public class UserPreferencesService : IUserPreferencesService
 {
     private readonly IUserPreferencesRepository _userPreferencesRepository;
-
-    public UserPreferencesService(IUserPreferencesRepository userPreferencesRepository)
+    private readonly IPublishEndpoint _publishEndpoint;
+    
+    public UserPreferencesService(IUserPreferencesRepository userPreferencesRepository, IPublishEndpoint publishEndpoint)
     {
         _userPreferencesRepository = userPreferencesRepository;
+        _publishEndpoint = publishEndpoint;
     }
 
     public async Task<Result<Guid>> CreateUserPreferencesAsync(CreateUserPreferencesRequest request)
@@ -32,6 +36,7 @@ public class UserPreferencesService : IUserPreferencesService
         };
 
         var id = await _userPreferencesRepository.CreateUserPreferencesAsync(userPreferences);
+        await _publishEndpoint.Publish(new UserCreatedPreferences(request.UserEmail!));
         return Result<Guid>.Created($"/api/user-preferences/{id}", id);
     }
 

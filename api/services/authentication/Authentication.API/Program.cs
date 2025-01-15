@@ -1,3 +1,4 @@
+using System.Reflection;
 using Authentication.API.Data;
 using Authentication.API.Data.Seed;
 using Authentication.API.Models;
@@ -6,6 +7,7 @@ using Authentication.API.Services.TokenGenerator;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Shared.Authentication;
+using Shared.MessageBus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +19,7 @@ builder.Services.AddIdentity<User, Role>()
 
 builder.Services.ConfigureJwtAuthentication();
 builder.Services.AddAuthorization();
-
+builder.Services.ConfigureRabbitMq(Assembly.GetExecutingAssembly());
 builder.Services.AddDbContext<AuthDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString(AuthDbContext.DefaultConnectionStringPosition));

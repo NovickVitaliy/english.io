@@ -21,7 +21,8 @@ public static class DependencyInjection
     {
         services.AddRazorPages();
         services.AddControllers()
-            .AddApplicationPart(typeof(AuthenticationMarker).Assembly);
+            .AddApplicationPart(typeof(AuthenticationMarker).Assembly)
+            .AddApplicationPart(typeof(LearningMarker).Assembly);
         services.AddLocalization(options =>
         {
             options.ResourcesPath = "Resources";
@@ -36,6 +37,7 @@ public static class DependencyInjection
             {
                 options.Cookie.MaxAge = TimeSpan.FromMinutes(30);
                 options.LoginPath = "/login";
+                options.AccessDeniedPath = "/";
             });
         services.AddAuthorization();
         services.AddCascadingAuthenticationState();
