@@ -54,3 +54,14 @@ services:
       - ME_CONFIG_BASICAUTH=${MONGO_UI_AUTH}
     profiles:
       - development
+  
+  rabbitmq-broker:
+    container_name: rabbitmq-broker
+    restart: always
+    hostname: english-io
+    environment:
+      - RABBITMQ_DEFAULT_USER=${MESSAGE_BROKER_USERNAME}
+      - RABBITMQ_DEFAULT_PASS=${MESSAGE_BROKER_PASSWORD}
+    ports:
+      - "${RABBITMQ_BUS_PORT}:5672"
+      - "${RABBITMQ_UI_PORT}:15672"
