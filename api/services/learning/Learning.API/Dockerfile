@@ -12,6 +12,8 @@ COPY ["api/services/learning/Learning.Application/Learning.Application.csproj", 
 COPY ["api/services/learning/Learning.Domain/Learning.Domain.csproj", "api/services/learning/Learning.Domain/"]
 COPY ["shared/Shared/Shared.csproj", "shared/Shared/"]
 COPY ["api/services/learning/Learning.Infrastructure/Learning.Infrastructure.csproj", "api/services/learning/Learning.Infrastructure/"]
+COPY ["shared/Shared.MessageBus/Shared.MessageBus.csproj", "shared/Shared.MessageBus/"]
+COPY ["shared/Shared.Authentication/Shared.Authentication.csproj", "shared/Shared.Authentication/"]
 RUN dotnet restore "api/services/learning/Learning.API/Learning.API.csproj"
 COPY . .
 WORKDIR "/src/api/services/learning/Learning.API"

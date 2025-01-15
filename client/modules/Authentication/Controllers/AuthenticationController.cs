@@ -18,7 +18,8 @@ public class AuthenticationController : ControllerBase
     
     public async Task<IActionResult> SignToApp(string token, string redirectUri)
     {
-        var claims = _jwtSecurityTokenHandler.ReadJwtToken(token).Claims;
+        var claims = _jwtSecurityTokenHandler.ReadJwtToken(token).Claims.ToList();
+        claims.Add(new Claim("x-token", token));
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         var principal = new ClaimsPrincipal(identity);
         await HttpContext.SignInAsync(principal);

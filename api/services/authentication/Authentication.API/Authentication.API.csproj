@@ -19,6 +19,7 @@
     
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\shared\Shared.Authentication\Shared.Authentication.csproj" />
+      <ProjectReference Include="..\..\..\..\shared\Shared.MessageBus\Shared.MessageBus.csproj" />
       <ProjectReference Include="..\..\..\..\shared\Shared\Shared.csproj" />
     </ItemGroup>
     

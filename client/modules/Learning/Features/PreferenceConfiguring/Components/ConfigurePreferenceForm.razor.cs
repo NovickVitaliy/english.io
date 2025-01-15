@@ -42,7 +42,7 @@ public partial class ConfigurePreferenceForm : ComponentBase
             {
                 var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
                 _request.UserEmail = authState.User.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Email).Value;
-                await UserPreferencesService.CreateUserPreferencesAsync(_request);
+                await UserPreferencesService.CreateUserPreferencesAsync(_request, authState.User.Claims.Single(x => x.Type == "x-token").Value);
 
                 Snackbar.Add(Localizer["User_Preferences_Configured"], Severity.Success);
                 await Task.Delay(2000);

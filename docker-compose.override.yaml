@@ -10,6 +10,9 @@ services:
       - .env
     ports:
       - "${AUTH_API_PORT}:${ASPNETCORE_HTTP_PORTS}"
+    depends_on:
+      - auth.db
+      - rabbitmq-broker
   
   learning.api:
     container_name: learning.api
@@ -23,6 +26,9 @@ services:
       - "${LEARNING_API_PORT}:${ASPNETCORE_HTTP_PORTS}"
     env_file:
       - .env
+    depends_on:
+      - learning.db
+      - rabbitmq-broker
     
   auth.db:
     container_name: auth.db
