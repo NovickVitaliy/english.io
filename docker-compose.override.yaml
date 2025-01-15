@@ -21,6 +21,8 @@ services:
       - MongoOptions__DatabaseName=${MONGO_OPTIONS_DATABASE_NAME}
     ports:
       - "${LEARNING_API_PORT}:${ASPNETCORE_HTTP_PORTS}"
+    env_file:
+      - .env
     
   auth.db:
     container_name: auth.db
