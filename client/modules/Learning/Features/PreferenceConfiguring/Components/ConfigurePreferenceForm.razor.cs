@@ -40,7 +40,7 @@ public partial class ConfigurePreferenceForm : ComponentBase
             try
             {
                 var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-                _request.UserEmail = authState.User.Claims.Single(x => x.Type == "email").Value;
+                _request.UserEmail = authState.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
                 await UserPreferencesService.CreateUserPreferencesAsync(_request);
 
                 Snackbar.Add(Localizer["User_Preferences_Configured"], Severity.Success);
