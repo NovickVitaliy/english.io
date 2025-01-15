@@ -20,6 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.yaml = docker-compose.yaml
 		docker-compose.override.yaml = docker-compose.override.yaml
 		.env = .env
+		.gitignore = .gitignore
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "client", "client", "{0BD90375-4CC5-451A-B5D2-A12EA109FD7D}"
@@ -44,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Learning.Application", "api
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Learning.Infrastructure", "api\services\learning\Learning.Infrastructure\Learning.Infrastructure.csproj", "{49155983-7BF4-4374-80E0-3ED7E1E06A67}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Authentication", "shared\Shared.Authentication\Shared.Authentication.csproj", "{DEABD050-03EB-4A35-997E-A812DF5006D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +70,7 @@ Global
 		{707B5015-CDAD-43FF-BA81-D2F0C7867342} = {A12C096B-1312-4DBD-9613-A998851C21E0}
 		{A6F3C0D7-3D9E-40F9-8152-12CF628B50C1} = {A12C096B-1312-4DBD-9613-A998851C21E0}
 		{49155983-7BF4-4374-80E0-3ED7E1E06A67} = {A12C096B-1312-4DBD-9613-A998851C21E0}
+		{DEABD050-03EB-4A35-997E-A812DF5006D0} = {7E469C5B-FA63-4BAE-B48C-C63476F42DA8}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C340E3F4-62B2-413C-8E8B-406C427B1DC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -109,5 +113,9 @@ Global
 		{49155983-7BF4-4374-80E0-3ED7E1E06A67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49155983-7BF4-4374-80E0-3ED7E1E06A67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49155983-7BF4-4374-80E0-3ED7E1E06A67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEABD050-03EB-4A35-997E-A812DF5006D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEABD050-03EB-4A35-997E-A812DF5006D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEABD050-03EB-4A35-997E-A812DF5006D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEABD050-03EB-4A35-997E-A812DF5006D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

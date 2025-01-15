@@ -1,13 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 using Authentication.API.Models;
-using Authentication.API.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Shared.Authentication.Models;
 using Shared.ErrorHandling;
-using JwtConstants = Microsoft.IdentityModel.JsonWebTokens.JwtConstants;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace Authentication.API.Services.TokenGenerator;
@@ -17,10 +15,10 @@ public class TokenGenerator : ITokenGenerator
     private readonly JwtSettings _jwtSettings;
     private readonly UserManager<User> _userManager;
     private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
-    public TokenGenerator(UserManager<User> userManager, IOptions<JwtSettings> jwtSettingsOptions)
+    public TokenGenerator(UserManager<User> userManager, JwtSettings jwtSettings)
     {
         _userManager = userManager;
-        _jwtSettings = jwtSettingsOptions.Value;
+        _jwtSettings = jwtSettings;
         _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
     }
 
