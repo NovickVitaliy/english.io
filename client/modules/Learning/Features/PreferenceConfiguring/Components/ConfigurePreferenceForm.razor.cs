@@ -41,12 +41,13 @@ public partial class ConfigurePreferenceForm : ComponentBase
             try
             {
                 var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+                var token = authState.User.Claims.Single(x => x.Type == "x-token").Value;
                 _request.UserEmail = authState.User.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Email).Value;
-                await UserPreferencesService.CreateUserPreferencesAsync(_request, authState.User.Claims.Single(x => x.Type == "x-token").Value);
-
+                await UserPreferencesService.CreateUserPreferencesAsync(_request, token);
                 Snackbar.Add(Localizer["User_Preferences_Configured"], Severity.Success);
                 await Task.Delay(2000);
-                NavigationManager.NavigateTo("/learning/home");
+                var query = $"?token={Uri.EscapeDataString(token)}";
+                NavigationManager.NavigateTo("Learning/ConfigurePreference" + query, forceLoad: true);
             }
             catch (ApiException e)
             {
