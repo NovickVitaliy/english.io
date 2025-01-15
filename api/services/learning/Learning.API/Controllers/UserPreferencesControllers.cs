@@ -1,11 +1,13 @@
 using Learning.Application.Contracts.Services;
 using Learning.Application.DTOs.UserPreferences;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Learning.Controllers;
 
 [Route("api/user-preferences")]
 [ApiController]
+[Authorize]
 public class UserPreferencesControllers : ControllerBase
 {
     private readonly IUserPreferencesService _userPreferencesService;

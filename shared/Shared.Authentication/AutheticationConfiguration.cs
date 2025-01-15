@@ -31,8 +31,8 @@ public static class AutheticationConfiguration
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidAudience = JwtSettings.AudienceKey,
-                    ValidIssuer = JwtSettings.IssuerKey,
+                    ValidAudience = Env.GetString(JwtSettings.AudienceKey),
+                    ValidIssuer = Env.GetString(JwtSettings.IssuerKey),
                     ValidateAudience = true,
                     ValidateIssuer = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Env.GetString(JwtSettings.SecretKey))),
