@@ -29,6 +29,7 @@ public static class AutheticationConfiguration
             })
             .AddJwtBearer(options =>
             {
+                options.MapInboundClaims = false;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidAudience = Env.GetString(JwtSettings.AudienceKey),
