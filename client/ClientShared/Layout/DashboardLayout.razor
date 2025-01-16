@@ -1,4 +1,8 @@
-﻿@using MudBlazor
+﻿@using System.IdentityModel.Tokens.Jwt
+@using Blazored.LocalStorage
+@using Fluxor
+@using MudBlazor
+@using Shared.Store
 @inherits LayoutComponentBase
 
 <MudThemeProvider IsDarkMode="_isDarkMode" Theme="_theme"/>
@@ -13,6 +17,39 @@
 </MudLayout>
 
 @code {
+    [Inject] private IDispatcher Dispatcher { get; init; } = null!;
+    [Inject] private ILocalStorageService LocalStorageService { get; init; } = null!;
+    [Inject] private IState<UserState> UserState { get; init; } = null!;
     private readonly MudTheme _theme = new();
     private bool _isDarkMode;
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadUserFromStorage();
+            StateHasChanged();
+        }
+    }
+
+    private async Task LoadUserFromStorage()
+    {
+        var token = await LocalStorageService.GetItemAsync<string?>("x-token");
+
+        if (token is not null && IsJwtTokenValid(token))
+        {
+            Dispatcher.Dispatch(new SetUserStateAction(token));
+        }
+        else
+        {
+            await LocalStorageService.RemoveItemAsync("x-token");
+        }
+    }
+
+    private static bool IsJwtTokenValid(string jwtToken)
+    {
+        var jwt = new JwtSecurityTokenHandler().ReadJwtToken(jwtToken);
+
+        return jwt.ValidTo >= DateTime.UtcNow;
+    }
 }

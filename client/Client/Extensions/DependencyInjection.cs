@@ -5,6 +5,7 @@ using Authentication;
 using Learning;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using MudBlazor.Services;
+using Shared.Extensions;
 
 namespace Client.Extensions;
 
@@ -19,6 +20,7 @@ public static class DependencyInjection
 
     public static IServiceCollection ConfigureBlazor(this IServiceCollection services)
     {
+        services.ConfigureStateManager();
         services.AddRazorPages();
         services.AddControllers()
             .AddApplicationPart(typeof(AuthenticationMarker).Assembly)

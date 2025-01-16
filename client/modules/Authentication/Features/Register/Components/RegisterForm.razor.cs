@@ -1,9 +1,12 @@
 using System.Text.Json;
 using Authentication.Features.Register.Models;
 using Authentication.Shared.Services;
+using Blazored.LocalStorage;
+using Fluxor;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Refit;
+using Shared.Store;
 
 namespace Authentication.Features.Register.Components;
 
@@ -15,7 +18,8 @@ public partial class RegisterForm : ComponentBase
     [Inject] private IAuthenticationService AuthenticationService { get; init; } = null!;
     [Inject] private ISnackbar Snackbar { get; init; } = null!;
     [Inject] private NavigationManager NavigationManager { get; init; } = null!;
-
+    [Inject] private IDispatcher Dispatcher { get; init; } = null!;
+    [Inject] private ILocalStorageService LocalStorageService { get; init; } = null!;
     private async Task Submit()
     {
         await _form.Validate();
@@ -25,7 +29,8 @@ public partial class RegisterForm : ComponentBase
             try
             {
                 var response = await AuthenticationService.RegisterAsync(_registerRequest);
-
+                await LocalStorageService.SetItemAsync("x-token", response.AuthToken);
+                Dispatcher.Dispatch(new SetUserStateAction(response.AuthToken));
                 var query = $"?token={Uri.EscapeDataString(response.AuthToken)}&" +
                             $"redirectUri=/preference-configuration";
 
