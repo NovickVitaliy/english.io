@@ -1,13 +1,12 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using Authentication.Features.Login.Models;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Blazored.LocalStorage;
+using Fluxor;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Http;
 using MudBlazor;
 using Refit;
+using Shared;
+using Shared.Store;
 using IAuthenticationService = Authentication.Shared.Services.IAuthenticationService;
 
 namespace Authentication.Features.Login.Components;
@@ -20,8 +19,9 @@ public partial class LoginForm : ComponentBase
     private MudForm _form = null!;
     [Inject] private IAuthenticationService AuthenticationService { get; init; } = null!;
     [Inject] private ISnackbar Snackbar { get; init; } = null!;
-    [Inject] private AuthenticationStateProvider AuthenticationState { get; init; } = null!;
     [Inject] private NavigationManager NavigationManager { get; init; } = null!;
+    [Inject] private IDispatcher Dispatcher { get; init; } = null!;
+    [Inject] private ILocalStorageService LocalStorageService { get; init; } = null!;
     
     private async Task Submit()
     {
@@ -31,8 +31,8 @@ public partial class LoginForm : ComponentBase
             try
             {
                 var response = await AuthenticationService.LoginAsync(_loginRequest);
-                var uri = new Uri(NavigationManager.Uri)
-                    .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+                await LocalStorageService.SetItemAsync(ClientConstants.TokenKey, response.AuthToken);
+                Dispatcher.Dispatch(new SetUserStateAction(response.AuthToken));
 
                 var query = $"?token={Uri.EscapeDataString(response.AuthToken)}&" +
                             $"redirectUri={Uri.EscapeDataString(ReturnUrl)}";

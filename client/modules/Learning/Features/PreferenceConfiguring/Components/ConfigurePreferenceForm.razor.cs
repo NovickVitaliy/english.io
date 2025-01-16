@@ -43,9 +43,8 @@ public partial class ConfigurePreferenceForm : ComponentBase
         {
             try
             {
-                var tokenFromState = UserState.Value.Token;
                 var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-                var token = authState.User.Claims.Single(x => x.Type == "x-token").Value;
+                var token = UserState.Value.Token;
                 _request.UserEmail = authState.User.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Email).Value;
                 await UserPreferencesService.CreateUserPreferencesAsync(_request, token);
                 Snackbar.Add(Localizer["User_Preferences_Configured"], Severity.Success);
