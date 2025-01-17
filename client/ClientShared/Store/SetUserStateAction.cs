@@ -1,11 +1,3 @@
 namespace Shared.Store;
 
-public class SetUserStateAction
-{
-    public string Token { get; }
-
-    public SetUserStateAction(string token)
-    {
-        Token = token;
-    }
-}
+public record SetUserStateAction(string AuthToken, string[] Role, string Email, string Username);

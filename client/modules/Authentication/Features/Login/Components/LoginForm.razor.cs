@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Text.Json;
 using Authentication.Features.Login.Models;
 using Blazored.LocalStorage;
 using Fluxor;
@@ -31,8 +32,8 @@ public partial class LoginForm : ComponentBase
             try
             {
                 var response = await AuthenticationService.LoginAsync(_loginRequest);
-                await LocalStorageService.SetItemAsync(ClientConstants.TokenKey, response.AuthToken);
-                Dispatcher.Dispatch(new SetUserStateAction(response.AuthToken));
+                await LocalStorageService.SetItemAsync(ClientConstants.UserDataKey, JsonSerializer.Serialize(response));
+                Dispatcher.Dispatch(new SetUserStateAction(response.AuthToken, response.Role, response.Email, response.Username));
 
                 var query = $"?token={Uri.EscapeDataString(response.AuthToken)}&" +
                             $"redirectUri={Uri.EscapeDataString(ReturnUrl)}";

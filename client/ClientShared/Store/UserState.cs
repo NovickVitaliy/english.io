@@ -3,17 +3,10 @@ using Fluxor;
 namespace Shared.Store;
 
 [FeatureState]
-public class UserState
+public record UserState(string Token, string[] Role, string Email, string Username)
 {
-    public string Token { get; }
-
-    private UserState()
+    private UserState() : this(null!, null!, null!, null!)
     {
         
-    }
-
-    public UserState(string token)
-    {
-        Token = token;
     }
 }

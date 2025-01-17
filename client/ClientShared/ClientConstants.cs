@@ -2,5 +2,5 @@ namespace Shared;
 
 public static class ClientConstants
 {
-    public const string TokenKey = "X-TOKEN";
+    public const string UserDataKey = "X-USER";
 }
