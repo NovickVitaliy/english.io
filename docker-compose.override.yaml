@@ -11,9 +11,11 @@ services:
     ports:
       - "${AUTH_API_PORT}:${ASPNETCORE_HTTP_PORTS}"
     depends_on:
-      - auth.db
-      - rabbitmq-broker
-  
+      auth.db:
+        condition: service_started
+      rabbitmq-broker:
+        condition: service_healthy
+        
   learning.api:
     container_name: learning.api
     restart: always
@@ -27,9 +29,11 @@ services:
     env_file:
       - .env
     depends_on:
-      - learning.db
-      - rabbitmq-broker
-    
+      learning.db:
+        condition: service_started
+      rabbitmq-broker:
+        condition: service_healthy
+  
   auth.db:
     container_name: auth.db
     restart: always
@@ -71,3 +75,8 @@ services:
     ports:
       - "${RABBITMQ_BUS_PORT}:5672"
       - "${RABBITMQ_UI_PORT}:15672"
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
