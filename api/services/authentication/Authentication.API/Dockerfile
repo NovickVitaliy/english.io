@@ -9,8 +9,8 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["api/services/authentication/Authentication.API/Authentication.API.csproj", "api/services/authentication/Authentication.API/"]
 COPY ["shared/Shared/Shared.csproj", "shared/Shared/"]
-COPY ["shared/Shared.Authentication/Shared.Authentication.csproj", "shared/Shared.Authentication/"]
 COPY ["shared/Shared.MessageBus/Shared.MessageBus.csproj", "shared/Shared.MessageBus/"]
+COPY ["shared/Shared.Authentication/Shared.Authentication.csproj", "shared/Shared.Authentication/"]
 RUN dotnet restore "api/services/authentication/Authentication.API/Authentication.API.csproj"
 COPY . .
 WORKDIR "/src/api/services/authentication/Authentication.API"

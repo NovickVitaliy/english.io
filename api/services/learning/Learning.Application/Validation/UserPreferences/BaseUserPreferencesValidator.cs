@@ -3,7 +3,7 @@ using Learning.Application.DTOs.UserPreferences;
 
 namespace Learning.Application.Validation.UserPreferences;
 
-public abstract class BaseUserPreferencesValidator<T> : AbstractValidator<T> where T : BaseUserPreferencesRequest
+public abstract class BaseUserPreferencesValidator<T> : AbstractValidator<T> where T : IBaseUserPreferencesRequest
 {
     protected void ValidateId()
     {
@@ -36,6 +36,6 @@ public abstract class BaseUserPreferencesValidator<T> : AbstractValidator<T> whe
     {
         RuleFor(x => x.DailySessionsReminderTimes)
             .NotEmpty().WithMessage("Daily session reminder times must be present")
-            .Must(x => x.Length <= 5).WithMessage("Number of daily sessions reminder times must not be greater than 5");
+            .Must(x => x != null && x.Length <= 5).WithMessage("Number of daily sessions reminder times must not be greater than 5");
     }
 }

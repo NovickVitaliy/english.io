@@ -1,4 +1,3 @@
-using Learning;
 using Learning.Application;
 using Learning.Infrastructure;
 using Learning.Infrastructure.Database;
@@ -29,4 +28,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();

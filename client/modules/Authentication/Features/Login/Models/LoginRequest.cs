@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Authentication.Features.Login.Components;
 using Authentication.Features.Register.Components;
 using Shared.LocalizedDataAnnotations;

@@ -1,6 +1,6 @@
 namespace Learning;
 
-public class LearningMarker
+public interface ILearningMarker
 {
-    
+
 }

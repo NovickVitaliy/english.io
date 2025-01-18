@@ -4,9 +4,9 @@ using Shared.Requests;
 namespace Learning.Application.DTOs.UserPreferences;
 
 public record CreateUserPreferencesRequest(Guid? Id, string? UserEmail, int? NumberOfExampleSentencesPerWord, int? DailyWordPracticeLimit, TimeSpan[]? DailySessionsReminderTimes)
-    : BaseUserPreferencesRequest(Id, UserEmail, NumberOfExampleSentencesPerWord, DailyWordPracticeLimit, DailySessionsReminderTimes)
+    : IBaseUserPreferencesRequest
 {
-    public override RequestValidationResult IsValid()
+    public RequestValidationResult IsValid()
     {
         var validationResult = new CreateUserPreferencesValidator().Validate(this);
 

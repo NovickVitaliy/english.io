@@ -2,7 +2,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Authentication.API.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Shared.Authentication.Models;
 using Shared.ErrorHandling;
@@ -26,7 +25,7 @@ public class TokenGenerator : ITokenGenerator
     {
         var claims = (await _userManager.GetClaimsAsync(user)).ToList();
         var roles = (await _userManager.GetRolesAsync(user)).ToList();
-        
+
         claims.AddRange([
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Iss, _jwtSettings.Issuer),
@@ -38,7 +37,7 @@ public class TokenGenerator : ITokenGenerator
             SecurityAlgorithms.HmacSha256);
 
         var dateIssued = DateTime.UtcNow;
-        
+
         var token = _jwtSecurityTokenHandler.CreateJwtSecurityToken(
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,

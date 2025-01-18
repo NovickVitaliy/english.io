@@ -1,5 +1,4 @@
 using Learning.Domain;
-using Shared.ErrorHandling;
 
 namespace Learning.Application.Contracts.Repositories;
 
