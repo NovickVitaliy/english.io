@@ -1,8 +1,6 @@
 using System.Reflection;
-using Learning.Application.Contracts;
 using Learning.Application.Contracts.Repositories;
 using Learning.Application.Contracts.Services;
-using Learning.Domain;
 using Learning.Infrastructure.Database;
 using Learning.Infrastructure.Options;
 using Learning.Infrastructure.Repositories;

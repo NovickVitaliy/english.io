@@ -1,6 +1,6 @@
 namespace Authentication;
 
-public class AuthenticationMarker
+public interface IAuthenticationMarker
 {
-    
+
 }

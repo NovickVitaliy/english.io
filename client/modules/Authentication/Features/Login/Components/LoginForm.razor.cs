@@ -15,7 +15,6 @@ namespace Authentication.Features.Login.Components;
 public partial class LoginForm : ComponentBase
 {
     [SupplyParameterFromQuery] private string ReturnUrl { get; init; } = null!;
-    private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
     private readonly LoginRequest _loginRequest = new LoginRequest();
     private MudForm _form = null!;
     [Inject] private IAuthenticationService AuthenticationService { get; init; } = null!;

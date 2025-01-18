@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Resources;
-using Microsoft.Extensions.Localization;
 
 namespace Shared.LocalizedDataAnnotations;
 

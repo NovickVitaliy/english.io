@@ -1,6 +1,6 @@
 namespace Shared.Requests;
 
-public abstract record BaseRequest
+public interface IBaseRequest
 {
-    public abstract RequestValidationResult IsValid();
+    RequestValidationResult IsValid();
 }

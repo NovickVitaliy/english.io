@@ -23,8 +23,8 @@ public static class DependencyInjection
         services.ConfigureStateManager();
         services.AddRazorPages();
         services.AddControllers()
-            .AddApplicationPart(typeof(AuthenticationMarker).Assembly)
-            .AddApplicationPart(typeof(LearningMarker).Assembly);
+            .AddApplicationPart(typeof(IAuthenticationMarker).Assembly)
+            .AddApplicationPart(typeof(ILearningMarker).Assembly);
         services.AddLocalization(options =>
         {
             options.ResourcesPath = "Resources";

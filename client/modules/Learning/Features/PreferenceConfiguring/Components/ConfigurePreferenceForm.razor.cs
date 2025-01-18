@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Fluxor;
 using Learning.Features.PreferenceConfiguring.Models;
 using Learning.Features.PreferenceConfiguring.Services;
@@ -18,9 +17,9 @@ public partial class ConfigurePreferenceForm : ComponentBase
     [Inject] private ISnackbar Snackbar { get; init; } = null!;
     [Inject] private IUserPreferencesService UserPreferencesService { get; init; } = null!;
     [Inject] private NavigationManager NavigationManager { get; init; } = null!;
-    private CreateUserPreferencesRequest _request = new CreateUserPreferencesRequest();
+    private readonly CreateUserPreferencesRequest _request = new CreateUserPreferencesRequest();
     private MudForm? _form = null!;
-    
+
     private void HandleDailySessionsNumberChange(int sessionsCount)
     {
         if (sessionsCount > _request.DailySessionsReminderTimes.Count)

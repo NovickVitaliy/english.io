@@ -1,9 +1,7 @@
-using System.Net;
 using Authentication;
 using Client;
 using Client.Extensions;
 using Learning;
-using MudBlazor.Services;
 using DependencyInjection = Client.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,10 +29,10 @@ app.UseAuthorization();
 app.UseRequestLocalization(DependencyInjection.GetLocalizationOptions(app.Configuration));
 
 app.MapRazorComponents<App>()
-    .AddAdditionalAssemblies(typeof(AuthenticationMarker).Assembly,
-        typeof(LearningMarker).Assembly)
+    .AddAdditionalAssemblies(typeof(IAuthenticationMarker).Assembly,
+        typeof(ILearningMarker).Assembly)
     .AddInteractiveServerRenderMode();
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();

@@ -9,7 +9,7 @@
 {
     <MudGrid Class="d-flex justify-end">
         <MudItem lg="2" md="4" xs="6">
-            <MudSelect Value="_selectedCulture" ValueChanged="@((string? locCode) => RequestCultureChange(locCode))"
+            <MudSelect Value="_selectedCulture" ValueChanged="@((string? locCode) => RequestCultureChange(locCode!))"
                        FullWidth="true" Margin="Margin.Dense">
                 @foreach (var culture in _cultures)
                 {
@@ -46,7 +46,6 @@
 
         if (locCode.Any(c => !Uri.IsWellFormedUriString(c.ToString(), UriKind.RelativeOrAbsolute)))
         {
-            Console.WriteLine($"Invalid culture string: {_selectedCulture}");
             return;
         }
 
