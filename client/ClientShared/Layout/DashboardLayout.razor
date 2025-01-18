@@ -1,7 +1,7 @@
 ﻿@using MudBlazor
-@inherits LayoutComponentBase
+@inherits BaseLayout
 
-<MudThemeProvider IsDarkMode="_isDarkMode" Theme="_theme"/>
+<MudThemeProvider IsDarkMode="IsDarkMode" Theme="Theme"/>
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
@@ -11,8 +11,3 @@
         @Body
     </MudMainContent>
 </MudLayout>
-
-@code {
-    private readonly MudTheme _theme = new();
-    private bool _isDarkMode;
-}

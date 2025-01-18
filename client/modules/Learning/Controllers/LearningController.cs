@@ -17,12 +17,11 @@ public class LearningController : ControllerBase
         _jwtSecurityTokenHandler = new();
     }
     
-    public async Task<IActionResult> ConfigurePreference(string token, string redirectUri)
+    public async Task<IActionResult> ConfigurePreference(string token)
     {
         await HttpContext.SignOutAsync();
         
         var claims = _jwtSecurityTokenHandler.ReadJwtToken(token).Claims.ToList();
-        claims.Add(new Claim("x-token", token));
         claims = claims.Where(x => x.Type != GlobalConstants.ApplicationClaimTypes.PreferencesConfigured).ToList();
         claims.Add(new Claim(GlobalConstants.ApplicationClaimTypes.PreferencesConfigured, "true"));
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

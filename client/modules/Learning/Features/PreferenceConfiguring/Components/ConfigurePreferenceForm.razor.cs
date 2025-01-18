@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Fluxor;
 using Learning.Features.PreferenceConfiguring.Models;
 using Learning.Features.PreferenceConfiguring.Services;
 using Microsoft.AspNetCore.Components;
@@ -6,11 +7,13 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.IdentityModel.JsonWebTokens;
 using MudBlazor;
 using Refit;
+using Shared.Store;
 
 namespace Learning.Features.PreferenceConfiguring.Components;
 
 public partial class ConfigurePreferenceForm : ComponentBase
 {
+    [Inject] private IState<UserState> UserState { get; init; } = null!;
     [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; init; } = null!;
     [Inject] private ISnackbar Snackbar { get; init; } = null!;
     [Inject] private IUserPreferencesService UserPreferencesService { get; init; } = null!;
@@ -41,7 +44,7 @@ public partial class ConfigurePreferenceForm : ComponentBase
             try
             {
                 var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-                var token = authState.User.Claims.Single(x => x.Type == "x-token").Value;
+                var token = UserState.Value.Token;
                 _request.UserEmail = authState.User.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Email).Value;
                 await UserPreferencesService.CreateUserPreferencesAsync(_request, token);
                 Snackbar.Add(Localizer["User_Preferences_Configured"], Severity.Success);
