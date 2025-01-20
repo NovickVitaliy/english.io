@@ -1,0 +1,15 @@
+@using MudBlazor
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+<MudContainer Class="d-flex justify-center align-center flex-column">
+    <MudText Typo="Typo.h4" Align="Align.Center">
+        @Localizer["Home_Welcome", UserState.Value.Username]
+    </MudText>
+    <MudGrid Justify="Justify.Center">
+        <MudItem Class="mt-5" xs="8" sm="8" md="4">
+            <MudButton Href="/learning/decks" Color="Color.Primary" Variant="Variant.Filled" FullWidth="true">
+                <MudText class="w-100 p-2 text-wrap" Typo="Typo.button"
+                         Align="Align.Center">@Localizer["Home_Prompt"]</MudText>
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

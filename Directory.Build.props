@@ -10,6 +10,7 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <MudIllegalParameters>Disabled</MudIllegalParameters>
     <MudAllowedAttributePattern>Any</MudAllowedAttributePattern>
+    <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
 
   <ItemGroup>

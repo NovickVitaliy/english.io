@@ -15,15 +15,15 @@ public class AuthenticationController : ControllerBase
     {
         _jwtSecurityTokenHandler = new();
     }
-    
-    public async Task<IActionResult> SignToApp(string token, string redirectUri)
+
+    public async Task<IActionResult> SignToApp(string token, string? redirectUri)
     {
         var claims = _jwtSecurityTokenHandler.ReadJwtToken(token).Claims;
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         var principal = new ClaimsPrincipal(identity);
         await HttpContext.SignInAsync(principal);
 
-        return LocalRedirect(redirectUri);
+        return LocalRedirect(redirectUri ?? "/learning/home");
     }
 
     public async Task<IActionResult> Logout()

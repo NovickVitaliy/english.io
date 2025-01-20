@@ -1,0 +1,13 @@
+@using MudBlazor
+<MudPaper Height="100%" Width="100%">
+    <MudText Class="border-bottom p-2" Typo="Typo.h5"
+             Align="Align.Center">@Localizer["Word_Of_The_Day_Header"]</MudText>
+    <div class="d-flex justify-center align-center flex-column gap-4 h-75">
+        <MudPaper Class="mud-theme-primary d-flex justify-center align-center" Height="50px" Width="150px">
+            <MudText Align="Align.Center" Typo="Typo.h5">World</MudText>
+        </MudPaper>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary">
+            Add to deck
+        </MudButton>
+    </div>
+</MudPaper>
