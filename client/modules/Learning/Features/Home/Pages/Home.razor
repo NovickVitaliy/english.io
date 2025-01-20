@@ -1,0 +1,25 @@
+@page "/learning/home"
+@using Microsoft.AspNetCore.Authorization
+@using MudBlazor
+@using Shared.Layout
+@using Learning.Features.Home.Components
+@layout DashboardLayout
+@attribute [Authorize]
+
+<MudContainer Class="mt-0" MaxWidth="MaxWidth.Large">
+    <HomeMain></HomeMain>
+    <Statistics></Statistics>
+    <MudGrid Justify="Justify.Center" class="d-block d-md-flex mt-5">
+        <MudItem xs="12" md="4">
+            <QuickAccess></QuickAccess>
+        </MudItem>
+
+        <MudItem xs="12" md="4">
+            <RandomMotivationalPhrase></RandomMotivationalPhrase>
+        </MudItem>
+
+        <MudItem xs="12" md="4">
+            <WordOfTheDay></WordOfTheDay>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <data name="Home_Welcome">
+    Вітаємо {0}
+  </data>
+  <data name="Home_Prompt">
+    Бажаєте повчитись?
+  </data>
+</root>

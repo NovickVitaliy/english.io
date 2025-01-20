@@ -17,4 +17,24 @@
       <ProjectReference Include="..\..\ClientShared\ClientShared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Features\Home\Models\" />
+      <Folder Include="Features\Home\Services\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Features\Home\Components\HomeMain.uk.resx">
+        <DependentUpon>HomeMain.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Home\Components\QuickAccess.uk.resx">
+        <DependentUpon>QuickAccess.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\PreferenceConfiguring\Components\ConfigurePreferenceForm.uk.resx">
+        <DependentUpon>ConfigurePreferenceForm.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Home\Components\WordOfTheDay.uk.resx">
+        <DependentUpon>WordOfTheDay.resx</DependentUpon>
+      </EmbeddedResource>
+    </ItemGroup>
+
 </Project>
