@@ -8,6 +8,10 @@
 
 <MudLayout>
     <MudMainContent Class="p-0 mt-5">
-        @Body
+        <CascadingValue Value="Theme">
+            <CascadingValue Value="IsDarkMode">
+                @Body
+            </CascadingValue>
+        </CascadingValue>
     </MudMainContent>
 </MudLayout>
