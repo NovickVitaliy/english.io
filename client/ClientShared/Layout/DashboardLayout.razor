@@ -1,5 +1,15 @@
-﻿@using MudBlazor
+﻿@using Blazored.LocalStorage
+@using MudBlazor
+@using Shared.Components
+@inject ILocalStorageService LocalStorageService
 @inherits BaseLayout
+
+@code {
+    private void HandleThemeChange(bool value)
+    {
+        IsDarkMode = value;
+    }
+}
 
 <MudThemeProvider IsDarkMode="IsDarkMode" Theme="Theme"/>
 <MudPopoverProvider/>
@@ -11,8 +21,7 @@
                     style=@($"height: 100vh; background-color: {(IsDarkMode ? Theme.PaletteDark.BackgroundGray : Theme.PaletteLight.BackgroundGray)}")>
         <CascadingValue Value="Theme">
             <CascadingValue Value="IsDarkMode">
-                <MudPaper Elevation="2" Class="flex-shrink-0" Style="height: 60px">
-                </MudPaper>
+                <DashboardHeader OnThemeChange="HandleThemeChange" IsDarkMode="IsDarkMode"></DashboardHeader>
 
                 <div class="flex-grow-1 overflow-auto">
                     @Body

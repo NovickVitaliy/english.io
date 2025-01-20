@@ -1,6 +1,6 @@
 using Fluxor;
 
-namespace Shared.Store;
+namespace Shared.Store.User;
 
 [FeatureState]
 public record UserState(string Token, string[] Role, string Email, string Username)

@@ -8,6 +8,7 @@ using MudBlazor;
 using Refit;
 using Shared;
 using Shared.Store;
+using Shared.Store.User;
 
 namespace Authentication.Features.Register.Components;
 

@@ -1,0 +1,12 @@
+@using MudBlazor
+<MudPaper Elevation="2" Class="flex-shrink-0 d-flex justify-space-evenly align-center" Style="height: 60px">
+    <div>
+        <MudSwitch T="bool" ValueChanged="ChangeTheme"
+                   ThumbIcon="@(IsDarkMode ? Icons.Material.Filled.DarkMode : Icons.Material.Filled.LightMode)"
+                   ThumbIconColor="IsDarkMode ? Color.Dark : Color.Warning"></MudSwitch>
+    </div>
+
+    <div style="width: 700px">
+        <LanguageSwitcher></LanguageSwitcher>
+    </div>
+</MudPaper>
