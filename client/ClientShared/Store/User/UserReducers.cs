@@ -1,6 +1,6 @@
 using Fluxor;
 
-namespace Shared.Store;
+namespace Shared.Store.User;
 
 public static class UserReducers
 {

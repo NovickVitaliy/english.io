@@ -9,6 +9,7 @@ using MudBlazor;
 using Refit;
 using Shared;
 using Shared.Store;
+using Shared.Store.User;
 using IAuthenticationService = Authentication.Shared.Services.IAuthenticationService;
 
 namespace Authentication.Features.Login.Components;

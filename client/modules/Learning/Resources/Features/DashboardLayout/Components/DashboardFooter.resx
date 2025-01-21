@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+  <data name="Footer_Home">
+    Home
+  </data>
+  <data name="Footer_Decks">
+    Decks
+  </data>
+  <data name="Footer_Settings">
+    Settings
+  </data>
+</root>

@@ -34,4 +34,13 @@
       <ProjectReference Include="..\..\shared\Shared\Shared.csproj" />
     </ItemGroup>
 
+  <ItemGroup>
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Components\LanguageSwitcher.uk.resx">
+      <DependentUpon>LanguageSwitcher.resx</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>

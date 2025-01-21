@@ -1,0 +1,35 @@
+﻿@using Blazored.LocalStorage
+@using Learning.Features.DashboardLayout.Components
+@using MudBlazor
+@using DashboardHeader = Learning.Features.DashboardLayout.Components.DashboardHeader
+@inject ILocalStorageService LocalStorageService
+@inherits Shared.Layout.BaseLayout
+
+@code {
+    private void HandleThemeChange(bool value)
+    {
+        IsDarkMode = value;
+    }
+}
+
+<MudThemeProvider IsDarkMode="IsDarkMode" Theme="Theme"/>
+<MudPopoverProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+<MudLayout Style="height: 100vh; overflow: hidden;">
+    <MudMainContent Class="pa-0 d-flex flex-column"
+                    style=@($"height: 100vh; background-color: {(IsDarkMode ? Theme.PaletteDark.BackgroundGray : Theme.PaletteLight.BackgroundGray)}")>
+        <CascadingValue Value="Theme">
+            <CascadingValue Value="IsDarkMode">
+                <DashboardHeader OnThemeChange="HandleThemeChange" IsDarkMode="IsDarkMode"></DashboardHeader>
+
+                <div class="flex-grow-1 overflow-auto">
+                    @Body
+                </div>
+
+                <DashboardFooter></DashboardFooter>
+            </CascadingValue>
+        </CascadingValue>
+    </MudMainContent>
+</MudLayout>

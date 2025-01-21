@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using MudBlazor;
 using Refit;
 using Shared.Store;
+using Shared.Store.User;
 
 namespace Learning.Features.PreferenceConfiguring.Components;
 
