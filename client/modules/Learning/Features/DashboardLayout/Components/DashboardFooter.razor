@@ -1,0 +1,29 @@
+@using MudBlazor
+@using Shared.Extensions
+<MudPaper Elevation="2" Class="flex-shrink-0 d-flex justify-space-evenly" Style="height: 70px">
+    <div class="w-75 d-flex justify-space-evenly p-2">
+        <MudLink Color="@(Location == "/learning/home" ? Color.Primary : Color.Default)"
+                 Href="/learning/home"
+                 Underline="Underline.None"
+                 class="d-flex justify-center align-center flex-column p-2 rounded-lg">
+            <MudIcon Icon="@Icons.Material.Filled.Home" Title="Home"/>
+            <MudText Typo="Typo.subtitle2">@Localizer["Footer_Home"]</MudText>
+        </MudLink>
+        <MudLink Color="@(Location == "/learning/decks" ? Color.Primary : Color.Default)"
+                 Href="/learning/decks"
+                 Underline="Underline.None"
+                 class="d-flex justify-center align-center flex-column p-2 rounded-lg">
+            <MudIcon Icon="@Icons.Material.Filled.MenuBook" Title="Decks"/>
+            <MudText Typo="Typo.subtitle2">@Localizer["Footer_Decks"]</MudText>
+        </MudLink>
+
+        <MudLink Color="@(Location == "/learning/settings" ? Color.Primary : Color.Default)"
+                 Href="/learning/settings"
+                 Underline="Underline.None"
+                 class="d-flex justify-center align-center flex-column p-2 rounded-lg">
+            <MudIcon Icon="@Icons.Material.Filled.Settings" Title="Settings"/>
+            <MudText Typo="Typo.subtitle2">@Localizer["Footer_Settings"]</MudText>
+        </MudLink>
+
+    </div>
+</MudPaper>

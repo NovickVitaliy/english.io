@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+  <data name="Footer_Home">
+    Головна
+  </data>
+  <data name="Footer_Decks">
+    Колоди
+  </data>
+  <data name="Footer_Settings">
+    Налаштування
+  </data>
+</root>

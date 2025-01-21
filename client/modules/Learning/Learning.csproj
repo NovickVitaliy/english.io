@@ -18,8 +18,14 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Features\Decks\Components\" />
+      <Folder Include="Features\Decks\Models\" />
+      <Folder Include="Features\Decks\Services\" />
       <Folder Include="Features\Home\Models\" />
       <Folder Include="Features\Home\Services\" />
+      <Folder Include="Features\Settings\Components\" />
+      <Folder Include="Features\Settings\Models\" />
+      <Folder Include="Features\Settings\Services\" />
     </ItemGroup>
 
     <ItemGroup>

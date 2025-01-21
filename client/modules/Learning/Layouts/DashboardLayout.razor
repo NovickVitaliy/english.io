@@ -1,8 +1,9 @@
 ﻿@using Blazored.LocalStorage
+@using Learning.Features.DashboardLayout.Components
 @using MudBlazor
-@using Shared.Components
+@using DashboardHeader = Learning.Features.DashboardLayout.Components.DashboardHeader
 @inject ILocalStorageService LocalStorageService
-@inherits BaseLayout
+@inherits Shared.Layout.BaseLayout
 
 @code {
     private void HandleThemeChange(bool value)
@@ -27,9 +28,7 @@
                     @Body
                 </div>
 
-                <MudPaper Elevation="2" Class="flex-shrink-0" Style="height: 56px">
-                    <MudText Align="Align.Center">Made by Novik Vitalii</MudText>
-                </MudPaper>
+                <DashboardFooter></DashboardFooter>
             </CascadingValue>
         </CascadingValue>
     </MudMainContent>

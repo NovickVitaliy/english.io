@@ -2,7 +2,7 @@ using Fluxor;
 using Microsoft.AspNetCore.Components;
 using Shared.Store.Theme;
 
-namespace Shared.Components;
+namespace Learning.Features.DashboardLayout.Components;
 
 public partial class DashboardHeader : ComponentBase
 {
