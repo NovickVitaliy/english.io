@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Refit;
 using Shared;
-using Shared.Store;
+using Shared.Extensions;
 using Shared.Store.User;
+using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Authentication.Features.Register.Components;
 
@@ -22,7 +23,7 @@ public partial class RegisterForm : ComponentBase
     [Inject] private NavigationManager NavigationManager { get; init; } = null!;
     [Inject] private IDispatcher Dispatcher { get; init; } = null!;
     [Inject] private ILocalStorageService LocalStorageService { get; init; } = null!;
-    
+
     private async Task Submit()
     {
         await _form.Validate();
@@ -34,7 +35,7 @@ public partial class RegisterForm : ComponentBase
                 var response = await AuthenticationService.RegisterAsync(_registerRequest);
                 await LocalStorageService.SetItemAsync(ClientConstants.UserDataKey, JsonSerializer.Serialize(response));
                 Dispatcher.Dispatch(new SetUserStateAction(response.AuthToken, response.Role, response.Email, response.Username));
-                
+
                 var query = $"?token={Uri.EscapeDataString(response.AuthToken)}&" +
                             $"redirectUri=/preference-configuration";
 
@@ -43,7 +44,8 @@ public partial class RegisterForm : ComponentBase
             }
             catch (ApiException e)
             {
-                Snackbar.Add(e.Content ?? "Error occured during registration", Severity.Error);
+                ProblemDetails problemDetails = e.ToProblemDetails();
+                Snackbar.Add((problemDetails!.Detail ?? problemDetails.Title)!, Severity.Error);
             }
         }
     }

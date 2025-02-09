@@ -22,22 +22,38 @@ public class Result<T>
 
     public static Result<T> Ok(T data)
     {
-        return new Result<T>(ErrorMessages.NoError(), HttpStatusCode.OK, data, true);
+        return new Result<T>(ErrorMessages.NoError, HttpStatusCode.OK, data, true);
     }
 
     public static Result<T> NoContent()
     {
-        return Ok(default!);
+        return new Result<T>(ErrorMessages.NoError, HttpStatusCode.NoContent, default!, true);
     }
 
     public static Result<T> Created(string location, T value)
     {
-        return new Result<T>(ErrorMessages.NoError(), HttpStatusCode.Created, value, true, location);
+        return new Result<T>(ErrorMessages.NoError, HttpStatusCode.Created, value, true, location);
+    }
+
+    public static Result<T> Accepted(T data, string location)
+    {
+        return new Result<T>(ErrorMessages.NoError, HttpStatusCode.Accepted, data, true);
     }
 
     public static Result<T> BadRequest(string reason)
     {
-        return new Result<T>(ErrorMessages.BadRequest(reason), HttpStatusCode.BadRequest,default!,false);
+        return new Result<T>(ErrorMessages.BadRequest(reason), HttpStatusCode.BadRequest, default!, false);
+    }
+
+    public static Result<T> Unauthorized(string reason = "Unauthorized")
+    {
+        return new Result<T>(ErrorMessages.Unauthorized(reason), HttpStatusCode.Unauthorized, default!, false);
+    }
+
+
+    public static Result<T> Forbidden(string reason = "Forbidden")
+    {
+        return new Result<T>(ErrorMessages.Forbidden(reason), HttpStatusCode.Forbidden, default!, false);
     }
 
     public static Result<T> NotFound(object key)
@@ -45,16 +61,43 @@ public class Result<T>
         return new Result<T>(ErrorMessages.NotFound<T>(key), HttpStatusCode.NotFound, default!, false);
     }
 
+    public static Result<T> Conflict(string reason)
+    {
+        return new Result<T>(ErrorMessages.Conflict(reason), HttpStatusCode.Conflict, default!, false);
+    }
+
+    public static Result<T> InternalServerError(string reason = "Internal Server Error")
+    {
+        return new Result<T>(ErrorMessages.InternalServerError(reason), HttpStatusCode.InternalServerError, default!, false);
+    }
+
     public IActionResult ToApiResponse()
     {
+        ProblemDetails? problemDetails = null;
+
+        if ((int)StatusCode >= 400)
+        {
+            problemDetails = new ProblemDetails()
+            {
+                Status = (int)StatusCode,
+                Title = "An error occurred",
+                Detail = Description,
+                Type = StatusCode.ToString()
+            };
+        }
+
         return StatusCode switch
         {
             HttpStatusCode.OK => new OkObjectResult(Data),
             HttpStatusCode.NoContent => new NoContentResult(),
             HttpStatusCode.Created => new CreatedResult(Location, Data),
-            HttpStatusCode.BadRequest => new BadRequestObjectResult(this),
-            HttpStatusCode.NotFound => new NotFoundObjectResult(this),
-            _ => new ObjectResult(this) { StatusCode = (int?)HttpStatusCode.InternalServerError }
+            HttpStatusCode.Accepted => new AcceptedResult(Location, Data),
+            HttpStatusCode.BadRequest => new BadRequestObjectResult(problemDetails),
+            HttpStatusCode.Unauthorized => new UnauthorizedObjectResult(problemDetails),
+            HttpStatusCode.Forbidden => new ObjectResult(problemDetails) { StatusCode = (int)HttpStatusCode.Forbidden },
+            HttpStatusCode.NotFound => new NotFoundObjectResult(problemDetails),
+            HttpStatusCode.Conflict => new ConflictObjectResult(problemDetails),
+            _ => new ObjectResult(problemDetails) { StatusCode = (int)HttpStatusCode.InternalServerError }
         };
     }
 }

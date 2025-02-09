@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Http.Extensions;
 using MudBlazor;
 using Refit;
 using Shared;
+using Shared.Extensions;
 using Shared.Store;
 using Shared.Store.User;
 using IAuthenticationService = Authentication.Shared.Services.IAuthenticationService;
+using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Authentication.Features.Login.Components;
 
@@ -37,14 +39,14 @@ public partial class LoginForm : ComponentBase
                 Dispatcher.Dispatch(new SetUserStateAction(response.AuthToken, response.Role, response.Email, response.Username));
 
                 var query = $"?token={Uri.EscapeDataString(response.AuthToken)}" +
-                            (ReturnUrl is not null ? $"&redirectUri={Uri.EscapeDataString(ReturnUrl)}": "");
+                            (ReturnUrl is not null ? $"&redirectUri={Uri.EscapeDataString(ReturnUrl)}" : "");
                 NavigationManager.NavigateTo("Authentication/SignToApp" + query, forceLoad: true);
                 Snackbar.Add("Successful login. Welcome!", Severity.Success);
             }
             catch (ApiException e)
             {
-                //TODO: only for development, change in future
-                Snackbar.Add(e.Content ?? "Error occured during logging in", Severity.Error);
+                ProblemDetails problemDetails = e.ToProblemDetails();
+                Snackbar.Add((problemDetails!.Detail ?? problemDetails.Title)!, Severity.Error);
             }
         }
     }
