@@ -9,7 +9,7 @@ namespace Authentication.API.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
-    
+
     public AuthController(IAuthService authService)
     {
         _authService = authService;
@@ -20,10 +20,16 @@ public class AuthController : ControllerBase
     {
         return (await _authService.RegisterUser(request)).ToApiResponse();
     }
-    
+
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginUserRequest request)
     {
         return  (await _authService.LoginUser(request)).ToApiResponse();
+    }
+
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordRequest request)
+    {
+        return (await _authService.ForgotPasswordAsync(request)).ToApiResponse();
     }
 }

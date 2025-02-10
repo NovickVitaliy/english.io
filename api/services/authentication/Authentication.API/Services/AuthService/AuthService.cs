@@ -4,6 +4,7 @@ using Authentication.API.DTOs.Auth.Responses;
 using Authentication.API.Models;
 using Authentication.API.Services.TokenGenerator;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Shared;
 using Shared.ErrorHandling;
 
@@ -54,7 +55,7 @@ public class AuthService : IAuthService
     public async Task<Result<AuthResponse>> LoginUser(LoginUserRequest request)
     {
         //TODO: add validation
-        
+
         var user = await _userManager.FindByEmailAsync(request.Email);
         if (user is null)
         {
@@ -70,5 +71,24 @@ public class AuthService : IAuthService
         var tokenResult = await _tokenGenerator.GenerateJwtToken(user);
         var roles = await _userManager.GetRolesAsync(user);
         return Result<AuthResponse>.Ok(new AuthResponse(user.UserName!, user.Email!, roles.ToArray(), tokenResult.Data));
+    }
+    public async Task<Result<User>> ForgotPasswordAsync(ForgotPasswordRequest request)
+    {
+        var user = await _userManager.FindByEmailAsync(request.Email);
+        if (user is null)
+        {
+            return Result<User>.NotFound(request.Email);
+        }
+
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        var path = QueryHelpers.AddQueryString(request.ResetPasswordUrl, new Dictionary<string, string?>()
+        {
+            ["token"] = token,
+            ["email"] = request.Email
+        });
+
+        //TODO: send to the notification api
+
+        return Result<User>.Ok(user);
     }
 }
