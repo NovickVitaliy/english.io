@@ -4,6 +4,16 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>c252766d-febf-420d-a685-2d5e07b0eaba</UserSecretsId>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+      <PackageReference Include="MailKit" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\shared\Shared\Shared.csproj" />
+    </ItemGroup>
 
 </Project>
