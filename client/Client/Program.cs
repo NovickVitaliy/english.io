@@ -2,10 +2,12 @@ using Authentication;
 using Client;
 using Client.Extensions;
 using Learning;
+using Shared;
 using DependencyInjection = Client.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.RegisterClientSharedDependencies();
 builder.ConfigureBlazorCore();
 builder.Services.ConfigureBlazor();
 builder.Services.ConfigureModules(builder.Configuration);
