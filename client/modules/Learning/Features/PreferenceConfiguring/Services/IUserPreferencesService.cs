@@ -5,8 +5,8 @@ namespace Learning.Features.PreferenceConfiguring.Services;
 
 public interface IUserPreferencesService
 {
-    const string ApiUrlKey = "UserPreferences";
-    
+    const string ApiUrlKey = "Learning";
+
     [Post("/user-preferences")]
     Task<Guid> CreateUserPreferencesAsync(CreateUserPreferencesRequest request, [Authorize] string token);
 }
