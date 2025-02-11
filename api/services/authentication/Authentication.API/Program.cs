@@ -1,11 +1,16 @@
 using System.Reflection;
+using Authentication.API;
 using Authentication.API.Data;
 using Authentication.API.Data.Seed;
 using Authentication.API.Models;
+using Authentication.API.Options;
 using Authentication.API.Services.AuthService;
 using Authentication.API.Services.TokenGenerator;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Polly;
+using Polly.Extensions.Http;
 using Shared.Authentication;
 using Shared.MessageBus;
 
@@ -16,6 +21,22 @@ builder.Services.AddControllers();
 builder.Services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<AuthDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddOptions<NotificationsApiOptions>()
+    .BindConfiguration(NotificationsApiOptions.ConfigurationKey)
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
+builder.Services.AddOptions<ForgotPasswordOptions>()
+    .BindConfiguration(ForgotPasswordOptions.ConfigurationKey)
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
+builder.Services.AddHttpClient(AuthConstants.NotificationHttpClientName, (sp,client) =>
+{
+    var notiticationApiOptions = sp.GetRequiredService<IOptions<NotificationsApiOptions>>().Value;
+    client.BaseAddress = new Uri(notiticationApiOptions.IsHttps ? notiticationApiOptions.Https : notiticationApiOptions.Http);
+}).AddPolicyHandler(HttpPolicyExtensions.HandleTransientHttpError().RetryAsync(3));
 
 builder.Services.ConfigureJwtAuthentication();
 builder.Services.AddAuthorization();

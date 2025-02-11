@@ -4,25 +4,31 @@
     build:
       context: .
       dockerfile: api/services/authentication/Authentication.API/Dockerfile
-  
+
   learning.api:
     image: learning.api
     build:
       context: .
       dockerfile: api/services/learning/Learning.API/Dockerfile
-  
+
+  notifications.api:
+    image: notifications.api
+    build:
+      context: .
+      dockerfile: api/services/notifications/Notifications.API/Dockerfile
+
   auth.db:
     image: postgres
-    
+
   learning.db:
     image: mongo
-    
+
   mongo-ui:
     image: mongo-express
-    
+
   rabbitmq-broker:
-    image: rabbitmq:3-management  
-    
+    image: rabbitmq:3-management
+
 volumes:
   auth.db.volume:
   learning.db.volume:

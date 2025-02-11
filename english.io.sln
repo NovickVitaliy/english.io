@@ -59,7 +59,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.MessageBus", "shared
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "notifications", "notifications", "{D6951F4E-51C0-4616-8B15-038FF3357F1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notifications.API", "notifications\Notifications.API\Notifications.API.csproj", "{0D912752-A31E-462B-831C-BF7D2EC51DB3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notifications.API", "api\services\notifications\Notifications.API\Notifications.API.csproj", "{0D912752-A31E-462B-831C-BF7D2EC51DB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

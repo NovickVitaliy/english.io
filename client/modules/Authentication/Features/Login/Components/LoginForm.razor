@@ -22,8 +22,10 @@
                         @bind-Value="_loginRequest.Password"></MudTextField>
                 </MudForm>
             </MudCardContent>
-            <MudCardContent Class="d-flex justify-end">
+            <MudCardContent Class="d-flex justify-center align-end flex-column">
                 <MudButton Variant="Variant.Text" Color="Color.Primary" Href="/register">@Localizer["DontHaveAnAccountPrompt"]
+                </MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Primary" Href="/forgot-password">@Localizer["Forgot_Password_Prompt"]
                 </MudButton>
             </MudCardContent>
             <MudCardActions>

@@ -6,6 +6,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS}
       - ConnectionStrings__Default=${AUTH_DB_CONNECTION_STRING}
+      - NotificationsApi__Http=http://notifications-api:8080/
+      - NotificationsApi__Https=https://notifications-api:8081/
+      - NotificationsApi__IsHttps=false
     env_file:
       - .env
     ports:
@@ -15,7 +18,7 @@ services:
         condition: service_started
       rabbitmq-broker:
         condition: service_healthy
-        
+
   learning.api:
     container_name: learning.api
     restart: always
@@ -33,7 +36,24 @@ services:
         condition: service_started
       rabbitmq-broker:
         condition: service_healthy
-  
+
+  notifications.api:
+    container_name: notifications-api
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "${NOTIFICATIONS_API_PORT}:${ASPNETCORE_HTTP_PORTS}"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS}
+      - MailSettings__Server=${MAILSETTINGS_SERVER}
+      - MailSettings__Port=${MAILSETTINGS_PORT}
+      - MailSettings__SenderName=${MAILSETTINGS_SENDERNAME}
+      - MailSettings__SenderEmail=${MAILSETTINGS_SENDEREMAIL}
+      - MailSettings__Password=${MAILSETTINGS_PASSWORD}
+      - MailSettings__Username=${MAILSETTINGS_USERNAME}
+
   auth.db:
     container_name: auth.db
     restart: always
@@ -45,7 +65,7 @@ services:
       - "${AUTH_POSTGRES_PORT}:5432"
     volumes:
       - ${AUTH_AUTH_DB_VOLUME}:/var/lib/postgresql/data
-  
+
   learning.db:
     container_name: learning.db
     restart: always
@@ -64,7 +84,7 @@ services:
       - ME_CONFIG_BASICAUTH=${MONGO_UI_AUTH}
     profiles:
       - development
-  
+
   rabbitmq-broker:
     container_name: rabbitmq-broker
     restart: always

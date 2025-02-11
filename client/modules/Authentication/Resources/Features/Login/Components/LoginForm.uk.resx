@@ -38,4 +38,7 @@
     <data name="Password_Required" xml:space="preserve">
         <value>Пароль є обов'язковий</value>
     </data>
+  <data name="Forgot_Password_Prompt">
+      <value>Забули пароль?</value>
+  </data>
 </root>

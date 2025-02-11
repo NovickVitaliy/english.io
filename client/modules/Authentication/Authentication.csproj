@@ -28,4 +28,13 @@
       <ProjectReference Include="..\..\ClientShared\ClientShared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Features\ForgotPassword\Components\ForgotPasswordForm.uk.resx">
+        <DependentUpon>ForgotPasswordForm.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\ResetPassword\Components\ResetPasswordForm.uk.resx">
+        <DependentUpon>ResetPasswordForm.resx</DependentUpon>
+      </EmbeddedResource>
+    </ItemGroup>
+
 </Project>
