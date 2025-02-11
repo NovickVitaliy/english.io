@@ -1,6 +1,7 @@
 using Authentication.Features.ForgotPassword.Models;
 using Authentication.Features.Login.Models;
 using Authentication.Features.Register.Models;
+using Authentication.Features.ResetPassword.Models;
 using Authentication.Shared.Models;
 using Refit;
 
@@ -18,4 +19,7 @@ public interface IAuthenticationService
 
     [Post("/auth/forgot-password")]
     Task ForgotPasswordAsync(ForgotPasswordRequest request);
+
+    [Post("/auth/reset-password")]
+    Task ResetPasswordAsync(ResetPasswordRequest request);
 }

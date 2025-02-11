@@ -23,7 +23,7 @@ public partial class ForgotPasswordForm : ComponentBase
     {
         _forgotPasswordRequest = new ForgotPasswordRequest()
         {
-            ResetPasswordUrl = ClientOptions.Value.GetClientBaseUrl()
+            ResetPasswordUrl = new Uri(ClientOptions.Value.GetClientBaseUrl(), "reset-password")
         };
     }
 
