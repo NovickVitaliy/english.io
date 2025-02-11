@@ -13,4 +13,6 @@ public class ResetPasswordRequest
     public string NewPasswordConfirm { get; set; } = null!;
 
     public string ResetToken { get; set; } = null!;
+
+    public string Email { get; set; } = null!;
 }

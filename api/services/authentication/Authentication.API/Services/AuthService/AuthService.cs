@@ -111,6 +111,22 @@ public class AuthService : IAuthService
             ? Result<User>.Ok(user)
             : Result<User>.BadRequest(response.ReasonPhrase ?? "Error occured while sending message. Try later");
     }
+    public async Task<Result<User>> ResetPasswordAsync(ResetPasswordRequest request)
+    {
+        var user = await _userManager.FindByEmailAsync(request.Email);
+        if (user is null)
+        {
+            return Result<User>.NotFound(request.Email);
+        }
+
+        var result = await _userManager.ResetPasswordAsync(user, request.ResetToken, request.NewPassword);
+        if (result.Succeeded)
+        {
+            return Result<User>.Ok(user);
+        }
+
+        return Result<User>.BadRequest(result.Errors.First().Description);
+    }
 
     private string GenerateMessageBody(string requestEmail, string path)
     {

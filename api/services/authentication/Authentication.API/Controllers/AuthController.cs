@@ -1,4 +1,5 @@
 using Authentication.API.DTOs.Auth.Requests;
+using Authentication.API.DTOs.Other;
 using Authentication.API.Services.AuthService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,5 +32,11 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> ForgotPassword(ForgotPasswordRequest request)
     {
         return (await _authService.ForgotPasswordAsync(request)).ToApiResponse();
+    }
+
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPasswordAsync(ResetPasswordRequest request)
+    {
+        return (await _authService.ResetPasswordAsync(request)).ToApiResponse();
     }
 }

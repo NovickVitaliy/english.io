@@ -14,6 +14,9 @@ public partial class ResetPasswordForm : ComponentBase
 {
     [SupplyParameterFromQuery]
     private string Token { get; init; } = null!;
+
+    [SupplyParameterFromQuery]
+    private string Email { get; init; } = null!;
     private MudForm? _form = null!;
     private ResetPasswordRequest _request = new();
 
@@ -24,13 +27,14 @@ public partial class ResetPasswordForm : ComponentBase
 
     protected override void OnParametersSet()
     {
-        if (string.IsNullOrWhiteSpace(Token))
+        if (string.IsNullOrWhiteSpace(Token) || string.IsNullOrWhiteSpace(Email))
         {
             NavigationManager.NavigateTo(ClientOptions.Value.GetClientBaseUrl().ToString());
         }
         _request = new ResetPasswordRequest
         {
-            ResetToken = Token
+            ResetToken = Token,
+            Email = Email
         };
     }
 
