@@ -13,12 +13,10 @@ public class MailKitEmailService : IEmailService
 {
     private readonly MailSettings _mailSettings;
     private readonly ILogger<MailKitEmailService> _logger;
-    private readonly IEnumerable<IValidator> _validators;
 
-    public MailKitEmailService(IOptions<MailSettings> mailSettingsOptions, ILogger<MailKitEmailService> logger, IEnumerable<IValidator> validators)
+    public MailKitEmailService(IOptions<MailSettings> mailSettingsOptions, ILogger<MailKitEmailService> logger)
     {
         _logger = logger;
-        _validators = validators;
         _mailSettings = mailSettingsOptions.Value;
     }
 
@@ -26,10 +24,10 @@ public class MailKitEmailService : IEmailService
     {
         try
         {
-            var errorMessage = ValidateRequest(request);
-            if (!string.IsNullOrWhiteSpace(errorMessage))
+            var validationResult = request.IsValid();
+            if (!validationResult.IsValid)
             {
-                return Result<bool>.BadRequest(errorMessage);
+                return Result<bool>.BadRequest(validationResult.ErrorMessage);
             }
 
             using var msg = new MimeMessage();
@@ -53,15 +51,5 @@ public class MailKitEmailService : IEmailService
             _logger.LogError(e, "Error occured");
             return Result<bool>.BadRequest(e.Message);
         }
-    }
-
-    private string? ValidateRequest(SendEmailMessageRequest request)
-    {
-        return _validators.OfType<IValidator<SendEmailMessageRequest>>()
-            .Select(x => x.Validate(request))
-            .Where(x => x is { Errors.Count: > 0, IsValid: false })
-            .SelectMany(x => x.Errors)
-            .Select(x => x.ErrorMessage)
-            .FirstOrDefault();
     }
 }
