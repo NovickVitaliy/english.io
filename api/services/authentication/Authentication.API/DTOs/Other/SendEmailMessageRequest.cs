@@ -1,4 +1,4 @@
-using Authentication.API.Models;
+using Shared.Requests;
 
 namespace Authentication.API.DTOs.Other;
 
@@ -7,4 +7,7 @@ public record SendEmailMessageRequest(
     string ReceiverName,
     string Subject,
     string TextFormat,
-    string Body) : IAuthenticationRequest;
+    string Body) : IBaseRequest
+{
+    public RequestValidationResult IsValid() => throw new NotImplementedException();
+}

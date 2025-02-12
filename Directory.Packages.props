@@ -6,6 +6,7 @@
   <ItemGroup>
     <PackageVersion Include="Blazored.LocalStorage" Version="4.5.0" />
     <PackageVersion Include="DotNetEnv" Version="3.1.1" />
+    <PackageVersion Include="FluentValidation" Version="11.11.0" />
     <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
     <PackageVersion Include="Fluxor" Version="6.5.2" />
     <PackageVersion Include="Fluxor.Blazor.Web" Version="6.5.2" />

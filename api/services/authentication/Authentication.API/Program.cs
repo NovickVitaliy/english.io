@@ -6,6 +6,7 @@ using Authentication.API.Models;
 using Authentication.API.Options;
 using Authentication.API.Services.AuthService;
 using Authentication.API.Services.TokenGenerator;
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -21,6 +22,8 @@ builder.Services.AddControllers();
 builder.Services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<AuthDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
 builder.Services.AddOptions<NotificationsApiOptions>()
     .BindConfiguration(NotificationsApiOptions.ConfigurationKey)

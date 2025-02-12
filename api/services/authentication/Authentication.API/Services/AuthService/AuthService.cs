@@ -32,7 +32,11 @@ public class AuthService : IAuthService
 
     public async Task<Result<AuthResponse>> RegisterUser(RegisterUserRequest request)
     {
-        //TODO: add validation
+        var validationResult = request.IsValid();
+        if (!validationResult.IsValid)
+        {
+            return Result<AuthResponse>.BadRequest(validationResult.ErrorMessage);
+        }
 
         var user = await _userManager.FindByEmailAsync(request.Email);
         if (user is not null)
@@ -62,7 +66,11 @@ public class AuthService : IAuthService
 
     public async Task<Result<AuthResponse>> LoginUser(LoginUserRequest request)
     {
-        //TODO: add validation
+        var validationResult = request.IsValid();
+        if (!validationResult.IsValid)
+        {
+            return Result<AuthResponse>.BadRequest(validationResult.ErrorMessage);
+        }
 
         var user = await _userManager.FindByEmailAsync(request.Email);
         if (user is null)
@@ -82,6 +90,12 @@ public class AuthService : IAuthService
     }
     public async Task<Result<User>> ForgotPasswordAsync(ForgotPasswordRequest request)
     {
+        var validationResult = request.IsValid();
+        if (!validationResult.IsValid)
+        {
+            return Result<User>.BadRequest(validationResult.ErrorMessage);
+        }
+
         var user = await _userManager.FindByEmailAsync(request.Email);
         if (user is null)
         {
@@ -113,6 +127,12 @@ public class AuthService : IAuthService
     }
     public async Task<Result<User>> ResetPasswordAsync(ResetPasswordRequest request)
     {
+        var validationResult = request.IsValid();
+        if (!validationResult.IsValid)
+        {
+            return Result<User>.BadRequest(validationResult.ErrorMessage);
+        }
+
         var user = await _userManager.FindByEmailAsync(request.Email);
         if (user is null)
         {
