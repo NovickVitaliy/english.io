@@ -1,3 +1,5 @@
+using Authentication.API.Models;
+
 namespace Authentication.API.DTOs.Other;
 
 public record SendEmailMessageRequest(
@@ -5,4 +7,4 @@ public record SendEmailMessageRequest(
     string ReceiverName,
     string Subject,
     string TextFormat,
-    string Body);
+    string Body) : IAuthenticationRequest;
