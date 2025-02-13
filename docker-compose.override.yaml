@@ -53,6 +53,7 @@ services:
       - MailSettings__SenderEmail=${MAILSETTINGS_SENDEREMAIL}
       - MailSettings__Password=${MAILSETTINGS_PASSWORD}
       - MailSettings__Username=${MAILSETTINGS_USERNAME}
+      - ConnectionStrings__Default=Host=notifications.db;Port=5432;Database=notifications.db;Username=notifications.api;Password=12345
 
   auth.db:
     container_name: auth.db
