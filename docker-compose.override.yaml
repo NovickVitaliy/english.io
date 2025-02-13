@@ -9,6 +9,7 @@ services:
       - NotificationsApi__Http=http://notifications-api:8080/
       - NotificationsApi__Https=https://notifications-api:8081/
       - NotificationsApi__IsHttps=false
+      - NotificationsApi__Key=${NOTIFICATIONS_API_KEY}
     env_file:
       - .env
     ports:

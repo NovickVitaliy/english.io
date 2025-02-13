@@ -15,5 +15,6 @@ public class NotificationsApiOptions
     [Required]
     public bool IsHttps { get; init; }
 
-
+    [Required]
+    public string Key { get; init; } = null!;
 }

@@ -39,6 +39,7 @@ builder.Services.AddHttpClient(AuthConstants.NotificationHttpClientName, (sp,cli
 {
     var notiticationApiOptions = sp.GetRequiredService<IOptions<NotificationsApiOptions>>().Value;
     client.BaseAddress = new Uri(notiticationApiOptions.IsHttps ? notiticationApiOptions.Https : notiticationApiOptions.Http);
+    client.DefaultRequestHeaders.Add("X-API-KEY", notiticationApiOptions.Key);
 }).AddPolicyHandler(HttpPolicyExtensions.HandleTransientHttpError().RetryAsync(3));
 
 builder.Services.ConfigureJwtAuthentication();
