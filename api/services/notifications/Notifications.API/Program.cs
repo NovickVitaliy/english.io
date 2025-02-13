@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Notifications.API.Authentication;
 using Notifications.API.Database;
+using Notifications.API.Extensions;
 using Notifications.API.Options;
 using Notifications.API.Services;
 using Notifications.API.Services.ApiKey;
@@ -35,6 +36,11 @@ builder.Services.AddScoped<IEmailService, MailKitEmailService>();
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    await app.MigrateDatabaseAsync();
+}
 
 app.UseAuthentication();
 app.UseAuthorization();
