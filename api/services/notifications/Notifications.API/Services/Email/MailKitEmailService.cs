@@ -1,4 +1,3 @@
-using FluentValidation;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
@@ -7,7 +6,7 @@ using Notifications.API.DTOs;
 using Notifications.API.Options;
 using Shared.ErrorHandling;
 
-namespace Notifications.API.Services;
+namespace Notifications.API.Services.Email;
 
 public class MailKitEmailService : IEmailService
 {

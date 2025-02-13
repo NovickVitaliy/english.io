@@ -1,7 +1,7 @@
 using Notifications.API.DTOs;
 using Shared.ErrorHandling;
 
-namespace Notifications.API.Services;
+namespace Notifications.API.Services.Email;
 
 public interface IEmailService
 {

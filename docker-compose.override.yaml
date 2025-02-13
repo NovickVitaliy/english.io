@@ -74,6 +74,18 @@ services:
     volumes:
       - ${LEARNING_DB_VOLUME}:/data/db
 
+  notifications.db:
+    container_name: notifications.db
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=${NOTIFICATIONS_POSTGRES_PASSWORD}
+      - POSTGRES_USER=${NOTIFICATIONS_POSTGRES_USER}
+      - POSTGRES_DB=${NOTIFICATIONS_POSTGRES_DB}
+    ports:
+      - "${NOTIFICATIONS_POSTGRES_PORT}:5432"
+    volumes:
+      - ${NOTIFICATIONS_DB_VOLUME}:/var/lib/postgresql/data
+
   mongo-ui:
     container_name: mongo-ui
     restart: always

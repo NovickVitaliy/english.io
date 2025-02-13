@@ -1,12 +1,15 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Notifications.API.DTOs;
 using Notifications.API.Services;
+using Notifications.API.Services.Email;
 
 namespace Notifications.API.Controllers;
 
 [ApiController]
 [Route("api/notifications")]
+[Authorize(AuthenticationSchemes = "ApiKey")]
 public class NotificationsController : ControllerBase
 {
     private readonly IEmailService _emailService;
