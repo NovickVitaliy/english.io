@@ -8,4 +8,7 @@
   <data name="Search_Query">
     Пошук за назвою
   </data>
+  <data name="Dialog_Name">
+    Створити колоду
+  </data>
 </root>

@@ -1,0 +1,17 @@
+<root>
+  <data name="Deck_Topic">
+    Тема колоди
+  </data>
+  <data name="Deck_IsStrict">
+    Чи строга колода
+  </data>
+  <data name="Deck_IsStrict_Explanation">
+    Строга колода означає, що слова, додані до цієї колоди, будуть перевірені на відповідність темі
+  </data>
+  <data name="Cancel">
+    Скасувати
+  </data>
+  <data name="Create">
+    Створити
+  </data>
+</root>

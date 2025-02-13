@@ -1,0 +1,17 @@
+<root>
+  <data name="Deck_Topic">
+    Deck Topic
+  </data>
+  <data name="Deck_IsStrict">
+    Is Strict
+  </data>
+  <data name="Deck_IsStrict_Explanation">
+    Strict deck means that words added to this deck will be checked for compliance with the deck topic
+  </data>
+  <data name="Cancel">
+    Cancel
+  </data>
+  <data name="Create">
+    Create
+  </data>
+</root>

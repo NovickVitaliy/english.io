@@ -1,0 +1,29 @@
+@using Microsoft.Extensions.Localization
+@using MudBlazor
+@inject IStringLocalizer<CreateDeckDialog> Localizer
+<MudDialog Class="w-m">
+    <DialogContent>
+        <MudForm @ref="_form" Model="_request">
+            <MudTextField
+                @bind-Value="_request.DeckTopic"
+                Required="true"
+                For="() => _request.DeckTopic"
+                Label="@Localizer["Deck_Topic"]"
+            />
+            <div class="d-flex gap-1 justify-space-between align-items-center mt-5">
+                <MudCheckBox
+                    @bind-Value="_request.IsStrict"
+                    For="() => _request.IsStrict"
+                    Label="@Localizer["Deck_IsStrict"]"
+                />
+                <MudTooltip Text="@Localizer["Deck_IsStrict_Explanation"]">
+                    <MudIcon Icon="@Icons.Material.Filled.Info"/>
+                </MudTooltip>
+            </div>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" Color="Color.Secondary">@Localizer["Cancel"]</MudButton>
+        <MudButton OnClick="Submit" Color="Color.Primary" Variant="Variant.Filled">@Localizer["Create"]</MudButton>
+    </DialogActions>
+</MudDialog>
