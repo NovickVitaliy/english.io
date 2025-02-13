@@ -53,6 +53,9 @@ services:
       - MailSettings__SenderEmail=${MAILSETTINGS_SENDEREMAIL}
       - MailSettings__Password=${MAILSETTINGS_PASSWORD}
       - MailSettings__Username=${MAILSETTINGS_USERNAME}
+      - ConnectionStrings__Default=Host=notifications.db;Port=5432;Database=notifications.db;Username=notifications.api;Password=12345
+    depends_on:
+      - notifications.db
 
   auth.db:
     container_name: auth.db
@@ -73,6 +76,18 @@ services:
       - "${LEARNING_DB_PORT}:27017"
     volumes:
       - ${LEARNING_DB_VOLUME}:/data/db
+
+  notifications.db:
+    container_name: notifications.db
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=${NOTIFICATIONS_POSTGRES_PASSWORD}
+      - POSTGRES_USER=${NOTIFICATIONS_POSTGRES_USER}
+      - POSTGRES_DB=${NOTIFICATIONS_POSTGRES_DB}
+    ports:
+      - "${NOTIFICATIONS_POSTGRES_PORT}:5432"
+    volumes:
+      - ${NOTIFICATIONS_DB_VOLUME}:/var/lib/postgresql/data
 
   mongo-ui:
     container_name: mongo-ui
