@@ -6,5 +6,5 @@ namespace Learning.Application.Contracts.Services;
 public interface IDecksService
 {
     Task<Result<Guid>> CreateDeckAsync(CreateDeckRequest request);
-    Task<Result<DeckDto[]>> GetDecksForUser(string email);
+    Task<Result<GetDecksForUserResponse>> GetDecksForUser(GetDecksForUserRequest request);
 }

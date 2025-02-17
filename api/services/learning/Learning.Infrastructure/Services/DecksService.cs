@@ -41,15 +41,19 @@ public class DecksService : IDecksService
 
         return Result<Guid>.Created($"api/decks/{id}", id);
     }
-    public async Task<Result<DeckDto[]>> GetDecksForUser(string email)
+    public async Task<Result<GetDecksForUserResponse>> GetDecksForUser(GetDecksForUserRequest request)
     {
-        if (string.IsNullOrWhiteSpace(email))
+        if (string.IsNullOrWhiteSpace(request.Email))
         {
-            return Result<DeckDto[]>.BadRequest("Email cannot be empty");
+            return Result<GetDecksForUserResponse>.BadRequest("Email cannot be empty");
         }
 
-        var decks = await _decksRepository.GetDecksForUserAsync(email);
+        var decks = await _decksRepository.GetDecksForUserAsync(request);
 
-        return Result<DeckDto[]>.Ok(decks.Select(x => new DeckDto(x.Id, x.UserEmail, x.Topic, x.IsStrict)).ToArray());
+        var response = new GetDecksForUserResponse(decks.Select(x => new DeckDto(x.Id, x.UserEmail, x.Topic, x.IsStrict)).ToArray(),
+            request.PageNumber,
+            request.PageSize);
+
+        return Result<GetDecksForUserResponse>.Ok(response);
     }
 }
