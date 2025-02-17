@@ -1,5 +1,4 @@
 @using MudBlazor
 <MudPaper Class="mb-5 p-3">
-    <MudText Typo="Typo.caption">@DeckDto.Topic</MudText>
-    <MudText Typo="Typo.subtitle1">@DeckDto.IsStrict</MudText>
+    <MudText Typo="Typo.h5">@DeckDto.Topic | @Localizer["Strict"]: @(DeckDto.IsStrict ? "✅" : "❌") </MudText>
 </MudPaper>

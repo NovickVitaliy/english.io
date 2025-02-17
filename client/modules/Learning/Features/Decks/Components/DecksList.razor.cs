@@ -10,7 +10,7 @@ public partial class DecksList : ComponentBase
 {
     private DeckDto[]? _decks = null!;
     private int _currentPage = 1;
-    private long _totalPageCount;
+    private double _totalPageCount;
     [Inject] private IState<UserState> UserState { get; init; } = null!;
     [Inject] private IDecksService DecksService { get; init; } = null!;
 
@@ -25,7 +25,7 @@ public partial class DecksList : ComponentBase
         Console.WriteLine(request);
         var response = await DecksService.GetDecksForUserAsync(request, UserState.Value.Token);
         _decks = response.Decks;
-        _totalPageCount = response.Count;
+        _totalPageCount = Math.Ceiling((double)(response.Count / request.PageSize));
     }
 
     private async Task ChangePage(int page)
