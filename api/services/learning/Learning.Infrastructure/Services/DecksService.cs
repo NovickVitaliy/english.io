@@ -48,11 +48,10 @@ public class DecksService : IDecksService
             return Result<GetDecksForUserResponse>.BadRequest("Email cannot be empty");
         }
 
-        var decks = await _decksRepository.GetDecksForUserAsync(request);
+        var (decks, count) = await _decksRepository.GetDecksForUserAsync(request);
 
         var response = new GetDecksForUserResponse(decks.Select(x => new DeckDto(x.Id, x.UserEmail, x.Topic, x.IsStrict)).ToArray(),
-            request.PageNumber,
-            request.PageSize);
+            count);
 
         return Result<GetDecksForUserResponse>.Ok(response);
     }

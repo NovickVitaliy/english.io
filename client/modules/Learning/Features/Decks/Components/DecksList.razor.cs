@@ -9,12 +9,13 @@ namespace Learning.Features.Decks.Components;
 public partial class DecksList : ComponentBase
 {
     private DeckDto[]? _decks = null!;
+    private int _currentPage = 1;
     [Inject] private IState<UserState> UserState { get; init; } = null!;
     [Inject] private IDecksService DecksService { get; init; } = null!;
 
     protected override async Task OnInitializedAsync()
     {
-        _decks = await DecksService.GetDecksForUserAsync(UserState.Value.Email);
+        _decks = await DecksService.GetDecksForUserAsync(new GetDecksForUserRequest(UserState.Value.Email, _currentPage));
     }
 }
 

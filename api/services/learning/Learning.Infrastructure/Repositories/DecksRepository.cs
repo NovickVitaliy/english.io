@@ -21,7 +21,7 @@ public class DecksRepository : IDecksRepository
 
         return deck.Id;
     }
-    public async Task<Deck[]> GetDecksForUserAsync(GetDecksForUserRequest request)
+    public async Task<(Deck[] Decks, long Count)> GetDecksForUserAsync(GetDecksForUserRequest request)
     {
         var filter = Builders<Deck>.Filter.Eq(x => x.UserEmail, request.Email);
 
@@ -33,13 +33,15 @@ public class DecksRepository : IDecksRepository
                 x.Id, x.Topic, x.IsStrict, x.UserEmail
             }).ToListAsync();
 
-        return decks.Select(x => new Deck()
+        var count = await _learningDbContext.Decks.CountDocumentsAsync(filter);
+
+        return (decks.Select(x => new Deck()
         {
             DeckWords = [],
             Id = x.Id,
             Topic = x.Topic,
             IsStrict = x.IsStrict,
             UserEmail = x.UserEmail
-        }).ToArray();
+        }).ToArray(), count);
     }
 }
