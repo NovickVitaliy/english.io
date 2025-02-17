@@ -20,4 +20,22 @@ public class DecksRepository: IDecksRepository
 
         return deck.Id;
     }
+    public async Task<Deck[]> GetDecksForUserAsync(string email)
+    {
+        var filter = Builders<Deck>.Filter.Eq(x => x.UserEmail, email);
+
+        var decks = await _learningDbContext.Decks.Find(filter).Project(x => new
+        {
+            x.Id, x.Topic, x.IsStrict, x.UserEmail
+        }).ToListAsync();
+
+        return decks.Select(x => new Deck()
+        {
+            DeckWords = [],
+            Id = x.Id,
+            Topic = x.Topic,
+            IsStrict = x.IsStrict,
+            UserEmail = x.UserEmail
+        }).ToArray();
+    }
 }

@@ -3,6 +3,7 @@ using Learning.Application.Contracts.Repositories;
 using Learning.Application.Contracts.Services;
 using Learning.Application.DTOs.Decks;
 using Learning.Domain.Models;
+using MassTransit.Initializers;
 using Microsoft.AspNetCore.Http;
 using Shared.ErrorHandling;
 
@@ -39,5 +40,16 @@ public class DecksService : IDecksService
         var id = await _decksRepository.CreateDeckAsync(deck);
 
         return Result<Guid>.Created($"api/decks/{id}", id);
+    }
+    public async Task<Result<DeckDto[]>> GetDecksForUser(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            return Result<DeckDto[]>.BadRequest("Email cannot be empty");
+        }
+
+        var decks = await _decksRepository.GetDecksForUserAsync(email);
+
+        return Result<DeckDto[]>.Ok(decks.Select(x => new DeckDto(x.Id, x.UserEmail, x.Topic, x.IsStrict)).ToArray());
     }
 }
