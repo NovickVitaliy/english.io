@@ -2,6 +2,7 @@ using Learning.Application.Contracts.Repositories;
 using Learning.Application.Contracts.Services;
 using Learning.Application.DTOs.UserPreferences;
 using Learning.Domain;
+using Learning.Domain.Models;
 using MassTransit;
 using Shared.ErrorHandling;
 using Shared.MessageBus.Events;
@@ -12,7 +13,7 @@ public class UserPreferencesService : IUserPreferencesService
 {
     private readonly IUserPreferencesRepository _userPreferencesRepository;
     private readonly IPublishEndpoint _publishEndpoint;
-    
+
     public UserPreferencesService(IUserPreferencesRepository userPreferencesRepository, IPublishEndpoint publishEndpoint)
     {
         _userPreferencesRepository = userPreferencesRepository;
@@ -53,8 +54,8 @@ public class UserPreferencesService : IUserPreferencesService
         return userPreferences == null
             ? Result<UserPreferencesDto>.NotFound(request.Id.Value)
             : Result<UserPreferencesDto>.Ok(new UserPreferencesDto(
-                userPreferences.Id, 
-                userPreferences.UserEmail, 
+                userPreferences.Id,
+                userPreferences.UserEmail,
                 userPreferences.NumberOfExampleSentencesPerWord,
                 userPreferences.DailyWordPracticeLimit,
                 userPreferences.DailySessionsReminderTimes));
@@ -65,9 +66,9 @@ public class UserPreferencesService : IUserPreferencesService
         var validationResult = request.IsValid();
         if (!validationResult.IsValid)
         {
-            return Result<bool>.BadRequest(validationResult.ErrorMessage); 
+            return Result<bool>.BadRequest(validationResult.ErrorMessage);
         }
-        
+
         var userPreferences = new UserPreferences()
         {
             UserEmail = request.UserEmail!,
@@ -77,7 +78,7 @@ public class UserPreferencesService : IUserPreferencesService
         };
 
         await _userPreferencesRepository.UpdateUserPreferencesAsync(request.Id!.Value, userPreferences);
-        
+
         return Result<bool>.Ok(true);
     }
 
@@ -90,7 +91,7 @@ public class UserPreferencesService : IUserPreferencesService
         }
 
         await _userPreferencesRepository.DeleteUserPreferencesAsync(request.Id!.Value);
-        
+
         return Result<bool>.NoContent();
     }
 }

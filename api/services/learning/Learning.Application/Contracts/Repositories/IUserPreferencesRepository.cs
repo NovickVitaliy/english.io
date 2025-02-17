@@ -1,4 +1,4 @@
-using Learning.Domain;
+using Learning.Domain.Models;
 
 namespace Learning.Application.Contracts.Repositories;
 

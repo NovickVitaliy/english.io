@@ -18,7 +18,7 @@ public static class DependencyInjection
     public static IServiceCollection ConfigureInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.ConfigureRabbitMq(Assembly.GetExecutingAssembly());
-        
+
         services.AddOptions<MongoOptions>()
             .BindConfiguration(MongoOptions.ConfigurationKey)
             .ValidateDataAnnotations()
@@ -31,10 +31,15 @@ public static class DependencyInjection
             return new MongoClient(mongoOptions.ConnectionString);
         });
 
+        services.AddHttpContextAccessor();
+
         services.AddScoped<LearningDbContext>();
         services.AddScoped<IUserPreferencesRepository, UserPreferencesRepository>();
         services.AddScoped<IUserPreferencesService, UserPreferencesService>();
-        
+
+        services.AddScoped<IDecksRepository, DecksRepository>();
+        services.AddScoped<IDecksService, DecksService>();
+
         return services;
     }
 }

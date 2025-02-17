@@ -1,0 +1,14 @@
+<root>
+  <data name="Create_Deck_Button">
+    Створити нову колоду
+  </data>
+  <data name="Search">
+    Пошук
+  </data>
+  <data name="Search_Query">
+    Пошук за назвою
+  </data>
+  <data name="Dialog_Name">
+    Створити колоду
+  </data>
+</root>

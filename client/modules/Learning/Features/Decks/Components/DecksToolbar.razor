@@ -1,0 +1,8 @@
+@using Microsoft.Extensions.Localization
+@using MudBlazor
+@inject IStringLocalizer<DecksToolbar> Localizer
+<MudContainer Class="d-flex mt-5 gap-3">
+    <MudButton OnClick="ShowCreateDeckDialog" Color="Color.Primary" Variant="Variant.Filled">@Localizer["Create_Deck_Button"]</MudButton>
+    <MudTextField @bind-Value="_searchQuery" Label="@Localizer["Search_Query"]" Class="w-25"></MudTextField>
+    <MudButton Color="Color.Primary" Variant="Variant.Filled">@Localizer["Search"]</MudButton>
+</MudContainer>

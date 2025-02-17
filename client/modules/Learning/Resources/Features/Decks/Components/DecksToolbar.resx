@@ -1,0 +1,14 @@
+<root>
+  <data name="Create_Deck_Button">
+    Create new deck
+  </data>
+  <data name="Search">
+    Search
+  </data>
+  <data name="Search_Query">
+    Search by name
+  </data>
+  <data name="Dialog_Name">
+    Create Deck
+  </data>
+</root>

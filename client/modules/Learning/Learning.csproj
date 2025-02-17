@@ -18,9 +18,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Features\Decks\Components\" />
-      <Folder Include="Features\Decks\Models\" />
-      <Folder Include="Features\Decks\Services\" />
       <Folder Include="Features\Home\Models\" />
       <Folder Include="Features\Home\Services\" />
       <Folder Include="Features\Settings\Components\" />
@@ -40,6 +37,12 @@
       </EmbeddedResource>
       <EmbeddedResource Update="Resources\Features\Home\Components\WordOfTheDay.uk.resx">
         <DependentUpon>WordOfTheDay.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Decks\Components\DecksToolbar.uk.resx">
+        <DependentUpon>DecksToolbar.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Decks\Components\CreateDeckDialog.uk.resx">
+        <DependentUpon>CreateDeckDialog.resx</DependentUpon>
       </EmbeddedResource>
     </ItemGroup>
 

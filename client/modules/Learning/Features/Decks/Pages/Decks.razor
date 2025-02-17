@@ -1,8 +1,11 @@
 @layout DashboardLayout
 @page "/learning/decks"
 @using Learning.Layouts
-<h3>Decks</h3>
+@using Microsoft.AspNetCore.Authorization
+@using MudBlazor
+@using Learning.Features.Decks.Components
+@attribute [Authorize]
 
-@code {
-
-}
+<MudContainer MaxWidth="MaxWidth.Large">
+    <DecksToolbar></DecksToolbar>
+</MudContainer>
