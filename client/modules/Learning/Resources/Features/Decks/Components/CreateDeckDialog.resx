@@ -14,4 +14,10 @@
   <data name="Create">
     Create
   </data>
+  <data name="Error_Creating_Deck">
+    Error occured while creating deck
+  </data>
+  <data name="Deck_Created_Successfully">
+    Deck was created succesfully
+  </data>
 </root>

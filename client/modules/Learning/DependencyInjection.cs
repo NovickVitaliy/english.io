@@ -1,4 +1,5 @@
 using Learning.Features.PreferenceConfiguring.Services;
+using Learning.LearningShared.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shared;
@@ -15,7 +16,8 @@ public static class DependencyInjection
                 builder => builder.RequireClaim(GlobalConstants.ApplicationClaimTypes.PreferencesConfigured, "false"));
 
         services.ConfigureApiService<IUserPreferencesService>(configuration, IUserPreferencesService.ApiUrlKey);
-        
+        services.ConfigureApiService<IDecksService>(configuration, IDecksService.ApiUrlKey);
+
         return services;
     }
 }

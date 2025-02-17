@@ -14,4 +14,10 @@
   <data name="Create">
     Створити
   </data>
+  <data name="Error_Creating_Deck">
+    Сталася помилка при створенні колоди
+  </data>
+  <data name="Deck_Created_Successfully">
+    Колода була успішно створена
+  </data>
 </root>

@@ -27,7 +27,7 @@ public class DecksService : IDecksService
             return Result<Guid>.BadRequest(validationResult.ErrorMessage);
         }
 
-        var userEmail = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)!.Value;
+        var userEmail = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "email")!.Value;
         var deck = new Deck
         {
             Topic = request.DeckTopic,
