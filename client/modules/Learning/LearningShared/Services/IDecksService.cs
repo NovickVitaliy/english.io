@@ -10,6 +10,6 @@ public interface IDecksService
     [Post("/decks")]
     Task CreateDeckAsync(CreateDeckRequest request, [Authorize] string token);
 
-    [Post("/decks/{email}")]
-    Task<DeckDto[]> GetDecksForUserAsync([Query] GetDecksForUserRequest request);
+    [Get("/decks")]
+    Task<GetDecksForUserResponse> GetDecksForUserAsync(GetDecksForUserRequest request, [Authorize] string token);
 }

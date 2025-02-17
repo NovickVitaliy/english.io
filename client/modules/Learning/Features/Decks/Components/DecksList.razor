@@ -1,13 +1,16 @@
 @using MudBlazor
 <MudContainer MaxWidth="MaxWidth.ExtraLarge">
-@if (_decks is not null)
-{
-    @foreach (var deck in _decks)
+    @if (_decks is not null)
     {
-        <DeckListItem DeckDto="deck"></DeckListItem>
+        @foreach (var deck in _decks)
+        {
+            <DeckListItem DeckDto="deck"></DeckListItem>
+        }
+        <div class="d-flex justify-content-center align-items-center w-100">
+            <MudPagination Color="Color.Primary"
+                           Count="@((int)_totalPageCount)"
+                           SelectedChanged="ChangePage"
+            ></MudPagination>
+        </div>
     }
-    <MudPagination @bind-Selected="_currentPage"
-                   Color="Color.Primary"
-                   ></MudPagination>
-}
 </MudContainer>

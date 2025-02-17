@@ -23,7 +23,7 @@ public class DecksController : ControllerBase
         return (await _decksService.CreateDeckAsync(request)).ToApiResponse();
     }
 
-    [HttpGet()]
+    [HttpGet]
     public async Task<IActionResult> GetDecksForUserAsync([FromQuery] GetDecksForUserRequest request)
     {
         return (await _decksService.GetDecksForUser(request)).ToApiResponse();
