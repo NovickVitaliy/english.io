@@ -55,4 +55,28 @@ public class DecksService : IDecksService
 
         return Result<GetDecksForUserResponse>.Ok(response);
     }
+
+    public async Task<Result<DeckWithWordsDto>> GetDeckAsync(Guid deckId)
+    {
+        if (deckId == Guid.Empty)
+        {
+            return Result<DeckWithWordsDto>.BadRequest("Deck Id cannot be null");
+        }
+
+        var deck = await _decksRepository.GetDeckAsync(deckId);
+        if (deck is null)
+        {
+            return Result<DeckWithWordsDto>.NotFound(deckId);
+        }
+
+        var dto = new DeckWithWordsDto(
+            deck.Id,
+            deck.UserEmail,
+            deck.Topic,
+            deck.IsStrict,
+            deck.DeckWords.Count,
+            deck.DeckWords.Select(x =>  new DeckWordDto(x.Id, x.UkrainianVersion, x.EnglishVersion, x.ExampleSentences)).ToArray());
+
+        return Result<DeckWithWordsDto>.Ok(dto);
+    }
 }

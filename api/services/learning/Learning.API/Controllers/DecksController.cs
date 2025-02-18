@@ -28,4 +28,10 @@ public class DecksController : ControllerBase
     {
         return (await _decksService.GetDecksForUser(request)).ToApiResponse();
     }
+
+    [HttpGet("{deckId:guid}")]
+    public async Task<IActionResult> GetDeckAsync(Guid deckId)
+    {
+        return (await _decksService.GetDeckAsync(deckId)).ToApiResponse();
+    }
 }

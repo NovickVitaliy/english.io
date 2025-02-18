@@ -44,4 +44,11 @@ public class DecksRepository : IDecksRepository
             UserEmail = x.UserEmail
         }).ToArray(), count);
     }
+
+    public async Task<Deck?> GetDeckAsync(Guid deckId)
+    {
+        var filter = Builders<Deck>.Filter.Eq(x => x.Id, deckId);
+
+        return await (await _learningDbContext.Decks.FindAsync(filter)).SingleOrDefaultAsync();
+    }
 }
