@@ -1,4 +1,11 @@
 @using MudBlazor
 <MudPaper Class="mb-5 p-3">
-    <MudText Typo="Typo.h5">@DeckDto.Topic | @Localizer["Strict"]: @(DeckDto.IsStrict ? "✅" : "❌") </MudText>
+    <div class="d-flex justify-content-between">
+        <div class="d-flex w-75 gap-2 align-items-center">
+            <MudText Class="text-nowrap" Typo="Typo.h5">@DeckDto.Topic | @Localizer["Strict"]: @(DeckDto.IsStrict ? "✅" : "❌") | @Localizer["Word_Count"]: @DeckDto.WordCount</MudText>
+        </div>
+        <MudButton Style="width: 15%" Color="Color.Primary" Variant="Variant.Filled">
+            @Localizer["Go_To_Deck"]
+        </MudButton>
+    </div>
 </MudPaper>
