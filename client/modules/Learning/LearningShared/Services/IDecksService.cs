@@ -12,4 +12,7 @@ public interface IDecksService
 
     [Get("/decks")]
     Task<GetDecksForUserResponse> GetDecksForUserAsync(GetDecksForUserRequest request, [Authorize] string token);
+
+    [Get("/decks/{deckId}")]
+    Task<DeckDto> GetDeckAsync(Guid deckId, [Authorize] string token);
 }
