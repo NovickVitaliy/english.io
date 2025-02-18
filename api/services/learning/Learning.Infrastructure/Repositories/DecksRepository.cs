@@ -1,11 +1,12 @@
 using Learning.Application.Contracts.Repositories;
+using Learning.Application.DTOs.Decks;
 using Learning.Domain.Models;
 using Learning.Infrastructure.Database;
 using MongoDB.Driver;
 
 namespace Learning.Infrastructure.Repositories;
 
-public class DecksRepository: IDecksRepository
+public class DecksRepository : IDecksRepository
 {
     private readonly LearningDbContext _learningDbContext;
 
@@ -19,5 +20,28 @@ public class DecksRepository: IDecksRepository
         await _learningDbContext.Decks.InsertOneAsync(deck);
 
         return deck.Id;
+    }
+    public async Task<(Deck[] Decks, long Count)> GetDecksForUserAsync(GetDecksForUserRequest request)
+    {
+        var filter = Builders<Deck>.Filter.Eq(x => x.UserEmail, request.Email);
+
+        var decks = await _learningDbContext.Decks.Find(filter)
+            .Skip((request.PageNumber - 1) * request.PageSize)
+            .Limit(request.PageSize)
+            .Project(x => new
+            {
+                x.Id, x.Topic, x.IsStrict, x.UserEmail
+            }).ToListAsync();
+
+        var count = await _learningDbContext.Decks.CountDocumentsAsync(filter);
+
+        return (decks.Select(x => new Deck()
+        {
+            DeckWords = [],
+            Id = x.Id,
+            Topic = x.Topic,
+            IsStrict = x.IsStrict,
+            UserEmail = x.UserEmail
+        }).ToArray(), count);
     }
 }

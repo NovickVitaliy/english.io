@@ -9,4 +9,7 @@ public interface IDecksService
 
     [Post("/decks")]
     Task CreateDeckAsync(CreateDeckRequest request, [Authorize] string token);
+
+    [Get("/decks")]
+    Task<GetDecksForUserResponse> GetDecksForUserAsync(GetDecksForUserRequest request, [Authorize] string token);
 }
