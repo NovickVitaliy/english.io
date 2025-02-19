@@ -8,18 +8,26 @@ namespace Learning.Features.Decks.Components;
 
 public partial class DeckComponent : ComponentBase
 {
-    private DeckWithWordsDto? _deckDto;
+    private DeckWithWordsDto? _deckDto = new DeckWithWordsDto(
+        Guid.NewGuid(),
+        "123",
+        "test",
+        true,
+        5,
+        [
+            new DeckWordDto(Guid.NewGuid(), "ua version", "eng version", ["first", "second", "third"])
+        ]);
 
     [Parameter, EditorRequired] public Guid DeckId { get; init; }
     [Inject] private IDecksService DecksService { get; init; } = null!;
     [Inject] private IState<UserState> UserState { get; init; } = null!;
 
-    protected override async Task OnParametersSetAsync()
-    {
-        if (UserState.Value is not null)
-        {
-            _deckDto = await DecksService.GetDeckAsync(DeckId, UserState.Value.Token);
-        }
-    }
+    // protected override async Task OnParametersSetAsync()
+    // {
+    //     if (UserState.Value is not null)
+    //     {
+    //         _deckDto = await DecksService.GetDeckAsync(DeckId, UserState.Value.Token);
+    //     }
+    // }
 }
 
