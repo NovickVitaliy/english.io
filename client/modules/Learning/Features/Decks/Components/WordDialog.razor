@@ -1,0 +1,20 @@
+@using MudBlazor
+<MudDialog>
+    <TitleContent>
+        @DeckWord.EnglishVersion
+    </TitleContent>
+    <DialogContent>
+        <MudText> <b>@Localizer["English_Version"]: </b>@DeckWord.EnglishVersion</MudText>
+        <MudText> <b>@Localizer["Ukrainian_Version"]: </b>@DeckWord.UkrainianVersion</MudText>
+        <MudText>@Localizer["Example_Sentences"]</MudText>
+        <ol>
+            @foreach (var exampleSentence in DeckWord.ExampleSentences)
+            {
+                <li>@exampleSentence</li>
+            }
+        </ol>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>

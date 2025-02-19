@@ -6,7 +6,7 @@
         <MudDivider></MudDivider>
         @foreach (var word in _deckDto.DeckWords)
         {
-            <MudButton Style="padding: 0" Class="mt-3 w-100 justify-content-start">
+            <MudButton OnClick="@(() => ShowWordDialog(word))" Style="padding: 0" Class="mt-3 w-100 justify-content-start">
                 <MudPaper Class="p-3 w-100">
                     <MudText Typo="Typo.body1" Class="fw-bold mb-1">
                         @word.EnglishVersion

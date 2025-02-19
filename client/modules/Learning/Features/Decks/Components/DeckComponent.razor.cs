@@ -2,6 +2,7 @@ using Fluxor;
 using Learning.Features.Decks.Models;
 using Learning.LearningShared.Services;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using Shared.Store.User;
 
 namespace Learning.Features.Decks.Components;
@@ -21,6 +22,7 @@ public partial class DeckComponent : ComponentBase
     [Parameter, EditorRequired] public Guid DeckId { get; init; }
     [Inject] private IDecksService DecksService { get; init; } = null!;
     [Inject] private IState<UserState> UserState { get; init; } = null!;
+    [Inject] private IDialogService DialogService { get; init; } = null!;
 
     // protected override async Task OnParametersSetAsync()
     // {
@@ -29,5 +31,12 @@ public partial class DeckComponent : ComponentBase
     //         _deckDto = await DecksService.GetDeckAsync(DeckId, UserState.Value.Token);
     //     }
     // }
+
+    private async Task ShowWordDialog(DeckWordDto word)
+    {
+        var parameters = new DialogParameters<WordDialog> { { x => x.DeckWord, word } };
+
+        var dialog = await DialogService.ShowAsync<WordDialog>("Delete Server", parameters);
+    }
 }
 
