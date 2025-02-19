@@ -190,6 +190,7 @@ dotnet_diagnostic.CA1062.severity = none
 
 # CA1819: Properties should not return arrays
 dotnet_diagnostic.CA1819.severity = none
+dotnet_diagnostic.S125.severity = none
 
 # CA1054: URI-like parameters should not be strings
 dotnet_diagnostic.CA1054.severity = none
