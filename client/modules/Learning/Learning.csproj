@@ -47,6 +47,9 @@
       <EmbeddedResource Update="Resources\Features\Decks\Components\DeckListItem.uk.resx">
         <DependentUpon>DeckListItem.resx</DependentUpon>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Decks\Pages\DeckPage.uk.resx">
+        <DependentUpon>DeckPage.resx</DependentUpon>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>
