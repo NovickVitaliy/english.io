@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Learning.Application.Contracts.Api;
 using Learning.Application.Contracts.Repositories;
 using Learning.Application.Contracts.Services;
 using Learning.Application.DTOs.Decks;
@@ -13,11 +14,13 @@ public class DecksService : IDecksService
 {
     private readonly IDecksRepository _decksRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IAiLearningService _aiLearningService;
 
-    public DecksService(IDecksRepository decksRepository, IHttpContextAccessor httpContextAccessor)
+    public DecksService(IDecksRepository decksRepository, IHttpContextAccessor httpContextAccessor, IAiLearningService aiLearningService)
     {
         _decksRepository = decksRepository;
         _httpContextAccessor = httpContextAccessor;
+        _aiLearningService = aiLearningService;
     }
 
     public async Task<Result<Guid>> CreateDeckAsync(CreateDeckRequest request)
@@ -75,8 +78,32 @@ public class DecksService : IDecksService
             deck.Topic,
             deck.IsStrict,
             deck.DeckWords.Count,
-            deck.DeckWords.Select(x =>  new DeckWordDto(x.Id, x.UkrainianVersion, x.EnglishVersion, x.ExampleSentences)).ToArray());
+            deck.DeckWords.Select(x =>  new DeckWordDto(x.UkrainianVersion, x.EnglishVersion, x.ExampleSentences)).ToArray());
 
         return Result<DeckWithWordsDto>.Ok(dto);
+    }
+
+    public async Task<Result<DeckWordDto>> CreateDeckWordAsync(CreateDeckWordRequest request)
+    {
+        var validationResult = request.IsValid();
+        if (!validationResult.IsValid)
+        {
+            return Result<DeckWordDto>.BadRequest(validationResult.ErrorMessage);
+        }
+
+        //TODO: change to retrieval from the claims
+        int exampleSentences = 5;
+        var deckWordDto = await _aiLearningService.GetTranslatedWordWithExamplesAsync(request.Word, exampleSentences);
+
+        var deckWord = new DeckWord()
+        {
+            EnglishVersion = deckWordDto.EnglishVersion,
+            UkrainianVersion = deckWordDto.UkrainianVersion,
+            ExampleSentences = deckWordDto.ExampleSentences
+        };
+
+        await _decksRepository.CreateDeckWordAsync(request.DeckId, deckWord);
+
+        return Result<DeckWordDto>.Ok(deckWordDto);
     }
 }

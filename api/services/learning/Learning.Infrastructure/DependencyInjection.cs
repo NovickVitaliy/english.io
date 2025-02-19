@@ -1,4 +1,5 @@
 using System.Reflection;
+using Learning.Application.Contracts.Api;
 using Learning.Application.Contracts.Repositories;
 using Learning.Application.Contracts.Services;
 using Learning.Infrastructure.Database;
@@ -23,6 +24,23 @@ public static class DependencyInjection
             .BindConfiguration(MongoOptions.ConfigurationKey)
             .ValidateDataAnnotations()
             .ValidateOnStart();
+
+        services.AddOptions<AiLearningPromptsOptions>()
+            .BindConfiguration(AiLearningPromptsOptions.ConfigurationKey)
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
+        services.AddOptions<GeminiOptions>()
+            .BindConfiguration(GeminiOptions.ConfigurationKey)
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
+        services.AddHttpClient<IAiLearningService>((sp, client) =>
+        {
+            var geminiOptions = sp.GetRequiredService<IOptions<GeminiOptions>>().Value ?? throw new InvalidOperationException();
+
+            client.BaseAddress = new Uri(geminiOptions.GenerateContentUrl);
+        });
 
         services.AddSingleton<IMongoClient>(sp =>
         {
