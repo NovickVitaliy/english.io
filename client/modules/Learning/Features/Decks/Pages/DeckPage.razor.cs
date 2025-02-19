@@ -8,5 +8,6 @@ namespace Learning.Features.Decks.Pages;
 
 public partial class DeckPage : ComponentBase
 {
+    [Parameter] public Guid DeckId { get; init; }
 }
 

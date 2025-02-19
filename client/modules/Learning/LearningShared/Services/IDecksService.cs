@@ -14,5 +14,5 @@ public interface IDecksService
     Task<GetDecksForUserResponse> GetDecksForUserAsync(GetDecksForUserRequest request, [Authorize] string token);
 
     [Get("/decks/{deckId}")]
-    Task<DeckDto> GetDeckAsync(Guid deckId, [Authorize] string token);
+    Task<DeckWithWordsDto> GetDeckAsync(Guid deckId, [Authorize] string token);
 }

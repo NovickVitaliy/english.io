@@ -8,9 +8,9 @@ namespace Learning.Features.Decks.Components;
 
 public partial class DeckComponent : ComponentBase
 {
-    private DeckDto? _deckDto;
+    private DeckWithWordsDto? _deckDto;
 
-    public Guid DeckId { get; init; }
+    [Parameter, EditorRequired] public Guid DeckId { get; init; }
     [Inject] private IDecksService DecksService { get; init; } = null!;
     [Inject] private IState<UserState> UserState { get; init; } = null!;
 

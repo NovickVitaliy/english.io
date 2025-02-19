@@ -1,1 +1,9 @@
 @page "/learning/decks/{deckId:guid}"
+@using MudBlazor
+@using Learning.Features.Decks.Components
+@using Learning.Layouts
+@layout DashboardLayout
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <DeckComponent DeckId="DeckId"></DeckComponent>
+</MudContainer>
