@@ -8,13 +8,13 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Learning.Infrastructure.Api;
 
-public class AiLearningService : IAiLearningService
+public class GeminiAiLearningService : IAiLearningService
 {
     private readonly AiLearningPromptsOptions _options;
     private readonly HttpClient _httpClient;
     private readonly GeminiOptions _geminiOptions;
 
-    public AiLearningService(
+    public GeminiAiLearningService(
         IOptions<AiLearningPromptsOptions> options,
         IHttpClientFactory httpClientFactory,
         IOptions<GeminiOptions> geminiOptions)

@@ -2,6 +2,7 @@ using System.Reflection;
 using Learning.Application.Contracts.Api;
 using Learning.Application.Contracts.Repositories;
 using Learning.Application.Contracts.Services;
+using Learning.Infrastructure.Api;
 using Learning.Infrastructure.Database;
 using Learning.Infrastructure.Options;
 using Learning.Infrastructure.Repositories;
@@ -58,6 +59,8 @@ public static class DependencyInjection
 
         services.AddScoped<IDecksRepository, DecksRepository>();
         services.AddScoped<IDecksService, DecksService>();
+
+        services.AddScoped<IAiLearningService, GeminiAiLearningService>();
 
         return services;
     }
