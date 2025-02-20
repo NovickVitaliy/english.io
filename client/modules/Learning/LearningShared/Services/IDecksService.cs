@@ -15,4 +15,7 @@ public interface IDecksService
 
     [Get("/decks/{deckId}")]
     Task<DeckWithWordsDto> GetDeckAsync(Guid deckId, [Authorize] string token);
+
+    [Post("/decks/{deckId}/words")]
+    Task<DeckWordDto> CreateDeckWordAsync(Guid deckId, CreateDeckWordRequest request, [Authorize] string token);
 }

@@ -1,0 +1,17 @@
+<root>
+  <data name="Required">
+    Слово є обов'язковим
+  </data>
+  <data name="Cancel">
+    Скасувати
+  </data>
+  <data name="Create">
+    Створити
+  </data>
+  <data name="Api_Error">
+    Помилка під час додавання слова до списку
+  </data>
+  <data name="Api_Success">
+    Слово було успішно додане до колоди
+  </data>
+</root>
