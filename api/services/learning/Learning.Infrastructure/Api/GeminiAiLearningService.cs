@@ -26,11 +26,12 @@ public class GeminiAiLearningService : IAiLearningService
 
     public async Task<DeckWordDto> GetTranslatedWordWithExamplesAsync(string word, int exampleSentences)
     {
+        Console.WriteLine(_httpClient.BaseAddress);
         var body = BuildRequest(word, exampleSentences);
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Post,
-            RequestUri = new Uri($":generateContent?key={_geminiOptions.ApiKey}", UriKind.Relative),
+            RequestUri = new Uri($"v1beta/models/gemini-2.0-flash-001:generateContent?key={_geminiOptions.ApiKey}", UriKind.Relative),
             Content = new StringContent(JsonSerializer.Serialize(body))
         };
 
@@ -44,8 +45,8 @@ public class GeminiAiLearningService : IAiLearningService
             .GetProperty("text")
             .GetString();
 
-        var deckWordDto = JsonSerializer.Deserialize<DeckWordDto>(textProperty!);
-        return JsonSerializer.Deserialize<DeckWordDto>(textProperty!)!;
+        var deckWordDto = JsonSerializer.Deserialize<DeckWordDto>(textProperty!, new JsonSerializerOptions(){PropertyNameCaseInsensitive = true});
+        return JsonSerializer.Deserialize<DeckWordDto>(textProperty!, new JsonSerializerOptions(){ PropertyNameCaseInsensitive = true})!;
     }
 
     private object BuildRequest(string word, int exampleSentences)

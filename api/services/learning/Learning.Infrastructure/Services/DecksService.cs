@@ -6,6 +6,7 @@ using Learning.Application.DTOs.Decks;
 using Learning.Domain.Models;
 using MassTransit.Initializers;
 using Microsoft.AspNetCore.Http;
+using Shared;
 using Shared.ErrorHandling;
 
 namespace Learning.Infrastructure.Services;
@@ -91,12 +92,12 @@ public class DecksService : IDecksService
             return Result<DeckWordDto>.BadRequest(validationResult.ErrorMessage);
         }
 
-        //TODO: change to retrieval from the claims
-        int exampleSentences = 5;
+        int exampleSentences = int.Parse(_httpContextAccessor.HttpContext.User.Claims.Single(x => x.Type == GlobalConstants.ApplicationClaimTypes.ExampleSentencesPerWord).Value);
         var deckWordDto = await _aiLearningService.GetTranslatedWordWithExamplesAsync(request.Word, exampleSentences);
 
         var deckWord = new DeckWord()
         {
+            Id = Guid.NewGuid(),
             EnglishVersion = deckWordDto.EnglishVersion,
             UkrainianVersion = deckWordDto.UkrainianVersion,
             ExampleSentences = deckWordDto.ExampleSentences

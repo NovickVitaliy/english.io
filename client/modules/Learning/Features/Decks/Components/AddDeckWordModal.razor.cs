@@ -30,6 +30,7 @@ public partial class AddDeckWordModal : ComponentBase
         {
             await DecksService.CreateDeckWordAsync(DeckId, _request, UserState.Value.Token);
             Snackbar.Add(Localizer["Api_Success"], Severity.Success);
+            MudDialog.Close(DialogResult.Ok(this));
         }
         catch (ApiException e)
         {
