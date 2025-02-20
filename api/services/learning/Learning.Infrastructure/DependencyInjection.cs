@@ -35,7 +35,7 @@ public static class DependencyInjection
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
-        services.AddHttpClient<IAiLearningService>((sp, client) =>
+        services.AddHttpClient(IAiLearningService.HttpClientKey, (sp, client) =>
         {
             var geminiOptions = sp.GetRequiredService<IOptions<GeminiOptions>>().Value ?? throw new InvalidOperationException();
 
@@ -50,6 +50,7 @@ public static class DependencyInjection
         });
 
         services.AddHttpContextAccessor();
+        services.AddHttpClient();
 
         services.AddScoped<LearningDbContext>();
         services.AddScoped<IUserPreferencesRepository, UserPreferencesRepository>();

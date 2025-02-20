@@ -16,10 +16,10 @@ public class AiLearningService : IAiLearningService
 
     public AiLearningService(
         IOptions<AiLearningPromptsOptions> options,
-        HttpClient httpClient,
+        IHttpClientFactory httpClientFactory,
         IOptions<GeminiOptions> geminiOptions)
     {
-        _httpClient = httpClient;
+        _httpClient = httpClientFactory.CreateClient(IAiLearningService.HttpClientKey);
         _options = options.Value;
         _geminiOptions = geminiOptions.Value;
     }
