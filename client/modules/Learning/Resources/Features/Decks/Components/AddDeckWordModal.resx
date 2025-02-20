@@ -1,0 +1,17 @@
+<root>
+  <data name="Required">
+    Word is required
+  </data>
+  <data name="Cancel">
+    Cancel
+  </data>
+  <data name="Create">
+    Create
+  </data>
+  <data name="Api_Error">
+    Error occured while adding word to the deck
+  </data>
+  <data name="Api_Success">
+    Word was successfully added to the deck
+  </data>
+</root>

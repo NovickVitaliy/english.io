@@ -51,4 +51,20 @@ public class DecksRepository : IDecksRepository
 
         return await (await _learningDbContext.Decks.FindAsync(filter)).SingleOrDefaultAsync();
     }
+
+    public async Task<DeckWord?> CreateDeckWordAsync(Guid deckId, DeckWord deckWord)
+    {
+        var filter = Builders<Deck>.Filter.Eq(x => x.Id, deckId);
+        var deck = await (await _learningDbContext.Decks.FindAsync(filter)).SingleOrDefaultAsync();
+        if (deck is null)
+        {
+            return null;
+        }
+
+        deck.DeckWords.Add(deckWord);
+
+        await _learningDbContext.Decks.ReplaceOneAsync(filter, deck);
+
+        return deckWord;
+    }
 }

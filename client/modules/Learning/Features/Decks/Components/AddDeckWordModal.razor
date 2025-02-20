@@ -1,0 +1,19 @@
+@using Microsoft.Extensions.Localization
+@using MudBlazor
+@inject IStringLocalizer<AddDeckWordModal> Localizer
+<MudDialog Class="w-m">
+    <DialogContent>
+        <MudForm @ref="_form" Model="_request">
+            <MudTextField
+                @bind-Value="_request.Word"
+                Required="true"
+                For="() => _request.Word"
+                Label="@Localizer["Required"]"
+            />
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" Color="Color.Secondary">@Localizer["Cancel"]</MudButton>
+        <MudButton OnClick="Submit" Color="Color.Primary" Variant="Variant.Filled">@Localizer["Create"]</MudButton>
+    </DialogActions>
+</MudDialog>

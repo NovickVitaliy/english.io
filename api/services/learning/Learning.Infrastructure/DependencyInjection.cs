@@ -1,6 +1,8 @@
 using System.Reflection;
+using Learning.Application.Contracts.Api;
 using Learning.Application.Contracts.Repositories;
 using Learning.Application.Contracts.Services;
+using Learning.Infrastructure.Api;
 using Learning.Infrastructure.Database;
 using Learning.Infrastructure.Options;
 using Learning.Infrastructure.Repositories;
@@ -24,6 +26,23 @@ public static class DependencyInjection
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
+        services.AddOptions<AiLearningPromptsOptions>()
+            .BindConfiguration(AiLearningPromptsOptions.ConfigurationKey)
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
+        services.AddOptions<GeminiOptions>()
+            .BindConfiguration(GeminiOptions.ConfigurationKey)
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
+        services.AddHttpClient(IAiLearningService.HttpClientKey, (sp, client) =>
+        {
+            var geminiOptions = sp.GetRequiredService<IOptions<GeminiOptions>>().Value ?? throw new InvalidOperationException();
+
+            client.BaseAddress = new Uri(geminiOptions.GenerateContentUrl);
+        });
+
         services.AddSingleton<IMongoClient>(sp =>
         {
             var mongoOptions = sp.GetRequiredService<IOptions<MongoOptions>>().Value;
@@ -32,6 +51,7 @@ public static class DependencyInjection
         });
 
         services.AddHttpContextAccessor();
+        services.AddHttpClient();
 
         services.AddScoped<LearningDbContext>();
         services.AddScoped<IUserPreferencesRepository, UserPreferencesRepository>();
@@ -39,6 +59,8 @@ public static class DependencyInjection
 
         services.AddScoped<IDecksRepository, DecksRepository>();
         services.AddScoped<IDecksService, DecksService>();
+
+        services.AddScoped<IAiLearningService, GeminiAiLearningService>();
 
         return services;
     }

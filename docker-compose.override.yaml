@@ -28,6 +28,9 @@ services:
       - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS}
       - MongoOptions__ConnectionString=${MONGO_OPTIONS_CONNECTION_STRING}
       - MongoOptions__DatabaseName=${MONGO_OPTIONS_DATABASE_NAME}
+      - AiLearningPrompts__PromptForWordTranslatingWithExampleSentences=${PROMPT_FOR_TRANSLATING_WORD_WITH_EXAMPLE}
+      - GeminiOptions__ApiKey=${GEMINI_API_KEY}
+      - GeminiOptions__GenerateContentUrl=${GEMINI_GENERATE_CONTENT_URL}
     ports:
       - "${LEARNING_API_PORT}:${ASPNETCORE_HTTP_PORTS}"
     env_file:

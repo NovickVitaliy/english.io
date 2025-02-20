@@ -34,4 +34,14 @@ public class DecksController : ControllerBase
     {
         return (await _decksService.GetDeckAsync(deckId)).ToApiResponse();
     }
+
+    [HttpPost("{deckId:guid}/words")]
+    public async Task<IActionResult> CreateDeckWordAsync(Guid deckId, CreateDeckWordRequest request)
+    {
+        request = request with
+        {
+            DeckId = deckId
+        };
+        return (await _decksService.CreateDeckWordAsync(request)).ToApiResponse();
+    }
 }
