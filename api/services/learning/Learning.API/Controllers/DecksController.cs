@@ -35,7 +35,7 @@ public class DecksController : ControllerBase
         return (await _decksService.GetDeckAsync(deckId)).ToApiResponse();
     }
 
-    [HttpPost("{deckId:guid}")]
+    [HttpPost("{deckId:guid}/words")]
     public async Task<IActionResult> CreateDeckWordAsync(Guid deckId, CreateDeckWordRequest request)
     {
         request = request with
