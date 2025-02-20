@@ -37,7 +37,7 @@ public class UserPreferencesService : IUserPreferencesService
         };
 
         var id = await _userPreferencesRepository.CreateUserPreferencesAsync(userPreferences);
-        await _publishEndpoint.Publish(new UserCreatedPreferences(request.UserEmail!));
+        await _publishEndpoint.Publish(new UserCreatedPreferences(request.UserEmail!, userPreferences.NumberOfExampleSentencesPerWord));
         return Result<Guid>.Created($"/api/user-preferences/{id}", id);
     }
 
