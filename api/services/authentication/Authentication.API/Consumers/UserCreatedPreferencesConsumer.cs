@@ -28,5 +28,6 @@ public class UserCreatedPreferencesConsumer : IConsumer<UserCreatedPreferences>
         await _userManager.RemoveClaimAsync(user, claim);
         claim = new Claim(GlobalConstants.ApplicationClaimTypes.PreferencesConfigured, "true");
         await _userManager.AddClaimAsync(user, claim);
+        await _userManager.AddClaimAsync(user, new Claim(GlobalConstants.ApplicationClaimTypes.ExampleSentencesPerWord, context.Message.ExampleSentences.ToString()));
     }
 }
