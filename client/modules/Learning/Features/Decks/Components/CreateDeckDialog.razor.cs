@@ -1,6 +1,7 @@
 using Fluxor;
 using Learning.Features.Decks.Models;
 using Learning.LearningShared.Services;
+using Learning.Store.Decks.Actions;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Refit;
@@ -19,7 +20,7 @@ public partial class CreateDeckDialog : ComponentBase
     [Inject] private IDecksService DecksService { get; init; } = null!;
     [Inject] private ISnackbar Snackbar { get; init; } = null!;
     [Inject] private IState<UserState> UserState { get; init; } = null!;
-
+    [Inject] private IDispatcher Dispatcher { get; init; } = null!;
 
     private void Cancel() => MudDialog.Close(DialogResult.Ok(this));
 
@@ -34,6 +35,7 @@ public partial class CreateDeckDialog : ComponentBase
             var token = UserState.Value.Token;
             await DecksService.CreateDeckAsync(_request, token);
             Snackbar.Add(Localizer["Deck_Created_Successfully"], Severity.Success);
+            Dispatcher.Dispatch(new AddDeckAction(new DeckDto(Guid.Empty, string.Empty, _request.DeckTopic, _request.IsStrict, 0)));
             MudDialog.Close(DialogResult.Ok(this));
         }
         catch (ApiException e)

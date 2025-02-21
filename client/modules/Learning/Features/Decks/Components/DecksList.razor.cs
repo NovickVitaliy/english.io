@@ -1,31 +1,45 @@
 using Fluxor;
+using Fluxor.Blazor.Web.Components;
 using Learning.Features.Decks.Models;
 using Learning.LearningShared.Services;
+using Learning.Store.Decks;
+using Learning.Store.Decks.Actions;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using Shared.Store.User;
 
 namespace Learning.Features.Decks.Components;
 
-public partial class DecksList : ComponentBase
+public partial class DecksList : FluxorComponent
 {
-    private DeckDto[]? _decks = null!;
     private int _currentPage = 1;
+    private const int PageSize = 10;
     private double _totalPageCount;
     [Inject] private IState<UserState> UserState { get; init; } = null!;
+    [Inject] private IState<DecksState> DecksState { get; init; } = null!;
     [Inject] private IDecksService DecksService { get; init; } = null!;
+    [Inject] private IStringLocalizer<DecksList> Localizer { get; init; } = null!;
+    [Inject] private IDispatcher Dispatcher { get; init; } = null!;
+
+    protected override void OnInitialized()
+    {
+        DecksState.StateChanged += (_, _) =>
+        {
+            _totalPageCount = Math.Ceiling((double)(DecksState.Value.Count / PageSize));
+        };
+
+        base.OnInitialized();
+    }
 
     protected override async Task OnParametersSetAsync()
     {
         await GetDecksFromApi();
     }
 
-    private async Task GetDecksFromApi()
+    private Task GetDecksFromApi()
     {
-        var request = new GetDecksForUserRequest(UserState.Value.Email, _currentPage);
-        Console.WriteLine(request);
-        var response = await DecksService.GetDecksForUserAsync(request, UserState.Value.Token);
-        _decks = response.Decks;
-        _totalPageCount = Math.Ceiling((double)(response.Count / request.PageSize));
+        Dispatcher.Dispatch(new FetchDecksAction(UserState.Value.Email, _currentPage, PageSize));
+        return Task.CompletedTask;
     }
 
     private async Task ChangePage(int page)
