@@ -3,6 +3,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using Authentication;
 using Learning;
+using Learning.Store.Decks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using MudBlazor.Services;
 using Shared.Extensions;
@@ -15,12 +16,14 @@ public static class DependencyInjection
     {
         services.RegisterAuthenticationModule(configuration);
         services.RegisterLearningModule(configuration);
-        return services; 
+        return services;
     }
 
     public static IServiceCollection ConfigureBlazor(this IServiceCollection services)
     {
-        services.ConfigureStateManager();
+        services.ConfigureStateManager([
+            typeof(DecksState).Assembly
+        ]);
         services.AddRazorPages();
         services.AddControllers()
             .AddApplicationPart(typeof(IAuthenticationMarker).Assembly)

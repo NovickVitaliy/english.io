@@ -53,6 +53,9 @@
       <EmbeddedResource Update="Resources\Features\Decks\Components\AddDeckWordModal.uk.resx">
         <DependentUpon>AddDeckWordModal.resx</DependentUpon>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Decks\Components\DecksList.uk.resx">
+        <DependentUpon>DecksList.resx</DependentUpon>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>
