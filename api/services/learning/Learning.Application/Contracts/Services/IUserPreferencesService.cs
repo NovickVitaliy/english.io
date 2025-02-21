@@ -5,7 +5,7 @@ namespace Learning.Application.Contracts.Services;
 
 public interface IUserPreferencesService
 {
-    Task<Result<Guid>> CreateUserPreferencesAsync(CreateUserPreferencesRequest request);
+    Task<Result<string>> CreateUserPreferencesAsync(CreateUserPreferencesRequest request);
     Task<Result<UserPreferencesDto>> GetUserPreferencesAsync(GetUserPreferencesRequest request);
     Task<Result<bool>> UpdateUserPreferencesAsync(UpdateUserPreferencesRequest request);
     Task<Result<bool>> DeleteUserPreferencesAsync(DeleteUserPreferencesRequest request);
