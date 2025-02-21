@@ -8,5 +8,5 @@ public interface IUserPreferencesService
     const string ApiUrlKey = "Learning";
 
     [Post("/user-preferences")]
-    Task<Guid> CreateUserPreferencesAsync(CreateUserPreferencesRequest request, [Authorize] string token);
+    Task<string> CreateUserPreferencesAsync(CreateUserPreferencesRequest request, [Authorize] string token);
 }

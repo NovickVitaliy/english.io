@@ -35,7 +35,7 @@ public partial class LoginForm : ComponentBase
             try
             {
                 var response = await AuthenticationService.LoginAsync(_loginRequest);
-                await LocalStorageService.SetItemAsync(ClientConstants.UserDataKey, JsonSerializer.Serialize(response));
+                await LocalStorageService.SetItemAsync(ClientConstants.UserDataKey, response);
                 Dispatcher.Dispatch(new SetUserStateAction(response.AuthToken, response.Role, response.Email, response.Username));
 
                 var query = $"?token={Uri.EscapeDataString(response.AuthToken)}" +

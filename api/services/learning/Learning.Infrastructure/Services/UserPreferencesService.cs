@@ -6,6 +6,7 @@ using Learning.Domain.Models;
 using MassTransit;
 using Shared.ErrorHandling;
 using Shared.MessageBus.Events;
+using Shared.MessageBus.Requests.CreateJwtToken;
 
 namespace Learning.Infrastructure.Services;
 
@@ -13,19 +14,24 @@ public class UserPreferencesService : IUserPreferencesService
 {
     private readonly IUserPreferencesRepository _userPreferencesRepository;
     private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IScopedClientFactory _scopedClientFactory;
 
-    public UserPreferencesService(IUserPreferencesRepository userPreferencesRepository, IPublishEndpoint publishEndpoint)
+    public UserPreferencesService(
+        IUserPreferencesRepository userPreferencesRepository,
+        IPublishEndpoint publishEndpoint,
+        IScopedClientFactory scopedClientFactory)
     {
         _userPreferencesRepository = userPreferencesRepository;
         _publishEndpoint = publishEndpoint;
+        _scopedClientFactory = scopedClientFactory;
     }
 
-    public async Task<Result<Guid>> CreateUserPreferencesAsync(CreateUserPreferencesRequest request)
+    public async Task<Result<string>> CreateUserPreferencesAsync(CreateUserPreferencesRequest request)
     {
         var validationResult = request.IsValid();
         if (!validationResult.IsValid)
         {
-            return Result<Guid>.BadRequest(validationResult.ErrorMessage);
+            return Result<string>.BadRequest(validationResult.ErrorMessage);
         }
 
         var userPreferences = new UserPreferences()
@@ -38,7 +44,10 @@ public class UserPreferencesService : IUserPreferencesService
 
         var id = await _userPreferencesRepository.CreateUserPreferencesAsync(userPreferences);
         await _publishEndpoint.Publish(new UserCreatedPreferences(request.UserEmail!, userPreferences.NumberOfExampleSentencesPerWord));
-        return Result<Guid>.Created($"/api/user-preferences/{id}", id);
+        var createJwtTokenRequest = new CreateJwtTokenRequest(request.UserEmail!);
+        var requestClient = _scopedClientFactory.CreateRequestClient<CreateJwtTokenRequest>();
+        var jwtResponse = await requestClient.GetResponse<CreateJwtTokenResponse>(createJwtTokenRequest);
+        return Result<string>.Created($"/api/user-preferences/{id}", jwtResponse.Message.JwtToken);
     }
 
     public async Task<Result<UserPreferencesDto>> GetUserPreferencesAsync(GetUserPreferencesRequest request)
