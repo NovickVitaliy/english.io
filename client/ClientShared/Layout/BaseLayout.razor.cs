@@ -4,6 +4,7 @@ using Blazored.LocalStorage;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using Shared.Extensions;
 using Shared.Store.Theme;
 using Shared.Store.User;
 
@@ -53,6 +54,7 @@ public abstract partial class BaseLayout : LayoutComponentBase, IDisposable
 
     private async Task LoadUserFromStorage()
     {
+        if (!NavigationManager.GetRelativePath().StartsWith("/learning", StringComparison.InvariantCultureIgnoreCase)) return;
         var userDataJson = await LocalStorageService.GetItemAsync<string?>(ClientConstants.UserDataKey);
         if (userDataJson is not null)
         {
