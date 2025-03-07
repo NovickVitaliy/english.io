@@ -8,4 +8,7 @@
   <data name="Go_To_Deck">
     Перейти до колоди
   </data>
+  <data name="Delete">
+    Видалити
+  </data>
 </root>

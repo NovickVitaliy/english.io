@@ -18,4 +18,7 @@ public interface IDecksService
 
     [Post("/decks/{deckId}/words")]
     Task<DeckWordDto> CreateDeckWordAsync(Guid deckId, CreateDeckWordRequest request, [Authorize] string token);
+
+    [Delete("/decks/{deckId}")]
+    Task DeleteDeckAsync(Guid deckId, [Authorize] string token);
 }

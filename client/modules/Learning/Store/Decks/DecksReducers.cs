@@ -24,6 +24,16 @@ public static class DecksReducers
     {
         return new DecksState(action.Decks, action.Count, false);
     }
+
+    [ReducerMethod]
+    public static DecksState ReduceRemoveDeckAction(DecksState state, RemoveDeckAction action)
+    {
+        var decks = state.Decks!
+            .Where(x => x.Id != action.DeckId)
+            .ToArray();
+
+        return new DecksState(decks, decks.Length, false);
+    }
 }
 
 public class Effects

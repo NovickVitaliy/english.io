@@ -1,0 +1,17 @@
+<root>
+  <data name="Title">
+    Видалити колоду
+  </data>
+  <data name="Content">
+    Ви впевнені що хочете видалити вибрану колоду?
+  </data>
+  <data name="Cancel">
+    Скасувати
+  </data>
+  <data name="Deleted_Successfully">
+    Колода була успішно видалена
+  </data>
+  <data name="Modal_Title">
+    Видалити колоду
+  </data>
+</root>

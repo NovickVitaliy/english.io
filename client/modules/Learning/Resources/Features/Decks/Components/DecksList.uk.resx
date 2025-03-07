@@ -1,5 +1,8 @@
 <root>
   <data name="Decks_Are_Loading">
-    Колода завантажуються
+    Колоди завантажуються
+  </data>
+  <data name="Empty">
+    Наразі у вас не має колод
   </data>
 </root>

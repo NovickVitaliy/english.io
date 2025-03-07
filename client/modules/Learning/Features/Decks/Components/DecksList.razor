@@ -1,20 +1,27 @@
 @using MudBlazor
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
-<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+<MudContainer Class="d-flex justify-content-center flex-column" MaxWidth="MaxWidth.ExtraLarge">
     @if (DecksState.Value.IsLoading)
     {
-        <MudText>@Localizer["Decks_Are_Loading"]</MudText>
+        <MudText Typo="Typo.h5" Align="Align.Center">@Localizer["Decks_Are_Loading"]</MudText>
     }
     @if (DecksState.Value.Decks is not null)
     {
-        @foreach (var deck in DecksState.Value.Decks)
+        @if (DecksState.Value.Decks.Length == 0)
         {
-            <DeckListItem DeckDto="deck"></DeckListItem>
+           <MudText Typo="Typo.h5" Align="Align.Center">@Localizer["Empty"]</MudText>
         }
-        <div class="d-flex justify-content-center align-items-center w-100">
-            <MudPagination Color="Color.Primary"
-                           Count="@((int)_totalPageCount)"
-                           SelectedChanged="ChangePage"></MudPagination>
-        </div>
+        @if (DecksState.Value.Decks.Length > 0)
+        {
+            @foreach (var deck in DecksState.Value.Decks)
+            {
+                <DeckListItem DeckDto="deck"></DeckListItem>
+            }
+            <div class="d-flex justify-content-center align-items-center w-100">
+                <MudPagination Color="Color.Primary"
+                               Count="@((int)_totalPageCount)"
+                               SelectedChanged="ChangePage"></MudPagination>
+            </div>
+        }
     }
 </MudContainer>

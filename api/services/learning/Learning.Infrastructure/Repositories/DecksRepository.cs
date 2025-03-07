@@ -75,4 +75,10 @@ public class DecksRepository : IDecksRepository
 
          return await (await _learningDbContext.Decks.AggregateAsync(pipelineDefinition)).SingleOrDefaultAsync();
     }
+    public async Task DeleteDeckAsync(Guid deckId)
+    {
+        var filter = Builders<Deck>.Filter.Eq(x => x.Id, deckId);
+
+        await _learningDbContext.Decks.DeleteOneAsync(filter);
+    }
 }

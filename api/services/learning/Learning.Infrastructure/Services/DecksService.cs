@@ -121,4 +121,15 @@ public class DecksService : IDecksService
 
         return Result<DeckWordDto>.Ok(deckWordDto);
     }
+    public async Task<Result<bool>> DeleteDeckAsync(Guid deckId)
+    {
+        if (Guid.Empty == deckId)
+        {
+            return Result<bool>.BadRequest("Deck ID cannot be empty");
+        }
+
+        await _decksRepository.DeleteDeckAsync(deckId);
+
+        return Result<bool>.NoContent();
+    }
 }

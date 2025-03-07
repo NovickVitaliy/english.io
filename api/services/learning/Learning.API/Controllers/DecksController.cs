@@ -44,4 +44,10 @@ public class DecksController : ControllerBase
         };
         return (await _decksService.CreateDeckWordAsync(request)).ToApiResponse();
     }
+
+    [HttpDelete("{deckId:guid}")]
+    public async Task<IActionResult> DeleteDeckAsync(Guid deckId)
+    {
+        return (await _decksService.DeleteDeckAsync(deckId)).ToApiResponse();
+    }
 }

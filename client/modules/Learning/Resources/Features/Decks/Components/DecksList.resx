@@ -2,4 +2,7 @@
   <data name="Decks_Are_Loading">
     Decks are being loaded
   </data>
+  <data name="Empty">
+    You don't have any decks now
+  </data>
 </root>
