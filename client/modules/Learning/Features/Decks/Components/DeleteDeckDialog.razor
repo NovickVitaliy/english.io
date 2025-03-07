@@ -1,0 +1,13 @@
+@using MudBlazor
+<MudDialog>
+    <TitleContent>
+        @Localizer["Title"]
+    </TitleContent>
+    <DialogContent>
+        @Localizer["Content"]
+        </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@Localizer["Cancel"]</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>

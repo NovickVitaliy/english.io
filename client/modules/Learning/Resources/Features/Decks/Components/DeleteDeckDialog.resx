@@ -1,0 +1,17 @@
+<root>
+  <data name="Title">
+    Delete deck
+  </data>
+  <data name="Content">
+    Are you sure you want to delete the chosen deck?
+  </data>
+  <data name="Cancel">
+    Cancel
+  </data>
+  <data name="Deleted_Successfully">
+    Deck was deleted successfuly
+  </data>
+  <data name="Modal_Title">
+    Delete deck
+  </data>
+</root>

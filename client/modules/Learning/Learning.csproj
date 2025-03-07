@@ -59,6 +59,9 @@
       <EmbeddedResource Update="Resources\Features\Decks\Components\DeckComponent.uk.resx">
         <DependentUpon>DeckComponent.resx</DependentUpon>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Decks\Components\DeleteDeckDialog.uk.resx">
+        <DependentUpon>DeleteDeckDialog.resx</DependentUpon>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>
