@@ -18,8 +18,9 @@ public abstract partial class BaseLayout : LayoutComponentBase, IDisposable
     [Inject] private ILocalStorageService LocalStorageService { get; init; } = null!;
     [Inject] private IState<UserState> UserState { get; init; } = null!;
     [Inject] private IState<ThemeState> ThemeState { get; init; } = null!;
+    [Inject] private NavigationManager NavigationManager { get; init; } = null!;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
@@ -63,8 +64,10 @@ public abstract partial class BaseLayout : LayoutComponentBase, IDisposable
             else
             {
                 await LocalStorageService.RemoveItemAsync(ClientConstants.UserDataKey);
+                NavigationManager.NavigateTo("/login");
             }
         }
+        NavigationManager.NavigateTo("/login");
     }
 
     private static bool IsJwtTokenValid(string jwtToken)
