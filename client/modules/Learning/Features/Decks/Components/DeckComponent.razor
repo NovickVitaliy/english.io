@@ -1,12 +1,13 @@
 @using MudBlazor
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 <MudContainer MaxWidth="MaxWidth.ExtraLarge">
-    @if (_deckDto is not null)
+    @if (DeckState.Value.DeckWithWordsDto is not null)
     {
-        <MudText Typo="Typo.h4" Class="mb-3">@_deckDto.Topic</MudText>
-        <MudDivider></MudDivider>
-        @foreach (var word in _deckDto.DeckWords)
+        <MudText Typo="Typo.h4" Class="mb-3">@DeckState.Value.DeckWithWordsDto!.Topic</MudText>
+        <MudDivider Class="mt-3 mb-3"></MudDivider>
+        @foreach (var word in DeckState.Value.DeckWithWordsDto!.DeckWords)
         {
-            <MudButton OnClick="@(() => ShowWordDialog(word))" Style="padding: 0" Class="mt-3 w-100 justify-content-start">
+            <MudButton OnClick="@(() => ShowWordDialog(word))" Style="padding: 0" Class="mb-3 w-100 justify-content-start">
                 <MudPaper Class="p-3 w-100">
                     <MudText Typo="Typo.body1" Class="fw-bold mb-1">
                         @word.EnglishVersion

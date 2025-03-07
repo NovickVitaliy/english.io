@@ -30,6 +30,7 @@ public class Effects
 {
     private readonly IDecksService _decksService;
     private readonly IState<UserState> _userState;
+
     public Effects(IDecksService decksService, IState<UserState> userState)
     {
         _decksService = decksService;
