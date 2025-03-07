@@ -9,5 +9,9 @@ public partial class DeckListItem : ComponentBase
 {
     [Parameter, EditorRequired] public DeckDto DeckDto { get; init; } = null!;
     [Inject] private IStringLocalizer<DeckListItem> Localizer { get; init; } = null!;
+    private void OpenConfirmDeleteDialog()
+    {
+        throw new NotImplementedException();
+    }
 }
 

@@ -2,10 +2,18 @@
 <MudPaper Class="mb-5 p-3">
     <div class="d-flex justify-content-between">
         <div class="d-flex w-75 gap-2 align-items-center">
-            <MudText Class="text-nowrap" Typo="Typo.h5">@DeckDto.Topic | @Localizer["Strict"]: @(DeckDto.IsStrict ? "✅" : "❌") | @Localizer["Word_Count"]: @DeckDto.WordCount</MudText>
+            <MudText Class="text-nowrap"
+                     Typo="Typo.h5">@DeckDto.Topic | @Localizer["Strict"]: @(DeckDto.IsStrict ? "✅" : "❌") | @Localizer["Word_Count"]: @DeckDto.WordCount</MudText>
         </div>
-        <MudButton Style="width: 15%" Color="Color.Primary" Variant="Variant.Filled" Href="@($"/learning/decks/{DeckDto.Id}")">
-            @Localizer["Go_To_Deck"]
-        </MudButton>
+        <div>
+            <MudButton Color="Color.Primary" Variant="Variant.Filled"
+                       Href="@($"/learning/decks/{DeckDto.Id}")">
+                <MudIcon Icon="@Icons.Material.Filled.ArrowForward"></MudIcon>
+            </MudButton>
+
+            <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="OpenConfirmDeleteDialog">
+                <MudIcon Icon="@Icons.Material.Filled.Delete"></MudIcon>
+            </MudButton>
+        </div>
     </div>
 </MudPaper>
