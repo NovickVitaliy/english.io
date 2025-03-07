@@ -9,4 +9,7 @@ public class AiLearningPromptsOptions
 
     [Required]
     public string PromptForWordTranslatingWithExampleSentences { get; init; } = null!;
+
+    [Required]
+    public string PromptForCheckingIfWordCompliesToTheTopic { get; init; } = null!;
 }
