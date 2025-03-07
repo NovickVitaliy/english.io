@@ -54,7 +54,14 @@ public class DecksService : IDecksService
 
         var (decks, count) = await _decksRepository.GetDecksForUserAsync(request);
 
-        var response = new GetDecksForUserResponse(decks.Select(x => new DeckDto(x.Id, x.UserEmail, x.Topic, x.IsStrict, x.DeckWords.Count)).ToArray(),
+        var response = new GetDecksForUserResponse(decks.Select(async x => new DeckDto(
+                x.Id,
+                x.UserEmail,
+                x.Topic,
+                x.IsStrict,
+                await _decksRepository.GetWordsCountForDeckAsync(x.Id)))
+                .Select(x => x.Result)
+                .ToArray(),
             count);
 
         return Result<GetDecksForUserResponse>.Ok(response);
