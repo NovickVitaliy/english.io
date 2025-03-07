@@ -67,7 +67,10 @@ public abstract partial class BaseLayout : LayoutComponentBase, IDisposable
                 NavigationManager.NavigateTo("/login");
             }
         }
-        NavigationManager.NavigateTo("/login");
+        else
+        {
+            NavigationManager.NavigateTo("/login");
+        }
     }
 
     private static bool IsJwtTokenValid(string jwtToken)

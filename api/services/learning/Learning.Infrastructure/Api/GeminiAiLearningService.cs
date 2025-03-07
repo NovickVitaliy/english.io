@@ -26,8 +26,7 @@ public class GeminiAiLearningService : IAiLearningService
 
     public async Task<DeckWordDto> GetTranslatedWordWithExamplesAsync(string word, int exampleSentences)
     {
-        Console.WriteLine(_httpClient.BaseAddress);
-        var body = BuildRequest(word, exampleSentences);
+        var body = BuildRequestForTranslatingTheWordWithExampleSentences(word, exampleSentences);
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Post,
@@ -49,12 +48,42 @@ public class GeminiAiLearningService : IAiLearningService
         return JsonSerializer.Deserialize<DeckWordDto>(textProperty!, new JsonSerializerOptions(){ PropertyNameCaseInsensitive = true})!;
     }
 
-    private object BuildRequest(string word, int exampleSentences)
+    public async Task<bool> DoesWordComplyToTheArticle(string word, string topic)
     {
-        var prompt = _options.PromptForWordTranslatingWithExampleSentences
-            .Replace("{numSentences}", exampleSentences.ToString(), StringComparison.InvariantCulture)
-            .Replace("{word}", word, StringComparison.InvariantCulture);
+        var body = BuildRequestForCheckingIfWordCompliesToTheTopic(word, topic);
+        var request = new HttpRequestMessage()
+        {
+            Method = HttpMethod.Post,
+            RequestUri = new Uri($"v1beta/models/gemini-2.0-flash-001:generateContent?key={_geminiOptions.ApiKey}", UriKind.Relative),
+            Content = new StringContent(JsonSerializer.Serialize(body))
+        };
 
+        var response = await _httpClient.SendAsync(request);
+        var json = await response.Content.ReadAsStringAsync();
+        using JsonDocument doc = JsonDocument.Parse(json);
+        var textProperty = doc.RootElement
+            .GetProperty("candidates")[0]
+            .GetProperty("content")
+            .GetProperty("parts")[0]
+            .GetProperty("text")
+            .GetString();
+
+        var deckWordDto = JsonSerializer.Deserialize<DoesWordComplyToTheTopicResponse>(textProperty!, new JsonSerializerOptions(){PropertyNameCaseInsensitive = true});
+        return JsonSerializer.Deserialize<DoesWordComplyToTheTopicResponse>(textProperty!, new JsonSerializerOptions(){ PropertyNameCaseInsensitive = true})!.DoesComply;
+
+    }
+
+    private object BuildRequestForCheckingIfWordCompliesToTheTopic(string word, string topic)
+    {
+        var prompt = _options.PromptForCheckingIfWordCompliesToTheTopic
+            .Replace("{word}", word, StringComparison.InvariantCulture)
+            .Replace("{topic}", topic, StringComparison.InvariantCulture);
+
+        return BuildRequestWithPrompt(prompt);
+    }
+
+    private static object BuildRequestWithPrompt(string prompt)
+    {
         return new
         {
             contents = new object[]
@@ -75,5 +104,14 @@ public class GeminiAiLearningService : IAiLearningService
                 response_mime_type = "application/json"
             }
         };
+    }
+
+    private object BuildRequestForTranslatingTheWordWithExampleSentences(string word, int exampleSentences)
+    {
+        var prompt = _options.PromptForWordTranslatingWithExampleSentences
+            .Replace("{numSentences}", exampleSentences.ToString(), StringComparison.InvariantCulture)
+            .Replace("{word}", word, StringComparison.InvariantCulture);
+
+        return BuildRequestWithPrompt(prompt);
     }
 }

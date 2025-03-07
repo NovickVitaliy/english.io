@@ -6,6 +6,7 @@ using Learning.Application.DTOs.Decks;
 using Learning.Domain.Models;
 using MassTransit.Initializers;
 using Microsoft.AspNetCore.Http;
+using MongoDB.Driver;
 using Shared;
 using Shared.ErrorHandling;
 
@@ -97,6 +98,12 @@ public class DecksService : IDecksService
         if (!validationResult.IsValid)
         {
             return Result<DeckWordDto>.BadRequest(validationResult.ErrorMessage);
+        }
+        var deck = await _decksRepository.GetDeckAsync(request.DeckId);
+
+        if (deck!.IsStrict && !await _aiLearningService.DoesWordComplyToTheArticle(request.Word, deck.Topic))
+        {
+            return Result<DeckWordDto>.BadRequest("Word does not comply to the topic of the deck");
         }
 
         int exampleSentences = int.Parse(_httpContextAccessor.HttpContext.User.Claims.Single(x => x.Type == GlobalConstants.ApplicationClaimTypes.ExampleSentencesPerWord).Value);

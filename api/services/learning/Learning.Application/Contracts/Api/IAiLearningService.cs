@@ -6,4 +6,5 @@ public interface IAiLearningService
 {
     const string HttpClientKey = "AiLearningService";
     Task<DeckWordDto> GetTranslatedWordWithExamplesAsync(string word, int exampleSentences);
+    Task<bool> DoesWordComplyToTheArticle(string word, string topic);
 }
