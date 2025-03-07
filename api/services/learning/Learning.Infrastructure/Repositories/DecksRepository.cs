@@ -37,11 +37,10 @@ public class DecksRepository : IDecksRepository
 
         return (decks.Select(x => new Deck()
         {
-            DeckWords = [],
             Id = x.Id,
             Topic = x.Topic,
             IsStrict = x.IsStrict,
-            UserEmail = x.UserEmail
+            UserEmail = x.UserEmail,
         }).ToArray(), count);
     }
 
@@ -66,5 +65,14 @@ public class DecksRepository : IDecksRepository
         await _learningDbContext.Decks.ReplaceOneAsync(filter, deck);
 
         return deckWord;
+    }
+    public async Task<int> GetWordsCountForDeckAsync(Guid deckId)
+    {
+        var filter = Builders<Deck>.Filter.Eq(x => x.Id, deckId);
+        var pipelineDefinition = new EmptyPipelineDefinition<Deck>()
+            .Match(filter)
+            .Project(x => x.DeckWords.Count);
+
+         return await (await _learningDbContext.Decks.AggregateAsync(pipelineDefinition)).SingleOrDefaultAsync();
     }
 }

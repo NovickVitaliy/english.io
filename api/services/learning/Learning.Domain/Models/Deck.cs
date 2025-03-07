@@ -7,4 +7,5 @@ public class Deck
     public string Topic { get; set; } = null!;
     public bool IsStrict { get; set; }
     public List<DeckWord> DeckWords { get; set; } = [];
+    public long DeckWordsCount { get; init; }
 }

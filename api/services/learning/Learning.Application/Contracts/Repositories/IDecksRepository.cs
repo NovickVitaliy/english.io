@@ -9,4 +9,5 @@ public interface IDecksRepository
     Task<(Deck[] Decks, long Count)> GetDecksForUserAsync(GetDecksForUserRequest request);
     Task<Deck?> GetDeckAsync(Guid deckId);
     Task<DeckWord?> CreateDeckWordAsync(Guid deckId, DeckWord deckWord);
+    Task<int> GetWordsCountForDeckAsync(Guid deckId);
 }
