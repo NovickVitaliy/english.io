@@ -8,7 +8,7 @@ public interface IDecksService
     const string ApiUrlKey = "Learning";
 
     [Post("/decks")]
-    Task CreateDeckAsync(CreateDeckRequest request, [Authorize] string token);
+    Task<Guid> CreateDeckAsync(CreateDeckRequest request, [Authorize] string token);
 
     [Get("/decks")]
     Task<GetDecksForUserResponse> GetDecksForUserAsync(GetDecksForUserRequest request, [Authorize] string token);
