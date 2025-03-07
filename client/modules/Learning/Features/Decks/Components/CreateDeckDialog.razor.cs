@@ -33,9 +33,9 @@ public partial class CreateDeckDialog : ComponentBase
         try
         {
             var token = UserState.Value.Token;
-            await DecksService.CreateDeckAsync(_request, token);
+            var deckId = await DecksService.CreateDeckAsync(_request, token);
             Snackbar.Add(Localizer["Deck_Created_Successfully"], Severity.Success);
-            Dispatcher.Dispatch(new AddDeckAction(new DeckDto(Guid.Empty, string.Empty, _request.DeckTopic, _request.IsStrict, 0)));
+            Dispatcher.Dispatch(new AddDeckAction(new DeckDto(deckId, string.Empty, _request.DeckTopic, _request.IsStrict, 0)));
             MudDialog.Close(DialogResult.Ok(this));
         }
         catch (ApiException e)
