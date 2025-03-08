@@ -28,6 +28,11 @@ public partial class DecksList : FluxorComponent
             _totalPageCount = Math.Ceiling((double)(DecksState.Value.Count / PageSize));
         };
 
+        UserState.StateChanged += (_, _) =>
+        {
+            GetDecksFromApi();
+        };
+
         base.OnInitialized();
     }
 
@@ -38,6 +43,7 @@ public partial class DecksList : FluxorComponent
 
     private Task GetDecksFromApi()
     {
+        if (string.IsNullOrWhiteSpace(UserState.Value.Token)) return Task.CompletedTask;
         Dispatcher.Dispatch(new FetchDecksAction(UserState.Value.Email, _currentPage, PageSize));
         return Task.CompletedTask;
     }
