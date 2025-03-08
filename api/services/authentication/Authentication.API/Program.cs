@@ -14,6 +14,8 @@ using Polly;
 using Polly.Extensions.Http;
 using Shared.Authentication;
 using Shared.MessageBus;
+using Shared.Services;
+using Shared.Services.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,13 +37,7 @@ builder.Services.AddOptions<ForgotPasswordOptions>()
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
-builder.Services.AddHttpClient(AuthConstants.NotificationHttpClientName, (sp,client) =>
-{
-    var notiticationApiOptions = sp.GetRequiredService<IOptions<NotificationsApiOptions>>().Value;
-    client.BaseAddress = new Uri(notiticationApiOptions.IsHttps ? notiticationApiOptions.Https : notiticationApiOptions.Http);
-    client.DefaultRequestHeaders.Add("X-API-KEY", notiticationApiOptions.Key);
-}).AddPolicyHandler(HttpPolicyExtensions.HandleTransientHttpError().RetryAsync(3));
-
+builder.Services.AddNotificationsServiceHttpClient();
 builder.Services.ConfigureJwtAuthentication();
 builder.Services.AddAuthorization();
 builder.Services.ConfigureRabbitMq(Assembly.GetExecutingAssembly());

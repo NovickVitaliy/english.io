@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Shared;
 using Shared.ErrorHandling;
+using Shared.Services;
 
 namespace Authentication.API.Services.AuthService;
 
@@ -113,7 +114,7 @@ public class AuthService : IAuthService
 
         var sendEmailMessageRequest = new SendEmailMessageRequest(request.Email, request.Email, subject, "Html", body);
 
-        var client = _httpClientFactory.CreateClient(AuthConstants.NotificationHttpClientName);
+        var client = _httpClientFactory.CreateClient(SharedServicesConstants.NotificationHttpClientName);
         var response = await client.SendAsync(new HttpRequestMessage()
         {
             Method = HttpMethod.Post,
