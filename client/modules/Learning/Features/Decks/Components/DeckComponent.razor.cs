@@ -21,13 +21,25 @@ public partial class DeckComponent : FluxorComponent
     [Inject] private IDispatcher Dispatcher { get; init; } = null!;
     [Inject] private IStringLocalizer<DeckComponent> Localizer { get; init; } = null!;
 
+    protected override void OnInitialized()
+    {
+        UserState.StateChanged += (_, _) =>
+        {
+            GetDeckFromApi();
+        };
+        base.OnInitialized();
+    }
+
     protected override Task OnParametersSetAsync()
     {
-        if (UserState.Value is not null)
-        {
-            Dispatcher.Dispatch(new FetchDeckAction(DeckId));
-        }
+        GetDeckFromApi();
         return Task.CompletedTask;
+    }
+
+    private void GetDeckFromApi()
+    {
+        if (string.IsNullOrWhiteSpace(UserState.Value.Token)) return;
+        Dispatcher.Dispatch(new FetchDeckAction(DeckId));
     }
 
     private async Task ShowWordDialog(DeckWordDto word)

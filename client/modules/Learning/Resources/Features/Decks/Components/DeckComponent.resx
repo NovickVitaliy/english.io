@@ -2,4 +2,7 @@
   <data name="Create_Word_Dialog">
     Create word
   </data>
+  <data name="Deck_Is_Loading">
+    Deck is being loaded...
+  </data>
 </root>

@@ -1,6 +1,10 @@
 @using MudBlazor
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    @if (DeckState.Value.IsLoading)
+    {
+        <MudText Typo="Typo.h5" Align="Align.Center">@Localizer["Deck_Is_Loading"]</MudText>
+    }
     @if (DeckState.Value.DeckWithWordsDto is not null)
     {
         <MudText Typo="Typo.h4" Class="mb-3">@DeckState.Value.DeckWithWordsDto!.Topic</MudText>
