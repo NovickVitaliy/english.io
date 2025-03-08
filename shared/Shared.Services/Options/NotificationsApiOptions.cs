@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Authentication.API.Options;
+namespace Shared.Services.Options;
 
 public class NotificationsApiOptions
 {
