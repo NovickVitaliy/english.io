@@ -1,7 +1,9 @@
 using Learning.Features.PreferenceConfiguring.Services;
+using Learning.Features.Settings.Service;
 using Learning.LearningShared.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Refit;
 using Shared;
 using Shared.Extensions;
 
@@ -17,6 +19,7 @@ public static class DependencyInjection
 
         services.ConfigureApiService<IUserPreferencesService>(configuration, IUserPreferencesService.ApiUrlKey);
         services.ConfigureApiService<IDecksService>(configuration, IDecksService.ApiUrlKey);
+        services.ConfigureApiService<IAuthenticationSettingsService>(configuration, IAuthenticationSettingsService.ApiUrlKey);
 
         return services;
     }
