@@ -1,8 +1,27 @@
 @layout DashboardLayout
 @page "/learning/settings"
 @using Learning.Layouts
-<h3>Settings</h3>
+@using MudBlazor
+@using Learning.Features.Settings.Components
 
-@code {
-
-}
+<MudContainer MaxWidth="MaxWidth.Large">
+    <MudGrid Class="mt-1">
+        <MudItem md="2">
+            <SettingsOptions OnOptionChanged="value => CurrentOption = value"></SettingsOptions>
+        </MudItem>
+        <MudItem md="10">
+            @switch (CurrentOption)
+            {
+                case Models.SettingsOptions.Security:
+                    <MudText Typo="Typo.h4">Security</MudText>
+                    break;
+                case Models.SettingsOptions.Preferences:
+                    <MudText Typo="Typo.h4">Preferences</MudText>
+                    break;
+                default:
+                    <MudText Typo="Typo.h4">Choose option from the list</MudText>
+                    break;
+            }
+        </MudItem>
+    </MudGrid>
+</MudContainer>
