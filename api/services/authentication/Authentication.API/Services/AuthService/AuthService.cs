@@ -22,12 +22,15 @@ public class AuthService : IAuthService
     private readonly UserManager<User> _userManager;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly ForgotPasswordOptions _forgotPasswordOptions;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
     public AuthService(ITokenGenerator tokenGenerator, UserManager<User> userManager, IHttpClientFactory httpClientFactory,
-        IOptions<ForgotPasswordOptions> forgotPasswordOptions)
+        IOptions<ForgotPasswordOptions> forgotPasswordOptions, IHttpContextAccessor httpContextAccessor)
     {
         _tokenGenerator = tokenGenerator;
         _userManager = userManager;
         _httpClientFactory = httpClientFactory;
+        _httpContextAccessor = httpContextAccessor;
         _forgotPasswordOptions = forgotPasswordOptions.Value;
     }
 
@@ -147,6 +150,30 @@ public class AuthService : IAuthService
         }
 
         return Result<User>.BadRequest(result.Errors.First().Description);
+    }
+
+    public async Task<Result<bool>> ChangePasswordAsync(ChangePasswordRequest request)
+    {
+        var validationResult = request.IsValid();
+        if (!validationResult.IsValid)
+        {
+            return Result<bool>.BadRequest(validationResult.ErrorMessage);
+        }
+
+        var email = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            return Result<bool>.BadRequest("Invalid request");
+        }
+
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user is null)
+        {
+            return Result<bool>.NotFound("User with given email was not found");
+        }
+
+        await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
+        return Result<bool>.Ok(true);
     }
 
     private string GenerateMessageBody(string requestEmail, string path)

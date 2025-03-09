@@ -1,6 +1,7 @@
 using Authentication.API.DTOs.Auth.Requests;
 using Authentication.API.DTOs.Other;
 using Authentication.API.Services.AuthService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Authentication.API.Controllers;
@@ -38,5 +39,12 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> ResetPasswordAsync(ResetPasswordRequest request)
     {
         return (await _authService.ResetPasswordAsync(request)).ToApiResponse();
+    }
+
+    [HttpPost("change-password")]
+    [Authorize]
+    public async Task<IActionResult> ChangePasswordAsync(ChangePasswordRequest request)
+    {
+        return (await _authService.ChangePasswordAsync(request)).ToApiResponse();
     }
 }
