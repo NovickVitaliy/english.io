@@ -10,18 +10,20 @@
             <SettingsOptions OnOptionChanged="value => CurrentOption = value"></SettingsOptions>
         </MudItem>
         <MudItem md="10">
-            @switch (CurrentOption)
-            {
-                case Models.SettingsOptions.Security:
-                    <MudText Typo="Typo.h4">Security</MudText>
-                    break;
-                case Models.SettingsOptions.Preferences:
-                    <MudText Typo="Typo.h4">Preferences</MudText>
-                    break;
-                default:
-                    <MudText Typo="Typo.h4">Choose option from the list</MudText>
-                    break;
-            }
+            <MudPaper Class="p-3">
+                @switch (CurrentOption)
+                {
+                    case Models.SettingsOptions.Security:
+                        <MudText Typo="Typo.h4">Security</MudText>
+                        break;
+                    case Models.SettingsOptions.Preferences:
+                        <MudText Typo="Typo.h4">Preferences 1</MudText>
+                        break;
+                    default:
+                        <MudText Typo="Typo.h4">Choose option from the list</MudText>
+                        break;
+                }
+            </MudPaper>
         </MudItem>
     </MudGrid>
 </MudContainer>
