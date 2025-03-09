@@ -20,8 +20,6 @@
     <ItemGroup>
       <Folder Include="Features\Home\Models\" />
       <Folder Include="Features\Home\Services\" />
-      <Folder Include="Features\Settings\Components\" />
-      <Folder Include="Features\Settings\Models\" />
       <Folder Include="Features\Settings\Services\" />
     </ItemGroup>
 

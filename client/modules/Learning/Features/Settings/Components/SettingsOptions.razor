@@ -1,0 +1,17 @@
+@using Learning.Features.Settings.Models
+@using MudBlazor
+<MudPaper>
+    <MudList SelectedValueChanged="@(v => OnOptionChanged.InvokeAsync(v))" T="Models.SettingsOptions">
+        <MudListItem Value="Models.SettingsOptions.Security" Text="@Localizer["Security"]"></MudListItem>
+        <MudListItem Value="Models.SettingsOptions.Preferences" Text="@Localizer["Preferences"]"></MudListItem>
+        <MudListItem Disabled="true"></MudListItem>
+        <MudListItem Disabled="true"></MudListItem>
+        <MudListItem Disabled="true"></MudListItem>
+        <MudListItem Disabled="true"></MudListItem>
+        <MudListItem Disabled="true"></MudListItem>
+        <MudListItem Disabled="true"></MudListItem>
+        <MudListItem Disabled="true"></MudListItem>
+        <MudListItem Disabled="true"></MudListItem>
+        <MudListItem Disabled="true"></MudListItem>
+    </MudList>
+</MudPaper>
