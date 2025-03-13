@@ -34,7 +34,7 @@ public partial class RegisterForm : ComponentBase
             {
                 var response = await AuthenticationService.RegisterAsync(_registerRequest);
                 await LocalStorageService.SetItemAsync(ClientConstants.UserDataKey, response);
-                Dispatcher.Dispatch(new SetUserStateAction(response.AuthToken, response.Role, response.Email, response.Username));
+                Dispatcher.Dispatch(new SetUserStateAction(response.AuthToken, response.Role, response.Email, response.Username, response.IsEmailVerified));
 
                 var query = $"?token={Uri.EscapeDataString(response.AuthToken)}&" +
                             $"redirectUri=/preference-configuration";

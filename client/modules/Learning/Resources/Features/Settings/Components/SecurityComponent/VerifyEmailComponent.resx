@@ -1,0 +1,11 @@
+<root>
+  <data name="Verify_Email">
+    Email Verification
+  </data>
+  <data name="Verify_Button">
+    Verify Email
+  </data>
+  <data name="Is_Verified">
+    Is email verified:
+  </data>
+</root>

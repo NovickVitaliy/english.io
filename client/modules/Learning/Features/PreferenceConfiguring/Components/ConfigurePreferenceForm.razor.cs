@@ -61,7 +61,7 @@ public partial class ConfigurePreferenceForm : ComponentBase
                     AuthToken = jwtToken
                 };
                 await LocalStorageService.SetItemAsync(ClientConstants.UserDataKey, JsonSerializer.Serialize(authData));
-                Dispatcher.Dispatch(new SetUserStateAction(authData.AuthToken, authData.Role, authData.Email, authData.Username));
+                Dispatcher.Dispatch(new SetUserStateAction(authData.AuthToken, authData.Role, authData.Email, authData.Username, authData.IsEmailVerified));
 
                 Snackbar.Add(Localizer["User_Preferences_Configured"], Severity.Success);
                 await Task.Delay(2000);

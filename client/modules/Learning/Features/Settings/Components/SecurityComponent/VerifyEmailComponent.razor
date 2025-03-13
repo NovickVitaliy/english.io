@@ -1,0 +1,7 @@
+@using MudBlazor
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+<MudText Typo="Typo.h6">@Localizer["Verify_Email"]</MudText>
+<div>
+    <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="VerifyEmailAsync">@Localizer["Verify_Button"]</MudButton>
+    <MudText Typo="Typo.body1">@Localizer["Is_Verified"] @(UserState.Value.IsEmailVerified ? "✅" : "❌")</MudText>
+</div>

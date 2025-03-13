@@ -36,7 +36,7 @@ public partial class LoginForm : ComponentBase
             {
                 var response = await AuthenticationService.LoginAsync(_loginRequest);
                 await LocalStorageService.SetItemAsync(ClientConstants.UserDataKey, response);
-                Dispatcher.Dispatch(new SetUserStateAction(response.AuthToken, response.Role, response.Email, response.Username));
+                Dispatcher.Dispatch(new SetUserStateAction(response.AuthToken, response.Role, response.Email, response.Username, response.IsEmailVerified));
 
                 var query = $"?token={Uri.EscapeDataString(response.AuthToken)}" +
                             (ReturnUrl is not null ? $"&redirectUri={Uri.EscapeDataString(ReturnUrl)}" : "");

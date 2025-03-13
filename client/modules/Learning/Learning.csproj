@@ -65,6 +65,12 @@
       <EmbeddedResource Update="Resources\Features\Settings\Components\SecurityComponent\ChangePasswordComponent.uk.resx">
         <DependentUpon>ChangePasswordComponent.resx</DependentUpon>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Settings\Components\SecurityComponent\Security.uk.resx">
+        <DependentUpon>Security.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Settings\Components\SecurityComponent\VerifyEmailComponent.uk.resx">
+        <DependentUpon>VerifyEmailComponent.resx</DependentUpon>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

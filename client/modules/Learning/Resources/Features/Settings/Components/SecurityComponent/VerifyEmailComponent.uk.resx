@@ -1,0 +1,11 @@
+<root>
+  <data name="Verify_Email">
+    Підтвердження електронної адреси
+  </data>
+  <data name="Verify_Button">
+    Підвердити електрону адресу
+  </data>
+  <data name="Is_Verified">
+    Пошта підтверджена:
+  </data>
+</root>

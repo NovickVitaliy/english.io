@@ -67,7 +67,7 @@ public class AuthService : IAuthService
             new Claim(JwtRegisteredClaimNames.EmailVerified, "false")
         ]);
         var tokenResult = await _tokenGenerator.GenerateJwtToken(user);
-        return Result<AuthResponse>.Ok(new AuthResponse(user.UserName, user.Email, [AuthConstants.Roles.User], tokenResult.Data));
+        return Result<AuthResponse>.Ok(new AuthResponse(user.UserName, user.Email, [AuthConstants.Roles.User], tokenResult.Data, false));
     }
 
     public async Task<Result<AuthResponse>> LoginUser(LoginUserRequest request)
@@ -92,7 +92,8 @@ public class AuthService : IAuthService
 
         var tokenResult = await _tokenGenerator.GenerateJwtToken(user);
         var roles = await _userManager.GetRolesAsync(user);
-        return Result<AuthResponse>.Ok(new AuthResponse(user.UserName!, user.Email!, roles.ToArray(), tokenResult.Data));
+        var isEmailVerified = bool.Parse((await _userManager.GetClaimsAsync(user)).SingleOrDefault(x => x.Type == JwtRegisteredClaimNames.EmailVerified)!.Value);
+        return Result<AuthResponse>.Ok(new AuthResponse(user.UserName!, user.Email!, roles.ToArray(), tokenResult.Data, isEmailVerified));
     }
     public async Task<Result<User>> ForgotPasswordAsync(ForgotPasswordRequest request)
     {
