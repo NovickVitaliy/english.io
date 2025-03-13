@@ -52,35 +52,11 @@ public abstract partial class BaseLayout : LayoutComponentBase, IDisposable
         }
     }
 
-    private async Task LoadUserFromStorage()
+    protected virtual Task LoadUserFromStorage()
     {
-        if (!NavigationManager.GetRelativePath().StartsWith("/learning", StringComparison.InvariantCultureIgnoreCase)) return;
-        var userDataJson = await LocalStorageService.GetItemAsync<string?>(ClientConstants.UserDataKey);
-        if (userDataJson is not null)
-        {
-            var action = JsonSerializer.Deserialize<SetUserStateAction?>(userDataJson);
-            if (action is not null && IsJwtTokenValid(action.AuthToken))
-            {
-                Dispatcher.Dispatch(action);
-            }
-            else
-            {
-                await LocalStorageService.RemoveItemAsync(ClientConstants.UserDataKey);
-                NavigationManager.NavigateTo("/login");
-            }
-        }
-        else
-        {
-            NavigationManager.NavigateTo("/login");
-        }
+        return Task.CompletedTask;
     }
 
-    private static bool IsJwtTokenValid(string jwtToken)
-    {
-        var jwt = new JwtSecurityTokenHandler().ReadJwtToken(jwtToken);
-
-        return jwt.ValidTo >= DateTime.UtcNow;
-    }
     public void Dispose()
     {
         Dispose(true);

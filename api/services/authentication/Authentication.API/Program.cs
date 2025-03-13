@@ -37,6 +37,11 @@ builder.Services.AddOptions<ForgotPasswordOptions>()
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
+builder.Services.AddOptions<EmailVerificationOptions>()
+    .BindConfiguration(EmailVerificationOptions.ConfigurationKey)
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddNotificationsServiceHttpClient();
 builder.Services.ConfigureJwtAuthentication();

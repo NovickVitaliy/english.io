@@ -47,4 +47,11 @@ public class AuthController : ControllerBase
     {
         return (await _authService.ChangePasswordAsync(request)).ToApiResponse();
     }
+
+    [HttpPost("send-verification-email")]
+    [Authorize]
+    public async Task<IActionResult> SendVerifyingEmailMessageAsync(SendVerifyingEmailMessageRequest request)
+    {
+        return (await _authService.SendVerifyingEmailMessageAsync(request)).ToApiResponse();
+    }
 }

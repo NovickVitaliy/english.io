@@ -8,4 +8,10 @@
   <data name="Is_Verified">
     Пошта підтверджена:
   </data>
+  <data name="Verification_Email_Was_Sent">
+    Лист для підтвердження електронної пошти було успішно надіслано
+  </data>
+  <data name="Error_Occured">
+    Сталася помилка
+  </data>
 </root>

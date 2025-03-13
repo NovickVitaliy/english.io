@@ -1,14 +1,50 @@
-﻿@using Blazored.LocalStorage
+﻿@using System.IdentityModel.Tokens.Jwt
+@using System.Text.Json
+@using Blazored.LocalStorage
+@using Fluxor
 @using Learning.Features.DashboardLayout.Components
 @using MudBlazor
+@using Shared
+@using Shared.Store.User
 @using DashboardHeader = Learning.Features.DashboardLayout.Components.DashboardHeader
 @inject ILocalStorageService LocalStorageService
+@inject IDispatcher Dispatcher
+@inject NavigationManager NavigationManager
 @inherits Shared.Layout.BaseLayout
 
 @code {
     private void HandleThemeChange(bool value)
     {
         IsDarkMode = value;
+    }
+
+    protected override async Task LoadUserFromStorage()
+    {
+        var userDataJson = await LocalStorageService.GetItemAsync<string?>(ClientConstants.UserDataKey);
+        if (userDataJson is not null)
+        {
+            var action = JsonSerializer.Deserialize<SetUserStateAction?>(userDataJson);
+            if (action is not null && IsJwtTokenValid(action.AuthToken))
+            {
+                Dispatcher.Dispatch(action);
+            }
+            else
+            {
+                await LocalStorageService.RemoveItemAsync(ClientConstants.UserDataKey);
+                NavigationManager.NavigateTo("/login");
+            }
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+    }
+
+    private static bool IsJwtTokenValid(string jwtToken)
+    {
+        var jwt = new JwtSecurityTokenHandler().ReadJwtToken(jwtToken);
+
+        return jwt.ValidTo >= DateTime.UtcNow;
     }
 }
 

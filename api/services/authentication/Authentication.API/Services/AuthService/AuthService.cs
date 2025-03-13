@@ -24,15 +24,17 @@ public class AuthService : IAuthService
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly ForgotPasswordOptions _forgotPasswordOptions;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly EmailVerificationOptions _emailVerificationOptions;
 
     public AuthService(ITokenGenerator tokenGenerator, UserManager<User> userManager, IHttpClientFactory httpClientFactory,
-        IOptions<ForgotPasswordOptions> forgotPasswordOptions, IHttpContextAccessor httpContextAccessor)
+        IOptions<ForgotPasswordOptions> forgotPasswordOptions, IHttpContextAccessor httpContextAccessor, IOptions<EmailVerificationOptions> emailVerificationOptions)
     {
         _tokenGenerator = tokenGenerator;
         _userManager = userManager;
         _httpClientFactory = httpClientFactory;
         _httpContextAccessor = httpContextAccessor;
         _forgotPasswordOptions = forgotPasswordOptions.Value;
+        _emailVerificationOptions = emailVerificationOptions.Value;
     }
 
     public async Task<Result<AuthResponse>> RegisterUser(RegisterUserRequest request)
@@ -181,6 +183,44 @@ public class AuthService : IAuthService
             return Result<bool>.Ok(true);
         }
         return Result<bool>.BadRequest(result.Errors.FirstOrDefault()?.Description ?? "Error Occured");
+    }
+
+    public async Task<Result<User>> SendVerifyingEmailMessageAsync(SendVerifyingEmailMessageRequest request)
+    {
+        var email = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Email)!.Value;
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            return Result<User>.BadRequest("Invalid email");
+        }
+
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user is null)
+        {
+            return Result<User>.NotFound(email);
+        }
+
+        var subject = "Email Verification";
+        var verifyEmailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        var path = request.VerifyEmailUrl + $"?token={verifyEmailToken}";
+        var body = GenerateVerificationEmailMessageBody(email, path);
+        var sendEmailMessageRequest = new SendEmailMessageRequest(email, email, subject, "Html", body);
+
+        var client = _httpClientFactory.CreateClient(SharedServicesConstants.NotificationHttpClientName);
+        var response = await client.SendAsync(new HttpRequestMessage()
+        {
+            Method = HttpMethod.Post,
+            RequestUri = new Uri("api/notifications/send-message", UriKind.Relative),
+            Content = new StringContent(JsonSerializer.Serialize(sendEmailMessageRequest), Encoding.UTF8, "application/json")
+        });
+
+        return response.IsSuccessStatusCode
+            ? Result<User>.Ok(user)
+            : Result<User>.BadRequest(response.ReasonPhrase ?? "Error occured");
+    }
+
+    private string GenerateVerificationEmailMessageBody(string email, string path)
+    {
+        return string.Format(_emailVerificationOptions.MessageTemplate, email, path);
     }
 
     private string GenerateMessageBody(string requestEmail, string path)

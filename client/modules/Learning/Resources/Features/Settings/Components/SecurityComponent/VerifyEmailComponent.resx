@@ -8,4 +8,10 @@
   <data name="Is_Verified">
     Is email verified:
   </data>
+  <data name="Verification_Email_Was_Sent">
+    Verification Email was successfully sent
+  </data>
+  <data name="Error_Occured">
+    Error Occured
+  </data>
 </root>
