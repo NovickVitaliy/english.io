@@ -17,10 +17,10 @@ public static class Constants
 
         public static class ChangePasswordComponent
         {
-            public const string NewPasswordsMustMatch = "New_Passwords_Must_Match";
+            public const string OldPasswordsMustMatch = "Old_Passwords_Must_Match";
             public const string OldPasswordIsRequired = "Old_Password_Is_Required";
             public const string NewPasswordIsRequired = "New_Password_Is_Required";
-            public const string NewPasswordConfirmIsRequired = "New_Password_Confirm_Is_Required";
+            public const string OldPasswordConfirmIsRequired = "Old_Password_Confirm_Is_Required";
         }
     }
 }

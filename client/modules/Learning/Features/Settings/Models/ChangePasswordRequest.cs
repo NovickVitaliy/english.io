@@ -11,7 +11,7 @@ public class ChangePasswordRequest
     [LocalizedRequired(Constants.Localization.ChangePasswordComponentBaseName, Constants.ValidationErrors.ChangePasswordComponent.NewPasswordIsRequired, typeof(ChangePasswordComponent))]
     public string NewPassword { get; set; } = null!;
 
-    [LocalizedRequired(Constants.Localization.ChangePasswordComponentBaseName, Constants.ValidationErrors.ChangePasswordComponent.NewPasswordConfirmIsRequired, typeof(ChangePasswordComponent))]
-    [LocalizedCompare(Constants.Localization.ChangePasswordComponentBaseName, Constants.ValidationErrors.ChangePasswordComponent.NewPasswordsMustMatch, typeof(ChangePasswordComponent), nameof(NewPasswordConfirm))]
-    public string NewPasswordConfirm { get; set; } = null!;
+    [LocalizedRequired(Constants.Localization.ChangePasswordComponentBaseName, Constants.ValidationErrors.ChangePasswordComponent.OldPasswordConfirmIsRequired, typeof(ChangePasswordComponent))]
+    [LocalizedCompare(Constants.Localization.ChangePasswordComponentBaseName, Constants.ValidationErrors.ChangePasswordComponent.OldPasswordsMustMatch, typeof(ChangePasswordComponent), nameof(OldPassword))]
+    public string OldPasswordConfirm { get; set; } = null!;
 }

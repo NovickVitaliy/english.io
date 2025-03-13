@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
@@ -160,7 +161,7 @@ public class AuthService : IAuthService
             return Result<bool>.BadRequest(validationResult.ErrorMessage);
         }
 
-        var email = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+        var email = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Email)?.Value;
         if (string.IsNullOrWhiteSpace(email))
         {
             return Result<bool>.BadRequest("Invalid request");
@@ -172,8 +173,12 @@ public class AuthService : IAuthService
             return Result<bool>.NotFound("User with given email was not found");
         }
 
-        await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
-        return Result<bool>.Ok(true);
+        var result = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
+        if (result.Succeeded)
+        {
+            return Result<bool>.Ok(true);
+        }
+        return Result<bool>.BadRequest(result.Errors.FirstOrDefault()?.Description ?? "Error Occured");
     }
 
     private string GenerateMessageBody(string requestEmail, string path)
