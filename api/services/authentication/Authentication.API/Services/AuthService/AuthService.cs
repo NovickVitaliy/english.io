@@ -64,6 +64,7 @@ public class AuthService : IAuthService
             new Claim(ClaimTypes.Name, user.UserName),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(GlobalConstants.ApplicationClaimTypes.PreferencesConfigured, "false"),
+            new Claim(JwtRegisteredClaimNames.EmailVerified, "false")
         ]);
         var tokenResult = await _tokenGenerator.GenerateJwtToken(user);
         return Result<AuthResponse>.Ok(new AuthResponse(user.UserName, user.Email, [AuthConstants.Roles.User], tokenResult.Data));
