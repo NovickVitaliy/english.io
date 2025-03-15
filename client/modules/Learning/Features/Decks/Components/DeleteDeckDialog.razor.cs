@@ -36,7 +36,7 @@ public partial class DeleteDeckDialog : ComponentBase
         catch (ApiException e)
         {
             ProblemDetails problemDetails = e.ToProblemDetails();
-            Snackbar.Add(problemDetails.Title ?? problemDetails.Detail ?? "Error occured", Severity.Error);
+            Snackbar.Add(Localizer[problemDetails.Detail ?? "Error_Occured"], Severity.Error);
         }
     }
 }

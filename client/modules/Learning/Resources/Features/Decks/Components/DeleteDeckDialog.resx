@@ -14,4 +14,10 @@
   <data name="Modal_Title">
     Delete deck
   </data>
+  <data name="Deck_Id_Cannot_Be_Empty">
+    Deck Id cannot be empty
+  </data>
+  <data name="Error_Occured">
+    Error occured
+  </data>
 </root>
