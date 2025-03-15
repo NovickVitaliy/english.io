@@ -35,6 +35,9 @@
       <EmbeddedResource Update="Resources\Features\ResetPassword\Components\ResetPasswordForm.uk.resx">
         <DependentUpon>ResetPasswordForm.resx</DependentUpon>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Login\Components\LoginForm.uk.resx">
+        <DependentUpon>LoginForm.resx</DependentUpon>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>
