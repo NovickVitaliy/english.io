@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using Shared;
 using Shared.ErrorHandling;
 using Shared.Services;
+using static Authentication.API.LocalizationKeys;
 
 namespace Authentication.API.Services.AuthService;
 
@@ -48,7 +49,7 @@ public class AuthService : IAuthService
         var user = await _userManager.FindByEmailAsync(request.Email);
         if (user is not null)
         {
-            return Result<AuthResponse>.BadRequest("User with such an email already exists.");
+            return Result<AuthResponse>.BadRequest(UserWithSuchEmailAlreadyExists);
         }
 
         user = new User
@@ -83,13 +84,13 @@ public class AuthService : IAuthService
         var user = await _userManager.FindByEmailAsync(request.Email);
         if (user is null)
         {
-            return Result<AuthResponse>.BadRequest("User with such an email does not exist.");
+            return Result<AuthResponse>.BadRequest(UserWithSuchEmailDoesNotExist);
         }
 
         var passwordMatch = await _userManager.CheckPasswordAsync(user, request.Password);
         if (!passwordMatch)
         {
-            return Result<AuthResponse>.BadRequest("Incorrect password");
+            return Result<AuthResponse>.BadRequest(IncorrectPassword);
         }
 
         var tokenResult = await _tokenGenerator.GenerateJwtToken(user);
@@ -132,7 +133,7 @@ public class AuthService : IAuthService
 
         return response.IsSuccessStatusCode
             ? Result<User>.Ok(user)
-            : Result<User>.BadRequest(response.ReasonPhrase ?? "Error occured while sending message. Try later");
+            : Result<User>.BadRequest(response.ReasonPhrase ?? ErrorWhileSendingMessage);
     }
     public async Task<Result<User>> ResetPasswordAsync(ResetPasswordRequest request)
     {
@@ -168,13 +169,13 @@ public class AuthService : IAuthService
         var email = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Email)?.Value;
         if (string.IsNullOrWhiteSpace(email))
         {
-            return Result<bool>.BadRequest("Invalid request");
+            return Result<bool>.BadRequest(InvalidRequest);
         }
 
         var user = await _userManager.FindByEmailAsync(email);
         if (user is null)
         {
-            return Result<bool>.NotFound("User with given email was not found");
+            return Result<bool>.NotFound(UserWithGivenEmailWasNotFound);
         }
 
         var result = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
@@ -182,7 +183,7 @@ public class AuthService : IAuthService
         {
             return Result<bool>.Ok(true);
         }
-        return Result<bool>.BadRequest(result.Errors.FirstOrDefault()?.Description ?? "Error Occured");
+        return Result<bool>.BadRequest(result.Errors.FirstOrDefault()?.Description ?? ErrorOccured);
     }
 
     public async Task<Result<User>> SendVerifyingEmailMessageAsync(SendVerifyingEmailMessageRequest request)
@@ -190,7 +191,7 @@ public class AuthService : IAuthService
         var email = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Email)!.Value;
         if (string.IsNullOrWhiteSpace(email))
         {
-            return Result<User>.BadRequest("Invalid email");
+            return Result<User>.BadRequest(InvalidEmail);
         }
 
         var user = await _userManager.FindByEmailAsync(email);
@@ -215,7 +216,7 @@ public class AuthService : IAuthService
 
         return response.IsSuccessStatusCode
             ? Result<User>.Ok(user)
-            : Result<User>.BadRequest(response.ReasonPhrase ?? "Error occured");
+            : Result<User>.BadRequest(response.ReasonPhrase ?? ErrorOccured);
     }
 
     public async Task<Result<string>> VerifyEmailAsync(VerifyEmailRequest request)
@@ -229,13 +230,13 @@ public class AuthService : IAuthService
         var email = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Email)?.Value;
         if (string.IsNullOrWhiteSpace(email))
         {
-            return Result<string>.BadRequest("Invalid email");
+            return Result<string>.BadRequest(InvalidEmail);
         }
 
         var user = await _userManager.FindByEmailAsync(email);
         if (user is null)
         {
-            return Result<string>.BadRequest("User is not found");
+            return Result<string>.BadRequest(UserWithGivenEmailWasNotFound);
         }
 
         var result = await _userManager.ConfirmEmailAsync(user, request.Token);
@@ -245,7 +246,7 @@ public class AuthService : IAuthService
             return Result<string>.Ok(accessTokenResult.Data);
         }
 
-        return Result<string>.BadRequest(result.Errors.FirstOrDefault()?.Description ?? "Error occured");
+        return Result<string>.BadRequest(result.Errors.FirstOrDefault()?.Description ?? ErrorOccured);
     }
 
     private string GenerateVerificationEmailMessageBody(string email, string path)

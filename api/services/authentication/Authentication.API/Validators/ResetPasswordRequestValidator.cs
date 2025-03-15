@@ -1,5 +1,6 @@
 using Authentication.API.DTOs.Other;
 using FluentValidation;
+using static Authentication.API.LocalizationKeys;
 
 namespace Authentication.API.Validators;
 
@@ -8,17 +9,17 @@ public class ResetPasswordRequestValidator : AbstractValidator<ResetPasswordRequ
     public ResetPasswordRequestValidator()
     {
         RuleFor(x => x.Email)
-            .NotEmpty().WithMessage("Email address cannot be empty")
-            .EmailAddress().WithMessage("Email address must be in a valid format");
+            .NotEmpty().WithMessage(EmailCannotBeEmpty)
+            .EmailAddress().WithMessage(EmailMustBeInValidFormat);
 
         RuleFor(x => x.NewPassword)
-            .NotEmpty().WithMessage("'New Password' cannot be empty");
+            .NotEmpty().WithMessage(NewPasswordMustNotBeEmpty);
 
         RuleFor(x => x.NewPasswordConfirm)
-            .NotEmpty().WithMessage("'New Confirm Password' cannot be empty")
-            .Equal(x => x.NewPassword).WithMessage("'New Password' and 'New Confirm Password' must match");
+            .NotEmpty().WithMessage(NewConfirmPasswordCannotBeEmpty)
+            .Equal(x => x.NewPassword).WithMessage(NewPasswordAndNewConfirmPasswordMustMatch);
 
         RuleFor(x => x.ResetToken)
-            .NotEmpty().WithMessage("Reset token cannot be empty");
+            .NotEmpty().WithMessage(ResetTokenCannotBeEmpty);
     }
 }
