@@ -53,7 +53,7 @@ public partial class ResetPasswordForm : ComponentBase
         catch (ApiException e)
         {
             var problemDetails = e.ToProblemDetails();
-            Snackbar.Add(problemDetails.Detail ?? problemDetails.Title ?? "Error occurred", Severity.Error);
+            Snackbar.Add(Localizer[problemDetails.Detail ?? "Error_Occured"], Severity.Error);
         }
     }
 }
