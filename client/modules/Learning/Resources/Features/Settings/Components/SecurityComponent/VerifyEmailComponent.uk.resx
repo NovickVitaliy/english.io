@@ -14,4 +14,10 @@
   <data name="Error_Occured">
     Сталася помилка
   </data>
+  <data name="Email_Verified_Successfully">
+    Пошта була успішно підтверджена
+  </data>
+  <data name="Email_Already_Verified">
+    Ви вже підтвердили власну пошту
+  </data>
 </root>

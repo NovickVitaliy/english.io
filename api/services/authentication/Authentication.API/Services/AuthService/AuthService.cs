@@ -201,7 +201,7 @@ public class AuthService : IAuthService
 
         var subject = "Email Verification";
         var verifyEmailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        var path = request.VerifyEmailUrl + $"?token={verifyEmailToken}";
+        var path = QueryHelpers.AddQueryString(request.VerifyEmailUrl.ToString(), "token", verifyEmailToken);
         var body = GenerateVerificationEmailMessageBody(email, path);
         var sendEmailMessageRequest = new SendEmailMessageRequest(email, email, subject, "Html", body);
 
@@ -216,6 +216,36 @@ public class AuthService : IAuthService
         return response.IsSuccessStatusCode
             ? Result<User>.Ok(user)
             : Result<User>.BadRequest(response.ReasonPhrase ?? "Error occured");
+    }
+
+    public async Task<Result<string>> VerifyEmailAsync(VerifyEmailRequest request)
+    {
+        var validationResult = request.IsValid();
+        if (!validationResult.IsValid)
+        {
+            return Result<string>.BadRequest(validationResult.ErrorMessage);
+        }
+
+        var email = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Email)?.Value;
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            return Result<string>.BadRequest("Invalid email");
+        }
+
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user is null)
+        {
+            return Result<string>.BadRequest("User is not found");
+        }
+
+        var result = await _userManager.ConfirmEmailAsync(user, request.Token);
+        if (result.Succeeded)
+        {
+            var accessTokenResult = await _tokenGenerator.GenerateJwtToken(user);
+            return Result<string>.Ok(accessTokenResult.Data);
+        }
+
+        return Result<string>.BadRequest(result.Errors.FirstOrDefault()?.Description ?? "Error occured");
     }
 
     private string GenerateVerificationEmailMessageBody(string email, string path)

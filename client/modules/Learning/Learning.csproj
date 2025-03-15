@@ -71,6 +71,9 @@
       <EmbeddedResource Update="Resources\Features\Settings\Components\SecurityComponent\VerifyEmailComponent.uk.resx">
         <DependentUpon>VerifyEmailComponent.resx</DependentUpon>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Settings\Components\SecurityComponent\EmailVerificationComponent.uk.resx">
+        <DependentUpon>EmailVerificationComponent.resx</DependentUpon>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

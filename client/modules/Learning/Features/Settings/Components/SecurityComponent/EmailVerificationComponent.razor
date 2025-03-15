@@ -1,0 +1,11 @@
+@page "/verify-email"
+@using MudBlazor
+@using Shared.Layout
+@layout EmptyLayout
+
+<MudContainer Class="d-flex justify-content-center align-items-center" MaxWidth="MaxWidth.ExtraLarge">
+    <MudPaper Class="d-flex justify-content-center align-items-center flex-column p-3 w-50 mt-5">
+        <MudText Typo="Typo.h5">@Localizer["Verify_Email_Prompt"]</MudText>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="VerifyEmail">@Localizer["Confirm"]</MudButton>
+    </MudPaper>
+</MudContainer>

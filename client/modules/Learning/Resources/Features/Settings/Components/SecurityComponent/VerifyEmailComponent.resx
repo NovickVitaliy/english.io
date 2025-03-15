@@ -14,4 +14,10 @@
   <data name="Error_Occured">
     Error Occured
   </data>
+  <data name="Email_Verified_Successfully">
+    Email was verified successfully
+  </data>
+  <data name="Email_Already_Verified">
+    You have already confirmed your email
+  </data>
 </root>

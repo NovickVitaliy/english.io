@@ -11,6 +11,7 @@ using Shared;
 using Shared.Extensions;
 using Shared.Store;
 using Shared.Store.User;
+using Shared.Store.User.Actions;
 using IAuthenticationService = Authentication.Shared.Services.IAuthenticationService;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 

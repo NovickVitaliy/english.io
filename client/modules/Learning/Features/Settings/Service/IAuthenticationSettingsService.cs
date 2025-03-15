@@ -13,4 +13,7 @@ public interface IAuthenticationSettingsService
 
     [Post("/auth/send-verification-email")]
     Task SendVerifyingEmailMessageAsync(SendVerifyingEmailMessageRequest request, [Authorize] string token);
+
+    [Post("/auth/verify-email")]
+    Task<string> VerifyEmailAsync(VerifyEmailRequest request, [Authorize] string token);
 }
