@@ -38,6 +38,9 @@
       <EmbeddedResource Update="Resources\Features\Login\Components\LoginForm.uk.resx">
         <DependentUpon>LoginForm.resx</DependentUpon>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Register\Components\RegisterForm.uk.resx">
+        <DependentUpon>RegisterForm.resx</DependentUpon>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>
