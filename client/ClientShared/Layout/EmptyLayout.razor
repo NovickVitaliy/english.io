@@ -1,6 +1,12 @@
+@using System.Text.Json
+@using Blazored.LocalStorage
+@using Fluxor
 @using MudBlazor
+@using Shared.Store.User
+@using Shared.Store.User.Actions
 @inherits BaseLayout
-
+@inject ILocalStorageService LocalStorageService
+@inject IDispatcher Dispatcher
 <MudThemeProvider/>
 <MudSnackbarProvider></MudSnackbarProvider>
 <MudPopoverProvider/>
@@ -8,3 +14,17 @@
 <MudLayout>
     @Body
 </MudLayout>
+
+
+@code
+{
+    protected override async Task LoadUserFromStorage()
+    {
+        var userDataJson = await LocalStorageService.GetItemAsync<string?>(ClientConstants.UserDataKey);
+        if (userDataJson is not null)
+        {
+            var action = JsonSerializer.Deserialize<SetUserStateAction?>(userDataJson);
+                Dispatcher.Dispatch(action);
+        }
+    }
+}

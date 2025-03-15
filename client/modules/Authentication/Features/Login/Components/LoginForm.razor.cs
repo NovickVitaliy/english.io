@@ -11,6 +11,7 @@ using Shared;
 using Shared.Extensions;
 using Shared.Store;
 using Shared.Store.User;
+using Shared.Store.User.Actions;
 using IAuthenticationService = Authentication.Shared.Services.IAuthenticationService;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
@@ -36,7 +37,7 @@ public partial class LoginForm : ComponentBase
             {
                 var response = await AuthenticationService.LoginAsync(_loginRequest);
                 await LocalStorageService.SetItemAsync(ClientConstants.UserDataKey, response);
-                Dispatcher.Dispatch(new SetUserStateAction(response.AuthToken, response.Role, response.Email, response.Username));
+                Dispatcher.Dispatch(new SetUserStateAction(response.AuthToken, response.Role, response.Email, response.Username, response.IsEmailVerified));
 
                 var query = $"?token={Uri.EscapeDataString(response.AuthToken)}" +
                             (ReturnUrl is not null ? $"&redirectUri={Uri.EscapeDataString(ReturnUrl)}" : "");

@@ -1,0 +1,23 @@
+<root>
+  <data name="Verify_Email">
+    Підтвердження електронної адреси
+  </data>
+  <data name="Verify_Button">
+    Підвердити електрону адресу
+  </data>
+  <data name="Is_Verified">
+    Пошта підтверджена:
+  </data>
+  <data name="Verification_Email_Was_Sent">
+    Лист для підтвердження електронної пошти було успішно надіслано
+  </data>
+  <data name="Error_Occured">
+    Сталася помилка
+  </data>
+  <data name="Email_Verified_Successfully">
+    Пошта була успішно підтверджена
+  </data>
+  <data name="Email_Already_Verified">
+    Ви вже підтвердили власну пошту
+  </data>
+</root>

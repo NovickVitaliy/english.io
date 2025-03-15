@@ -1,6 +1,7 @@
 using Authentication.API.DTOs.Auth.Requests;
 using Authentication.API.DTOs.Other;
 using Authentication.API.Services.AuthService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Authentication.API.Controllers;
@@ -38,5 +39,25 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> ResetPasswordAsync(ResetPasswordRequest request)
     {
         return (await _authService.ResetPasswordAsync(request)).ToApiResponse();
+    }
+
+    [HttpPost("change-password")]
+    [Authorize]
+    public async Task<IActionResult> ChangePasswordAsync(ChangePasswordRequest request)
+    {
+        return (await _authService.ChangePasswordAsync(request)).ToApiResponse();
+    }
+
+    [HttpPost("send-verification-email")]
+    [Authorize]
+    public async Task<IActionResult> SendVerifyingEmailMessageAsync(SendVerifyingEmailMessageRequest request)
+    {
+        return (await _authService.SendVerifyingEmailMessageAsync(request)).ToApiResponse();
+    }
+
+    [HttpPost("verify-email")]
+    public async Task<IActionResult> VerifyEmailAsync(VerifyEmailRequest request)
+    {
+        return (await _authService.VerifyEmailAsync(request)).ToApiResponse();
     }
 }

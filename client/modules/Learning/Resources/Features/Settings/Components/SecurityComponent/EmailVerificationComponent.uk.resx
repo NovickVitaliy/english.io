@@ -1,0 +1,14 @@
+<root>
+  <data name="Verify_Email_Prompt">
+    Щоб підвердити електрону адресу натисність кнопку нижче
+  </data>
+  <data name="Confirm">
+    Підтвердити
+  </data>
+  <data name="Error_Occured">
+    Сталася помилка
+  </data>
+  <data name="Email_Already_Confirmed">
+    Ви вже підтвердили свою пошту раніше
+  </data>
+</root>

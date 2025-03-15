@@ -1,0 +1,14 @@
+<root>
+  <data name="Verify_Email_Prompt">
+    To verify email click the button below
+  </data>
+  <data name="Confirm">
+    Confirm
+  </data>
+  <data name="Error_Occured">
+    Error occured
+  </data>
+  <data name="Email_Already_Confirmed">
+    You have already confirmed your email
+  </data>
+</root>

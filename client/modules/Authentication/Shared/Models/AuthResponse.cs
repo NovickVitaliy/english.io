@@ -4,4 +4,5 @@ public record AuthResponse(
     string Username,
     string Email,
     string[] Role,
-    string AuthToken);
+    string AuthToken,
+    bool IsEmailVerified);
