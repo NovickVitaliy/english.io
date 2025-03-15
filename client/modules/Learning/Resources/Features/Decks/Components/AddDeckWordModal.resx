@@ -23,4 +23,7 @@
   <data name="Word_Does_Not_Comply_To_The_Topic">
     Word does not comply to the topic of the deck
   </data>
+  <data name="Error_Occured">
+    Error occured
+  </data>
 </root>

@@ -23,4 +23,7 @@
   <data name="Word_Does_Not_Comply_To_The_Topic">
     Слово не відповідає темі колоди
   </data>
+  <data name="Error_Occured">
+    Сталася помилка
+  </data>
 </root>
