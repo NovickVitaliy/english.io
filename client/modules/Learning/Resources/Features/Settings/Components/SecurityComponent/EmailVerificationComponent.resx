@@ -8,4 +8,7 @@
   <data name="Error_Occured">
     Error occured
   </data>
+  <data name="Email_Already_Confirmed">
+    You have already confirmed your email
+  </data>
 </root>

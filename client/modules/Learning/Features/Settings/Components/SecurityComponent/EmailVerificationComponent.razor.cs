@@ -1,5 +1,6 @@
 using Blazored.LocalStorage;
 using Fluxor;
+using Fluxor.Blazor.Web.Components;
 using Learning.Features.Settings.Models.Security;
 using Learning.Features.Settings.Service;
 using Microsoft.AspNetCore.Components;
@@ -15,7 +16,7 @@ using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Learning.Features.Settings.Components.SecurityComponent;
 
-public partial class EmailVerificationComponent : ComponentBase
+public partial class EmailVerificationComponent : FluxorComponent
 {
     [Inject]
     private IStringLocalizer<EmailVerificationComponent> Localizer { get; init; } = null!;
