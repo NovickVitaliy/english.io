@@ -14,4 +14,13 @@
   <data name="Api_Success">
     Слово було успішно додане до колоди
   </data>
+  <data name="Word_Cannot_Be_Empty">
+    Слово не може бути пустим
+  </data>
+  <data name="Deck_Id_Cannot_Be_Empty">
+    Ідентифікатор колоди не може бути пустим
+  </data>
+  <data name="Word_Does_Not_Comply_To_The_Topic">
+    Слово не відповідає темі колоди
+  </data>
 </root>

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using MongoDB.Driver;
 using Shared;
 using Shared.ErrorHandling;
+using static Learning.Domain.LocalizationKeys;
 
 namespace Learning.Infrastructure.Services;
 
@@ -50,7 +51,7 @@ public class DecksService : IDecksService
     {
         if (string.IsNullOrWhiteSpace(request.Email))
         {
-            return Result<GetDecksForUserResponse>.BadRequest("Email cannot be empty");
+            return Result<GetDecksForUserResponse>.BadRequest(EmailCannotBeEmpty);
         }
 
         var (decks, count) = await _decksRepository.GetDecksForUserAsync(request);
@@ -72,7 +73,7 @@ public class DecksService : IDecksService
     {
         if (deckId == Guid.Empty)
         {
-            return Result<DeckWithWordsDto>.BadRequest("Deck Id cannot be null");
+            return Result<DeckWithWordsDto>.BadRequest(DeckIdCannotBeEmpty);
         }
 
         var deck = await _decksRepository.GetDeckAsync(deckId);
@@ -103,7 +104,7 @@ public class DecksService : IDecksService
 
         if (deck!.IsStrict && !await _aiLearningService.DoesWordComplyToTheArticle(request.Word, deck.Topic))
         {
-            return Result<DeckWordDto>.BadRequest("Word does not comply to the topic of the deck");
+            return Result<DeckWordDto>.BadRequest(WordDoesNotComplyToTheTopic);
         }
 
         int exampleSentences = int.Parse(_httpContextAccessor.HttpContext.User.Claims.Single(x => x.Type == GlobalConstants.ApplicationClaimTypes.ExampleSentencesPerWord).Value);
@@ -125,7 +126,7 @@ public class DecksService : IDecksService
     {
         if (Guid.Empty == deckId)
         {
-            return Result<bool>.BadRequest("Deck ID cannot be empty");
+            return Result<bool>.BadRequest(DeckIdCannotBeEmpty);
         }
 
         await _decksRepository.DeleteDeckAsync(deckId);
