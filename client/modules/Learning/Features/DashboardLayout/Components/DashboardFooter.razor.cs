@@ -15,6 +15,8 @@ public partial class DashboardFooter : ComponentBase, IDisposable
     protected override void OnInitialized()
     {
         NavigationManager.LocationChanged += OnLocationChanged;
+        Location = NavigationManager.GetRelativePath();
+        StateHasChanged();
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
