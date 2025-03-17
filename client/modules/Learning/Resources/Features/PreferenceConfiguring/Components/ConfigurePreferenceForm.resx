@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-    <data name="Preference_Configure_Form_Header" xml:space="preserve">
+  <data name="Preference_Configure_Form_Header" xml:space="preserve">
     <value>Configure Preferences</value>
   </data>
-    <data name="Example_Sentences_Number" xml:space="preserve">
+  <data name="Example_Sentences_Number" xml:space="preserve">
     <value>Number of Example Sentences</value>
   </data>
-    <data name="Exameple_Sentence_Number_Tooltip" xml:space="preserve">
+  <data name="Exameple_Sentence_Number_Tooltip" xml:space="preserve">
     <value>Set the number of example sentences per word.</value>
   </data>
-    <data name="Daily_Word_Practice_Limit" xml:space="preserve">
+  <data name="Daily_Word_Practice_Limit" xml:space="preserve">
     <value>Daily Word Practice Limit</value>
   </data>
-    <data name="Daily_Word_Practice_Limit_Tooltip" xml:space="preserve">
+  <data name="Daily_Word_Practice_Limit_Tooltip" xml:space="preserve">
     <value>Set the maximum number of words to practice daily.</value>
   </data>
-    <data name="Daily_Sessions_Count" xml:space="preserve">
+  <data name="Daily_Sessions_Count" xml:space="preserve">
     <value>Daily Sessions Count</value>
   </data>
-    <data name="Daily_Sessions_Count_Tooltip" xml:space="preserve">
+  <data name="Daily_Sessions_Count_Tooltip" xml:space="preserve">
     <value>Set the number of daily practice sessions.</value>
   </data>
-    <data name="Save" xml:space="preserve">
+  <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
   <data name="Sessions_Time_Prompt">
@@ -32,5 +32,35 @@
   </data>
   <data name="User_Preferences_Configured">
     <value>User preferences were successfully created. Navigating you to the learning home page.</value>
+  </data>
+  <data name="Id_Cannot_Be_Empty">
+    Id cannot be empty
+  </data>
+  <data name="User_Email_Cannot_Be_Empty">
+    User Email cannot be empty
+  </data>
+  <data name="User_Email_Must_Be_In_Valid_Format">
+    User Email must be in valid format
+  </data>
+  <data name="Number_Of_Example_Sentences_Greater_Than_Zero">
+    Number of example sentences per word must be greater than zero
+  </data>
+  <data name="Number_Of_Example_Sentences_Less_Than_Or_Equal_Than_Ten">
+    Number of examples sentences per word must be less than or equal than ten
+  </data>
+  <data name="Number_Of_Daily_Word_Practice_Limit_Greater_Than_Zero">
+    Number of daily word practice limit must be greater than zero
+  </data>
+  <data name="Number_Of_Daily_Word_Practice_Limit_Less_Than_Or_Equal_Than_15">
+    Number of daily word practice limit must be less than or equal than 15
+  </data>
+  <data name="Daily_Sessions_Reminder_Times_Must_Be_Present">
+    Daily sessions reminder times must be present
+  </data>
+  <data name="Number_Of_Daily_Sessions_Reminder_Times_Must_Not_Be_Greater_Than_5">
+    Number of daily sessions reminder times must be less than 5
+  </data>
+  <data name="Error_Occured">
+    Error occured
   </data>
 </root>
