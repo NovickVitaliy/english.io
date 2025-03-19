@@ -8,7 +8,13 @@
   <data name="Error_Occured">
     Error occured
   </data>
-  <data name="Email_Already_Confirmed">
-    You have already confirmed your email
+  <data name="Token_Is_Null">
+    Token is null
+  </data>
+  <data name="Invalid_Email">
+    Invalid email
+  </data>
+  <data name="User_With_Given_Email_Was_Not_Found">
+    User with given email was not found
   </data>
 </root>
