@@ -13,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using OfficeOpenXml;
+using QuestPDF.Infrastructure;
 using Shared.MessageBus;
 
 namespace Learning.Infrastructure;
@@ -21,6 +23,9 @@ public static class DependencyInjection
 {
     public static IServiceCollection ConfigureInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        QuestPDF.Settings.License = LicenseType.Community;
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
         services.ConfigureRabbitMq(Assembly.GetExecutingAssembly());
 
         services.AddOptions<MongoOptions>()
@@ -66,6 +71,7 @@ public static class DependencyInjection
         services.AddScoped<IDeckExporterService, DeckExporterService>();
         services.AddScoped<IDeckExporterFileProvider, CsvDeckExporterFileProvider>();
         services.AddScoped<IDeckExporterFileProvider, ExcelDeckExporterFileProvider>();
+        services.AddScoped<IDeckExporterFileProvider, PdfDeckExporterFileProvider>();
 
         return services;
     }

@@ -18,5 +18,6 @@
       <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
       <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" />
       <PackageReference Include="MongoDB.Driver" />
+      <PackageReference Include="QuestPDF" />
     </ItemGroup>
 </Project>

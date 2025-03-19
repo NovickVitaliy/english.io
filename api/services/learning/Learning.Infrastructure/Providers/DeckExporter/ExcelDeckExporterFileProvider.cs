@@ -13,8 +13,6 @@ public class ExcelDeckExporterFileProvider : IDeckExporterFileProvider
 
     public async Task<Stream> ExportDeckAsync(Deck deck)
     {
-        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-
         var stream = new MemoryStream();
         try
         {
