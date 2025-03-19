@@ -77,6 +77,9 @@
       <EmbeddedResource Update="Resources\Features\Decks\Components\WordDialog.uk.resx">
         <DependentUpon>WordDialog.resx</DependentUpon>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Decks\Components\ExportDeckModal.uk.resx">
+        <DependentUpon>ExportDeckModal.resx</DependentUpon>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

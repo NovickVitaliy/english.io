@@ -16,4 +16,5 @@ public static class LocalizationKeys
     public const string NumberOfDailyWordPracticeLimitMustBeLessThanOrEqualTo15 = "Number_Of_Daily_Word_Practice_Limit_Less_Than_Or_Equal_Than_15";
     public const string DailySessionsReminderTimesMustBePresent = "Daily_Sessions_Reminder_Times_Must_Be_Present";
     public const string NumberOfDailySessionsReminderTimesMustNotBeGreatedThan5 = "Number_Of_Daily_Sessions_Reminder_Times_Must_Not_Be_Greater_Than_5";
+    public const string NoProviderForChosenFileType = "No_Provider_For_Given_File_Type";
 }

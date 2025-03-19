@@ -1,10 +1,12 @@
 using System.Reflection;
 using Learning.Application.Contracts.Api;
+using Learning.Application.Contracts.Providers;
 using Learning.Application.Contracts.Repositories;
 using Learning.Application.Contracts.Services;
 using Learning.Infrastructure.Api;
 using Learning.Infrastructure.Database;
 using Learning.Infrastructure.Options;
+using Learning.Infrastructure.Providers.DeckExporter;
 using Learning.Infrastructure.Repositories;
 using Learning.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
@@ -61,6 +63,8 @@ public static class DependencyInjection
         services.AddScoped<IDecksService, DecksService>();
 
         services.AddScoped<IAiLearningService, GeminiAiLearningService>();
+        services.AddScoped<IDeckExporterService, DeckExporterService>();
+        services.AddScoped<IDeckExporterFileProvider, CsvDeckExporterFileProvider>();
 
         return services;
     }

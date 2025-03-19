@@ -11,10 +11,12 @@ namespace Learning.Controllers;
 public class DecksController : ControllerBase
 {
     private readonly IDecksService _decksService;
+    private readonly IDeckExporterService _deckExporterService;
 
-    public DecksController(IDecksService decksService)
+    public DecksController(IDecksService decksService, IDeckExporterService deckExporterService)
     {
         _decksService = decksService;
+        _deckExporterService = deckExporterService;
     }
 
     [HttpPost]
@@ -49,5 +51,15 @@ public class DecksController : ControllerBase
     public async Task<IActionResult> DeleteDeckAsync(Guid deckId)
     {
         return (await _decksService.DeleteDeckAsync(deckId)).ToApiResponse();
+    }
+
+    [HttpGet("export")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ExportDeckAsync([FromQuery] ExportDeckRequest request)
+    {
+        var response = await _deckExporterService.ExportDeckAsync(request);
+        var data = response.Data;
+
+        return File(data.FileStream, data.ContentType, data.FileName);
     }
 }

@@ -1,0 +1,18 @@
+@using Learning.Features.Decks.Models
+@using MudBlazor
+<MudDialog>
+    <TitleContent>
+
+    </TitleContent>
+    <DialogContent>
+        <MudText Typo="Typo.body1">@Localizer["Prompt"]</MudText>
+        <MudSelect @bind-Value="_chosenOption">
+            <MudSelectItem Value="ExportFileOptions.Csv">Csv</MudSelectItem>
+            <MudSelectItem Value="ExportFileOptions.Excel">Excel</MudSelectItem>
+            <MudSelectItem Value="ExportFileOptions.Pdf">PDF</MudSelectItem>
+        </MudSelect>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="ExportFile">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
