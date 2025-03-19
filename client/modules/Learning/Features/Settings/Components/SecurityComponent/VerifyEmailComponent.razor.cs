@@ -41,7 +41,7 @@ public partial class VerifyEmailComponent : FluxorComponent
         catch (ApiException e)
         {
             var problemDetails = e.ToProblemDetails();
-            Snackbar.Add(problemDetails.Title ?? problemDetails.Detail ?? Localizer["Error_Occured"]);
+            Snackbar.Add(Localizer[problemDetails.Detail ?? "Error_Occured"], Severity.Error);
         }
     }
 }
