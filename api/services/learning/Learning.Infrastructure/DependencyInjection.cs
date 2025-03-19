@@ -65,6 +65,7 @@ public static class DependencyInjection
         services.AddScoped<IAiLearningService, GeminiAiLearningService>();
         services.AddScoped<IDeckExporterService, DeckExporterService>();
         services.AddScoped<IDeckExporterFileProvider, CsvDeckExporterFileProvider>();
+        services.AddScoped<IDeckExporterFileProvider, ExcelDeckExporterFileProvider>();
 
         return services;
     }
