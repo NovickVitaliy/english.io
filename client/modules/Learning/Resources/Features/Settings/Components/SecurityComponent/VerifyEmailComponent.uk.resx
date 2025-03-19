@@ -20,4 +20,10 @@
   <data name="Email_Already_Verified">
     Ви вже підтвердили власну пошту
   </data>
+  <data name="Invalid_Email">
+    Невалідна електронна адреса
+  </data>
+  <data name="Entity_Not_Found">
+    Користувач з такою адресою не був знайдений
+  </data>
 </root>

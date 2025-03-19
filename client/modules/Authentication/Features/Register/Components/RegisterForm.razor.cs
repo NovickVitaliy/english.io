@@ -46,7 +46,7 @@ public partial class RegisterForm : ComponentBase
             catch (ApiException e)
             {
                 ProblemDetails problemDetails = e.ToProblemDetails();
-                Snackbar.Add((problemDetails!.Detail ?? problemDetails.Title)!, Severity.Error);
+                Snackbar.Add(Localizer[problemDetails.Detail ?? "Error_Occured"], Severity.Error);
             }
         }
     }

@@ -1,5 +1,6 @@
 using FluentValidation;
 using Learning.Application.DTOs.Decks;
+using static Learning.Domain.LocalizationKeys;
 
 namespace Learning.Application.Validation.Decks;
 
@@ -8,9 +9,9 @@ public class CreateDeckWordRequestValidator : AbstractValidator<CreateDeckWordRe
     public CreateDeckWordRequestValidator()
     {
         RuleFor(x => x.Word)
-            .NotEmpty().WithMessage("Word cannot be empty");
+            .NotEmpty().WithMessage(WordCannotBeEmpty);
 
         RuleFor(x => x.DeckId)
-            .NotEmpty().WithMessage("Deck Id cannot be empty");
+            .NotEmpty().WithMessage(DeckIdCannotBeEmpty);
     }
 }

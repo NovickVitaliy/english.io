@@ -40,7 +40,7 @@ public partial class AddDeckWordModal : ComponentBase
         catch (ApiException e)
         {
             var problemDetails = e.ToProblemDetails();
-            Snackbar.Add(problemDetails.Title ?? problemDetails.Detail ?? Localizer["Api_Error"], Severity.Error);
+            Snackbar.Add(Localizer[problemDetails.Detail ?? "Error_Occured"], Severity.Error);
         }
     }
 }

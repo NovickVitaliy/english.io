@@ -147,4 +147,23 @@
   <data name="Forgot_Password_Prompt">
     <value>Forgot password?</value>
   </data>
+  <!-- das -->
+  <data name="Email_Cannot_Be_Empty">
+    Email cannot be empty
+  </data>
+  <data name="Email_Must_Be_In_Valid_Format">
+    Email must be in valid format
+  </data>
+  <data name="Password_Cannot_Be_Empty">
+    Password cannot be empty
+  </data>
+  <data name="User_With_Such_Email_Does_Not_Exist">
+    User with email does not exist
+  </data>
+  <data name="Incorrect_Password">
+    Incorrect password
+  </data>
+  <data name="Error_Occured">
+    Error occured
+  </data>
 </root>

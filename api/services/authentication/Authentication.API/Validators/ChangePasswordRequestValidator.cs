@@ -1,5 +1,6 @@
 using Authentication.API.DTOs.Auth.Requests;
 using FluentValidation;
+using static Authentication.API.LocalizationKeys;
 
 namespace Authentication.API.Validators;
 
@@ -8,13 +9,13 @@ public class ChangePasswordRequestValidator : AbstractValidator<ChangePasswordRe
     public ChangePasswordRequestValidator()
     {
         RuleFor(x => x.OldPassword)
-            .NotEmpty().WithMessage("Old password must not be empty");
+            .NotEmpty().WithMessage(OldPasswordMustNotBeEmpty);
 
         RuleFor(x => x.OldPasswordConfirm)
-            .NotEmpty().WithMessage("'Old password confirm' must not be empty")
-            .Equal(x => x.OldPassword).WithMessage("'Old Password' and 'Old Password Confirm' must match");
+            .NotEmpty().WithMessage(OldPasswordConfirmMustNotBeEmpty)
+            .Equal(x => x.OldPassword).WithMessage(OldPasswordAndConfirmMustMatch);
 
         RuleFor(x => x.NewPassword)
-            .NotEmpty().WithMessage("New password must not be empty");
+            .NotEmpty().WithMessage(NewPasswordMustNotBeEmpty);
     }
 }

@@ -1,6 +1,6 @@
 using FluentValidation;
 using Learning.Application.DTOs.UserPreferences;
-
+using static Learning.Domain.LocalizationKeys;
 namespace Learning.Application.Validation.UserPreferences;
 
 public abstract class BaseUserPreferencesValidator<T> : AbstractValidator<T> where T : IBaseUserPreferencesRequest
@@ -8,34 +8,34 @@ public abstract class BaseUserPreferencesValidator<T> : AbstractValidator<T> whe
     protected void ValidateId()
     {
         RuleFor(x => x.Id)
-            .NotEmpty().WithMessage("Id cannot be empty");
+            .NotEmpty().WithMessage(IdCannotBeEmpty);
     }
 
     protected void ValidateUserEmail()
     {
         RuleFor(x => x.UserEmail)
-            .NotEmpty().WithMessage("User email cannot be empty")
-            .EmailAddress().WithMessage("User email must be in valid format");
+            .NotEmpty().WithMessage(UserEmailCannotBeEmpty)
+            .EmailAddress().WithMessage(UserEmailMustBeInValidFormat);
     }
 
     protected void ValidateNumberOfExampleSentencesPerWord()
     {
         RuleFor(x => x.NumberOfExampleSentencesPerWord)
-            .GreaterThan(0).WithMessage("Number of example sentences per word must be greater than 0")
-            .LessThanOrEqualTo(10).WithMessage("Number of example sentences per word must be less than or equal than 10");
+            .GreaterThan(0).WithMessage(NumberOfExampleSentencesPerWordMustBeGreaterThanZero)
+            .LessThanOrEqualTo(10).WithMessage(NumberOfExampleSentencesPerWordMustBeLessOrEqualToTen);
     }
 
     protected void ValidateDailyWordPracticeLimit()
     {
         RuleFor(x => x.DailyWordPracticeLimit)
-            .GreaterThan(0).WithMessage("Number of daily word practice limit must be greater than 0")
-            .LessThanOrEqualTo(15).WithMessage("Number of daily word practice limit must be less than or equal than 15");
+            .GreaterThan(0).WithMessage(NumberOfDailyWordPracticeLimitMustBeGreaterThanZero)
+            .LessThanOrEqualTo(15).WithMessage(NumberOfDailyWordPracticeLimitMustBeLessThanOrEqualTo15);
     }
 
     protected void ValidateDailySessionsReminderTimes()
     {
         RuleFor(x => x.DailySessionsReminderTimes)
-            .NotEmpty().WithMessage("Daily session reminder times must be present")
-            .Must(x => x != null && x.Length <= 5).WithMessage("Number of daily sessions reminder times must not be greater than 5");
+            .NotEmpty().WithMessage(DailySessionsReminderTimesMustBePresent)
+            .Must(x => x is { Length: <= 5 }).WithMessage(NumberOfDailySessionsReminderTimesMustNotBeGreatedThan5);
     }
 }

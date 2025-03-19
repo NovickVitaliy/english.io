@@ -1,6 +1,6 @@
 using Authentication.API.DTOs.Auth.Requests;
 using FluentValidation;
-
+using static Authentication.API.LocalizationKeys;
 namespace Authentication.API.Validators;
 
 public class RegisterUserRequestValidator : AbstractValidator<RegisterUserRequest>
@@ -8,14 +8,14 @@ public class RegisterUserRequestValidator : AbstractValidator<RegisterUserReques
     public RegisterUserRequestValidator()
     {
         RuleFor(x => x.Email)
-            .NotEmpty().WithMessage("Email address cannot be empty")
-            .EmailAddress().WithMessage("Email address must be in a valid format");
+            .NotEmpty().WithMessage(EmailCannotBeEmpty)
+            .EmailAddress().WithMessage(EmailMustBeInValidFormat);
 
         RuleFor(x => x.Password)
-            .NotEmpty().WithMessage("Password cannot be empty");
+            .NotEmpty().WithMessage(PasswordCannotBeEmpty);
 
         RuleFor(x => x.ConfirmPassword)
-            .NotEmpty().WithMessage("Confirm password cannot be empty")
-            .Equal(x => x.Password).WithMessage("'Password' and 'Confirm Password' must match");
+            .NotEmpty().WithMessage(ConfirmPasswordCannotBeEmpty)
+            .Equal(x => x.Password).WithMessage(PasswordAndConfirmPasswordMustMatch);
     }
 }

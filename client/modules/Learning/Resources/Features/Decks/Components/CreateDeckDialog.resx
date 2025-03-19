@@ -20,4 +20,10 @@
   <data name="Deck_Created_Successfully">
     Deck was created succesfully
   </data>
+  <data name="Deck_Topic_Cannot_Be_Empty">
+    Deck topic cannot be empty
+  </data>
+  <data name="Error_Occured">
+    Error occcured
+  </data>
 </root>

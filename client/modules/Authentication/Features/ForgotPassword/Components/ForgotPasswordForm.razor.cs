@@ -39,7 +39,7 @@ public partial class ForgotPasswordForm : ComponentBase
         catch (ApiException e)
         {
             var problemDetails = e.ToProblemDetails();
-            Snackbar.Add(problemDetails.Detail ?? problemDetails.Title ?? "Error Occured", Severity.Error);
+            Snackbar.Add(Localizer[problemDetails.Detail ?? "Error_Occured"], Severity.Error);
         }
     }
 }

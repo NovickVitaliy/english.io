@@ -74,6 +74,9 @@
       <EmbeddedResource Update="Resources\Features\Settings\Components\SecurityComponent\EmailVerificationComponent.uk.resx">
         <DependentUpon>EmailVerificationComponent.resx</DependentUpon>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Decks\Components\WordDialog.uk.resx">
+        <DependentUpon>WordDialog.resx</DependentUpon>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

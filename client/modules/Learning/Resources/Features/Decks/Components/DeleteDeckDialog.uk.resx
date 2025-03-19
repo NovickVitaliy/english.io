@@ -14,4 +14,10 @@
   <data name="Modal_Title">
     Видалити колоду
   </data>
+  <data name="Deck_Id_Cannot_Be_Empty">
+    Ідентифікатор колоди не може бути пусти
+  </data>
+  <data name="Error_Occured">
+    Сталася помилка
+  </data>
 </root>

@@ -14,4 +14,20 @@
   <data name="Api_Success">
     Word was successfully added to the deck
   </data>
+  <data name="Word_Cannot_Be_Empty">
+    Word cannot be empty
+  </data>
+  <data name="Deck_Id_Cannot_Be_Empty">
+    Deck Id cannot be empty
+  </data>
+  <data name="Word_Does_Not_Comply_To_The_Topic">
+    Word does not comply to the topic of the deck
+  </data>
+  <!-- da -->
+  <data name="Error_Occured">
+    Error occured
+  </data>
+  <data name="Id_Cannot_Be_Empty">
+    Id cannot be empty
+  </data>
 </root>

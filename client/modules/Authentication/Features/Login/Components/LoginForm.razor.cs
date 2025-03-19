@@ -1,16 +1,11 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Text.Json;
 using Authentication.Features.Login.Models;
 using Blazored.LocalStorage;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Http.Extensions;
 using MudBlazor;
 using Refit;
 using Shared;
 using Shared.Extensions;
-using Shared.Store;
-using Shared.Store.User;
 using Shared.Store.User.Actions;
 using IAuthenticationService = Authentication.Shared.Services.IAuthenticationService;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
@@ -47,7 +42,7 @@ public partial class LoginForm : ComponentBase
             catch (ApiException e)
             {
                 ProblemDetails problemDetails = e.ToProblemDetails();
-                Snackbar.Add((problemDetails!.Detail ?? problemDetails.Title)!, Severity.Error);
+                Snackbar.Add(Localizer[problemDetails.Detail ?? "Error_Occured"], Severity.Error);
             }
         }
     }

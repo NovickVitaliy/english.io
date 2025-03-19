@@ -20,4 +20,10 @@
   <data name="Deck_Created_Successfully">
     Колода була успішно створена
   </data>
+  <data name="Deck_Topic_Cannot_Be_Empty">
+    Тема колоди не може бути пустою
+  </data>
+  <data name="Error_Occured">
+    Сталася помилка
+  </data>
 </root>

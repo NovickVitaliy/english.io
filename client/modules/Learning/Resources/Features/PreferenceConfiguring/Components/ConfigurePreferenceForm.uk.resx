@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-    <data name="Preference_Configure_Form_Header" xml:space="preserve">
+  <data name="Preference_Configure_Form_Header" xml:space="preserve">
     <value>Налаштування вподобань</value>
   </data>
-    <data name="Example_Sentences_Number" xml:space="preserve">
+  <data name="Example_Sentences_Number" xml:space="preserve">
     <value>Кількість прикладних речень</value>
   </data>
-    <data name="Exameple_Sentence_Number_Tooltip" xml:space="preserve">
+  <data name="Exameple_Sentence_Number_Tooltip" xml:space="preserve">
     <value>Вкажіть кількість прикладних речень для кожного слова.</value>
   </data>
-    <data name="Daily_Word_Practice_Limit" xml:space="preserve">
+  <data name="Daily_Word_Practice_Limit" xml:space="preserve">
     <value>Щоденний ліміт слів для практики</value>
   </data>
-    <data name="Daily_Word_Practice_Limit_Tooltip" xml:space="preserve">
+  <data name="Daily_Word_Practice_Limit_Tooltip" xml:space="preserve">
     <value>Вкажіть максимальну кількість слів для щоденної практики.</value>
   </data>
-    <data name="Daily_Sessions_Count" xml:space="preserve">
+  <data name="Daily_Sessions_Count" xml:space="preserve">
     <value>Кількість щоденних сеансів</value>
   </data>
-    <data name="Daily_Sessions_Count_Tooltip" xml:space="preserve">
+  <data name="Daily_Sessions_Count_Tooltip" xml:space="preserve">
     <value>Вкажіть кількість щоденних сеансів практики.</value>
   </data>
-    <data name="Save" xml:space="preserve">
+  <data name="Save" xml:space="preserve">
     <value>Зберегти</value>
   </data>
   <data name="Sessions_Time_Prompt">
@@ -32,5 +32,35 @@
   </data>
   <data name="User_Preferences_Configured">
     <value>Вподобання користувача були успішно створені. Перевожу вас до домашньої сторінки навчання.</value>
+  </data>
+  <data name="Id_Cannot_Be_Empty">
+    Ідентифікатор не може бути пустим
+  </data>
+  <data name="User_Email_Cannot_Be_Empty">
+    Електронна адреса користувача не може бути пустою
+  </data>
+  <data name="User_Email_Must_Be_In_Valid_Format">
+    Електронна адреса повинна бути у правильному форматі
+  </data>
+  <data name="Number_Of_Example_Sentences_Greater_Than_Zero">
+    Кількість речень з прикладами для одного слова повинна бути більшою за 0
+  </data>
+  <data name="Number_Of_Example_Sentences_Less_Than_Or_Equal_Than_Ten">
+    Кількість речень з прикладами для одного слова повиина бути менше або рівне за 10
+  </data>
+  <data name="Number_Of_Daily_Word_Practice_Limit_Greater_Than_Zero">
+    Кількість слів для щоденної практики повинна бути більшою за нуль
+  </data>
+  <data name="Number_Of_Daily_Word_Practice_Limit_Less_Than_Or_Equal_Than_15">
+    Кількість слів для щоденної практики повинна бути менша або рівна 15
+  </data>
+  <data name="Daily_Sessions_Reminder_Times_Must_Be_Present">
+    Години нагадування для навчальних сесій повинні бути присутні
+  </data>
+  <data name="Number_Of_Daily_Sessions_Reminder_Times_Must_Not_Be_Greater_Than_5">
+    Кількість нагадувань для навчальних сесій повинна бути менша або рівна 5
+  </data>
+  <data name="Error_Occured">
+    Сталася помилка
   </data>
 </root>

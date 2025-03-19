@@ -41,7 +41,7 @@ public partial class CreateDeckDialog : ComponentBase
         catch (ApiException e)
         {
             var problemDetails = e.ToProblemDetails();
-            Snackbar.Add(problemDetails.Title ?? problemDetails.Detail ?? Localizer["Error_Creating_Deck"], Severity.Error);
+            Snackbar.Add(Localizer[problemDetails.Detail ?? "Error_Occured"], Severity.Error);
         }
     }
 }

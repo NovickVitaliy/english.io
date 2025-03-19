@@ -58,7 +58,7 @@ public class Result<T>
 
     public static Result<T> NotFound(object key)
     {
-        return new Result<T>(ErrorMessages.NotFound<T>(key), HttpStatusCode.NotFound, default!, false);
+        return new Result<T>(ErrorMessages.NotFound(key), HttpStatusCode.NotFound, default!, false);
     }
 
     public static Result<T> Conflict(string reason)
