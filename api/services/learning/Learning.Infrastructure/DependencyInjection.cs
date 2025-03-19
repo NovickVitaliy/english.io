@@ -1,16 +1,20 @@
 using System.Reflection;
 using Learning.Application.Contracts.Api;
+using Learning.Application.Contracts.Providers;
 using Learning.Application.Contracts.Repositories;
 using Learning.Application.Contracts.Services;
 using Learning.Infrastructure.Api;
 using Learning.Infrastructure.Database;
 using Learning.Infrastructure.Options;
+using Learning.Infrastructure.Providers.DeckExporter;
 using Learning.Infrastructure.Repositories;
 using Learning.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using OfficeOpenXml;
+using QuestPDF.Infrastructure;
 using Shared.MessageBus;
 
 namespace Learning.Infrastructure;
@@ -19,6 +23,9 @@ public static class DependencyInjection
 {
     public static IServiceCollection ConfigureInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        QuestPDF.Settings.License = LicenseType.Community;
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
         services.ConfigureRabbitMq(Assembly.GetExecutingAssembly());
 
         services.AddOptions<MongoOptions>()
@@ -61,6 +68,10 @@ public static class DependencyInjection
         services.AddScoped<IDecksService, DecksService>();
 
         services.AddScoped<IAiLearningService, GeminiAiLearningService>();
+        services.AddScoped<IDeckExporterService, DeckExporterService>();
+        services.AddScoped<IDeckExporterFileProvider, CsvDeckExporterFileProvider>();
+        services.AddScoped<IDeckExporterFileProvider, ExcelDeckExporterFileProvider>();
+        services.AddScoped<IDeckExporterFileProvider, PdfDeckExporterFileProvider>();
 
         return services;
     }

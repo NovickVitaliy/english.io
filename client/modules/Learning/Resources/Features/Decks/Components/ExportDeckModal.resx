@@ -1,0 +1,14 @@
+<root>
+  <data name="Export_Title">
+    Export deck words
+  </data>
+  <data name="Prompt">
+    Please choose the format in which you would like to export your deck words
+  </data>
+  <data name="Export_Dialog_Name">
+    Export deck
+  </data>
+  <data name="Error_Occured">
+    Error occured
+  </data>
+</root>

@@ -1,0 +1,14 @@
+<root>
+  <data name="Export_Title">
+    Експортувати слова колоди
+  </data>
+  <data name="Prompt">
+    Будь ласка виберіть формат в якому ви бажаєте експортувати слова з колоди
+  </data>
+  <data name="Export_Dialog_Name">
+    Експортувати колоду
+  </data>
+  <data name="Error_Occured">
+    Сталася помилка
+  </data>
+</root>
