@@ -62,6 +62,15 @@ services:
     depends_on:
       - notifications.db
 
+  text-to-speech.api:
+    container_name: text-to-speech.api
+    ports:
+      - "${TTS_PORT}:5003"
+    environment:
+      - FLASK_ENV=production
+      - LANG=${LANG:-en}
+    restart: unless-stopped
+
   auth.db:
     container_name: auth.db
     restart: always

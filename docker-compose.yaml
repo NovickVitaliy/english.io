@@ -17,6 +17,12 @@
       context: .
       dockerfile: api/services/notifications/Notifications.API/Dockerfile
 
+  text-to-speech.api:
+    image: text-to-speech.api
+    build:
+      context: api/services/text-to-speech
+      dockerfile: Dockerfile
+
   auth.db:
     image: postgres
 
