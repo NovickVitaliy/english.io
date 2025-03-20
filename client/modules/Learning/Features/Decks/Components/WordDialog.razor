@@ -23,7 +23,12 @@
         <ol>
             @foreach (var exampleSentence in DeckWord.ExampleSentences)
             {
-                <li class="p-1 mt-3 rounded-3">@exampleSentence</li>
+                <li class="p-1 mt-3 rounded-3">
+                    @exampleSentence
+                    <MudButton Size="Size.Small" OnClick="@(() => PlayWord(exampleSentence, ClientConstants.Languages.English))" Variant="Variant.Text" Color="Color.Primary">
+                        <MudIcon  Icon="@Icons.Material.Filled.PlayArrow"></MudIcon>
+                    </MudButton>
+                </li>
             }
         </ol>
     </DialogContent>
