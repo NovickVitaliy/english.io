@@ -1,3 +1,4 @@
+using System.Globalization;
 using Learning.Features.Decks.Models;
 using Learning.LearningShared.Services;
 using Microsoft.AspNetCore.Components;
@@ -36,6 +37,10 @@ public partial class WordDialog : ComponentBase
             Console.WriteLine(e);
             throw;
         }
+    }
+    private static string CapitalizeWord(string word)
+    {
+        return string.Join(' ', word.Split(' ').Select(w => $"{w[0].ToString().ToUpper(CultureInfo.InvariantCulture) + w[1..]}"));
     }
 }
 

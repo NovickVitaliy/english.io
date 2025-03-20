@@ -2,7 +2,9 @@
 @using Shared
 <MudDialog>
     <TitleContent>
-        @DeckWord.EnglishVersion
+        <MudText Typo="Typo.h6">
+            @(CapitalizeWord(DeckWord.EnglishVersion))
+        </MudText>
     </TitleContent>
     <DialogContent>
         <div class="d-flex gap-3 mb-1 justify-content-start align-items-center">
@@ -17,7 +19,7 @@
             </MudButton>
             <MudText> <b>@Localizer["Ukrainian_Version"]: </b>@DeckWord.UkrainianVersion</MudText>
         </div>
-        <MudText>@Localizer["Example_Sentences"]</MudText>
+        <MudText><b>@Localizer["Example_Sentences"]</b></MudText>
         <ol>
             @foreach (var exampleSentence in DeckWord.ExampleSentences)
             {
