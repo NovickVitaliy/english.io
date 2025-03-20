@@ -1,16 +1,27 @@
 @using MudBlazor
+@using Shared
 <MudDialog>
     <TitleContent>
         @DeckWord.EnglishVersion
     </TitleContent>
     <DialogContent>
-        <MudText> <b>@Localizer["English_Version"]: </b>@DeckWord.EnglishVersion</MudText>
-        <MudText> <b>@Localizer["Ukrainian_Version"]: </b>@DeckWord.UkrainianVersion</MudText>
+        <div class="d-flex gap-3 mb-1 justify-content-start align-items-center">
+            <MudButton Size="Size.Small" OnClick="@(() => PlayWord(@DeckWord.EnglishVersion, ClientConstants.Languages.English))" Variant="Variant.Filled" Color="Color.Primary">
+                <MudIcon Icon="@Icons.Material.Filled.PlayArrow"></MudIcon>
+            </MudButton>
+            <MudText> <b>@Localizer["English_Version"]: </b>@DeckWord.EnglishVersion</MudText>
+        </div>
+        <div class="d-flex gap-3 mb-1 justify-content-start align-items-center">
+            <MudButton Size="Size.Small" OnClick="@(() => PlayWord(@DeckWord.UkrainianVersion, ClientConstants.Languages.Ukrainian))" Variant="Variant.Filled" Color="Color.Primary">
+                <MudIcon Icon="@Icons.Material.Filled.PlayArrow"></MudIcon>
+            </MudButton>
+            <MudText> <b>@Localizer["Ukrainian_Version"]: </b>@DeckWord.UkrainianVersion</MudText>
+        </div>
         <MudText>@Localizer["Example_Sentences"]</MudText>
         <ol>
             @foreach (var exampleSentence in DeckWord.ExampleSentences)
             {
-                <li class="p-1 mt-3 bg-secondary rounded-3">@exampleSentence</li>
+                <li class="p-1 mt-3 rounded-3">@exampleSentence</li>
             }
         </ol>
     </DialogContent>
@@ -18,3 +29,4 @@
         <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
     </DialogActions>
 </MudDialog>
+<audio class="visually-hidden" controls @ref="_audioElement"></audio>
