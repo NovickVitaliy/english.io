@@ -129,3 +129,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  redis-cache:
+    container_name: redis-cache
+    restart: always
+    ports:
+      - "${REDIS_CACHE_PORT}:6379"
