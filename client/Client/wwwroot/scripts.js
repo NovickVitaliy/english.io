@@ -10,3 +10,9 @@ window.downloadFileFromStream = async (fileName, streamReference, type) => {
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
 };
+
+window.playAudio = (audioElement, audioSrc) => {
+    audioElement.src = audioSrc;
+    audioElement.play()
+        .catch(error => console.log(`Error while playing audio: ${error}`));
+};

@@ -20,6 +20,7 @@ public static class DependencyInjection
         services.ConfigureApiService<IUserPreferencesService>(configuration, IUserPreferencesService.ApiUrlKey);
         services.ConfigureApiService<IDecksService>(configuration, IDecksService.ApiUrlKey);
         services.ConfigureApiService<IAuthenticationSettingsService>(configuration, IAuthenticationSettingsService.ApiUrlKey);
+        services.ConfigureApiService<ITextToSpeechService>(configuration, ITextToSpeechService.ApiUrlKey);
 
         return services;
     }

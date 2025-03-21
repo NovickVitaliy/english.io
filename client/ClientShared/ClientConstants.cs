@@ -11,4 +11,10 @@ public static class ClientConstants
     {
         PropertyNameCaseInsensitive = true
     };
+
+    public static class Languages
+    {
+        public const string English = "en";
+        public const string Ukrainian = "uk";
+    }
 }
