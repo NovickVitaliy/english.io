@@ -2,6 +2,7 @@ using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
+using Shared.DelegateHttpHandlers;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Shared.Extensions;
@@ -21,7 +22,8 @@ public static class RefitExtensions
                 options.BaseAddress = new Uri(configuration.GetSection(ServicesSectionKey)[apiServiceUrlKey]
                                               ?? throw new ArgumentNullException(
                                                   $"Url for service with key: '{apiServiceUrlKey}' was not found"));
-            });
+            })
+            .AddHttpMessageHandler<LocalizationHttpHandler>();
 
         return services;
     }
