@@ -38,6 +38,9 @@
   rabbitmq-broker:
     image: rabbitmq:3-management
 
+  redis-cache:
+    image: redis
+
 volumes:
   auth.db.volume:
   learning.db.volume:
