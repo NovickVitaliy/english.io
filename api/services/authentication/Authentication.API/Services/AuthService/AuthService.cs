@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -11,6 +12,7 @@ using Authentication.API.Services.TokenGenerator;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
 using Shared;
 using Shared.ErrorHandling;
 using Shared.Services;
@@ -23,19 +25,19 @@ public class AuthService : IAuthService
     private readonly ITokenGenerator _tokenGenerator;
     private readonly UserManager<User> _userManager;
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly ForgotPasswordOptions _forgotPasswordOptions;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly EmailVerificationOptions _emailVerificationOptions;
+    private readonly EmailMessagesTemplate _forgotPasswordOptions;
+    private readonly EmailMessagesTemplate _emailVerificationOptions;
 
     public AuthService(ITokenGenerator tokenGenerator, UserManager<User> userManager, IHttpClientFactory httpClientFactory,
-        IOptions<ForgotPasswordOptions> forgotPasswordOptions, IHttpContextAccessor httpContextAccessor, IOptions<EmailVerificationOptions> emailVerificationOptions)
+        IOptionsSnapshot<EmailMessagesTemplate> emailMessagesTemplateOptions, IHttpContextAccessor httpContextAccessor)
     {
         _tokenGenerator = tokenGenerator;
         _userManager = userManager;
         _httpClientFactory = httpClientFactory;
         _httpContextAccessor = httpContextAccessor;
-        _forgotPasswordOptions = forgotPasswordOptions.Value;
-        _emailVerificationOptions = emailVerificationOptions.Value;
+        _forgotPasswordOptions = emailMessagesTemplateOptions.Get(EmailMessagesTemplate.ForgotPasswordOptionsKey);
+        _emailVerificationOptions = emailMessagesTemplateOptions.Get(EmailMessagesTemplate.EmailVerificationOptionsKey);
     }
 
     public async Task<Result<AuthResponse>> RegisterUser(RegisterUserRequest request)
@@ -118,8 +120,9 @@ public class AuthService : IAuthService
             ["token"] = token, ["email"] = request.Email
         });
 
-        var body = GenerateMessageBody(request.Email, path);
-        var subject = "Password reset";
+        var language = _httpContextAccessor.HttpContext?.Request.Headers[HeaderNames.AcceptLanguage].FirstOrDefault() ?? GlobalConstants.Languages.English;
+        var subject = _forgotPasswordOptions.MessageHeadersByLanguage[language];
+        var body = GenerateMessageBody(request.Email, path, language);
 
         var sendEmailMessageRequest = new SendEmailMessageRequest(request.Email, request.Email, subject, "Html", body);
 
@@ -200,10 +203,11 @@ public class AuthService : IAuthService
             return Result<User>.NotFound(email);
         }
 
-        var subject = "Email Verification";
         var verifyEmailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         var path = QueryHelpers.AddQueryString(request.VerifyEmailUrl.ToString(), "token", verifyEmailToken);
-        var body = GenerateVerificationEmailMessageBody(email, path);
+        var language = _httpContextAccessor.HttpContext.Request.Headers[HeaderNames.AcceptLanguage].FirstOrDefault() ?? GlobalConstants.Languages.English;
+        var subject = _emailVerificationOptions.MessageHeadersByLanguage[language];
+        var body = GenerateVerificationEmailMessageBody(email, path, language);
         var sendEmailMessageRequest = new SendEmailMessageRequest(email, email, subject, "Html", body);
 
         var client = _httpClientFactory.CreateClient(SharedServicesConstants.NotificationHttpClientName);
@@ -249,13 +253,13 @@ public class AuthService : IAuthService
         return Result<string>.BadRequest(result.Errors.FirstOrDefault()?.Description ?? ErrorOccured);
     }
 
-    private string GenerateVerificationEmailMessageBody(string email, string path)
+    private string GenerateVerificationEmailMessageBody(string email, string path, string language)
     {
-        return string.Format(_emailVerificationOptions.MessageTemplate, email, path);
+        return string.Format(CultureInfo.InvariantCulture, _emailVerificationOptions.MessageTemplatesByLanguage[language], email, path);
     }
 
-    private string GenerateMessageBody(string requestEmail, string path)
+    private string GenerateMessageBody(string requestEmail, string path, string language)
     {
-        return string.Format(_forgotPasswordOptions.MessageTemplate, requestEmail, path);
+        return string.Format(CultureInfo.InvariantCulture, _forgotPasswordOptions.MessageTemplatesByLanguage[language], requestEmail, path);
     }
 }
