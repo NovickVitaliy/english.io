@@ -32,13 +32,13 @@ builder.Services.AddOptions<NotificationsApiOptions>()
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
-builder.Services.AddOptions<ForgotPasswordOptions>()
-    .BindConfiguration(ForgotPasswordOptions.ConfigurationKey)
+builder.Services.AddOptions<EmailMessagesTemplate>(EmailMessagesTemplate.ForgotPasswordOptionsKey)
+    .BindConfiguration(EmailMessagesTemplate.ForgotPasswordOptionsKey)
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
-builder.Services.AddOptions<EmailVerificationOptions>()
-    .BindConfiguration(EmailVerificationOptions.ConfigurationKey)
+builder.Services.AddOptions<EmailMessagesTemplate>(EmailMessagesTemplate.EmailVerificationOptionsKey)
+    .BindConfiguration(EmailMessagesTemplate.EmailVerificationOptionsKey)
     .ValidateDataAnnotations()
     .ValidateOnStart();
 

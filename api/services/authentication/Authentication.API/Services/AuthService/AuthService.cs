@@ -25,19 +25,19 @@ public class AuthService : IAuthService
     private readonly ITokenGenerator _tokenGenerator;
     private readonly UserManager<User> _userManager;
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly ForgotPasswordOptions _forgotPasswordOptions;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly EmailVerificationOptions _emailVerificationOptions;
+    private readonly EmailMessagesTemplate _forgotPasswordOptions;
+    private readonly EmailMessagesTemplate _emailVerificationOptions;
 
     public AuthService(ITokenGenerator tokenGenerator, UserManager<User> userManager, IHttpClientFactory httpClientFactory,
-        IOptions<ForgotPasswordOptions> forgotPasswordOptions, IHttpContextAccessor httpContextAccessor, IOptions<EmailVerificationOptions> emailVerificationOptions)
+        IOptionsSnapshot<EmailMessagesTemplate> emailMessagesTemplateOptions, IHttpContextAccessor httpContextAccessor)
     {
         _tokenGenerator = tokenGenerator;
         _userManager = userManager;
         _httpClientFactory = httpClientFactory;
         _httpContextAccessor = httpContextAccessor;
-        _forgotPasswordOptions = forgotPasswordOptions.Value;
-        _emailVerificationOptions = emailVerificationOptions.Value;
+        _forgotPasswordOptions = emailMessagesTemplateOptions.Get(EmailMessagesTemplate.ForgotPasswordOptionsKey);
+        _emailVerificationOptions = emailMessagesTemplateOptions.Get(EmailMessagesTemplate.EmailVerificationOptionsKey);
     }
 
     public async Task<Result<AuthResponse>> RegisterUser(RegisterUserRequest request)
