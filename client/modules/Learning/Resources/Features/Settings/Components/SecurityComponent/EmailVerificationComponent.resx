@@ -17,4 +17,7 @@
   <data name="User_With_Given_Email_Was_Not_Found">
     User with given email was not found
   </data>
+  <data name="Email_Verified_Successfully">
+    Email verififed successfuly
+  </data>
 </root>

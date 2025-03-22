@@ -20,4 +20,7 @@
   <data name="User_With_Given_Email_Was_Not_Found">
     Користувач з такою адресою не був знайдений
   </data>
+  <data name="Email_Verified_Successfully">
+    Електронна адреса підтверджена успішно
+  </data>
 </root>
