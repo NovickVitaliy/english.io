@@ -16,7 +16,7 @@ public partial class ChangePasswordComponent : ComponentBase
 {
     private MudForm? _form = null;
     private readonly ChangePasswordRequest _request = new ChangePasswordRequest();
-
+    private bool _overlayVisible = false;
     [Inject] private IStringLocalizer<ChangePasswordComponent> Localizer { get; init; } = null!;
     [Inject] private ISnackbar Snackbar { get; init; } = null!;
     [Inject] private IAuthenticationSettingsService AuthenticationSettingsService { get; init; } = null!;
@@ -25,7 +25,8 @@ public partial class ChangePasswordComponent : ComponentBase
     private async Task ChangePasswordAsync()
     {
         await _form!.Validate();
-
+        if(!_form.IsValid) return;
+        _overlayVisible = true;
         try
         {
             await AuthenticationSettingsService.ChangePasswordAsync(_request, UserState.Value.Token);
@@ -36,6 +37,10 @@ public partial class ChangePasswordComponent : ComponentBase
         {
             ProblemDetails problemDetails = e.ToProblemDetails();
             Snackbar.Add(Localizer[problemDetails.Detail ?? "Error_Occured"], Severity.Error);
+        }
+        finally
+        {
+            _overlayVisible = false;
         }
     }
 }

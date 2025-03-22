@@ -14,7 +14,7 @@ public partial class ForgotPasswordForm : ComponentBase
 {
     private ForgotPasswordRequest _forgotPasswordRequest = null!;
     private MudForm _form = null!;
-
+    private bool _overlayVisible = false;
     [Inject] private IOptions<ClientOptions> ClientOptions { get; init; } = null!;
     [Inject] private IAuthenticationService AuthenticationService { get; init; } = null!;
     [Inject] private ISnackbar Snackbar { get; init; } = null!;
@@ -31,6 +31,7 @@ public partial class ForgotPasswordForm : ComponentBase
     {
         await _form.Validate();
         if (!_form.IsValid) return;
+        _overlayVisible = true;
         try
         {
             await AuthenticationService.ForgotPasswordAsync(_forgotPasswordRequest);
@@ -40,6 +41,10 @@ public partial class ForgotPasswordForm : ComponentBase
         {
             var problemDetails = e.ToProblemDetails();
             Snackbar.Add(Localizer[problemDetails.Detail ?? "Error_Occured"], Severity.Error);
+        }
+        finally
+        {
+            _overlayVisible = false;
         }
     }
 }

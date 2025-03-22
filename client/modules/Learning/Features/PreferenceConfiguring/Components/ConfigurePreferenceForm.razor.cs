@@ -29,6 +29,7 @@ public partial class ConfigurePreferenceForm : ComponentBase
     [Inject] private IDispatcher Dispatcher { get; init; } = null!;
     private readonly CreateUserPreferencesRequest _request = new CreateUserPreferencesRequest();
     private MudForm? _form = null!;
+    private bool _overlayVisible = false;
 
     private void HandleDailySessionsNumberChange(int sessionsCount)
     {
@@ -50,6 +51,7 @@ public partial class ConfigurePreferenceForm : ComponentBase
 
         if (_form.IsValid)
         {
+            _overlayVisible = true;
             try
             {
                 var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
@@ -58,7 +60,10 @@ public partial class ConfigurePreferenceForm : ComponentBase
                 var jwtToken = await UserPreferencesService.CreateUserPreferencesAsync(_request, token);
                 var json = await LocalStorageService.GetItemAsStringAsync(ClientConstants.UserDataKey);
                 json = System.Text.RegularExpressions.Regex.Unescape(json!);
-                var authData = JsonSerializer.Deserialize<UserData>(json!, new JsonSerializerOptions(){PropertyNameCaseInsensitive = true});
+                var authData = JsonSerializer.Deserialize<UserData>(json!, new JsonSerializerOptions()
+                {
+                    PropertyNameCaseInsensitive = true
+                });
                 authData = authData! with
                 {
                     AuthToken = jwtToken
@@ -75,6 +80,10 @@ public partial class ConfigurePreferenceForm : ComponentBase
             {
                 var problemDetails = e.ToProblemDetails();
                 Snackbar.Add(Localizer[problemDetails.Detail ?? "Error_Occured"], Severity.Error);
+            }
+            finally
+            {
+                _overlayVisible = false;
             }
         }
     }

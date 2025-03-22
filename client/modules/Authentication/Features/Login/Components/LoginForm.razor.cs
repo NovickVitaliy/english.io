@@ -17,6 +17,7 @@ public partial class LoginForm : ComponentBase
     [SupplyParameterFromQuery] private string? ReturnUrl { get; init; } = null!;
     private readonly LoginRequest _loginRequest = new LoginRequest();
     private MudForm _form = null!;
+    private bool _overlayVisible = false;
     [Inject] private IAuthenticationService AuthenticationService { get; init; } = null!;
     [Inject] private ISnackbar Snackbar { get; init; } = null!;
     [Inject] private NavigationManager NavigationManager { get; init; } = null!;
@@ -28,6 +29,7 @@ public partial class LoginForm : ComponentBase
         await _form.Validate();
         if (_form.IsValid)
         {
+            _overlayVisible = true;
             try
             {
                 var response = await AuthenticationService.LoginAsync(_loginRequest);
@@ -43,6 +45,10 @@ public partial class LoginForm : ComponentBase
             {
                 ProblemDetails problemDetails = e.ToProblemDetails();
                 Snackbar.Add(Localizer[problemDetails.Detail ?? "Error_Occured"], Severity.Error);
+            }
+            finally
+            {
+                _overlayVisible = false;
             }
         }
     }

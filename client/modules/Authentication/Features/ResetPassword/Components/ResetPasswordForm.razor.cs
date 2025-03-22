@@ -19,6 +19,7 @@ public partial class ResetPasswordForm : ComponentBase
     private string Email { get; init; } = null!;
     private MudForm? _form = null!;
     private ResetPasswordRequest _request = new();
+    private bool _overlayVisible = false;
 
     [Inject] private NavigationManager NavigationManager { get; init; } = null!;
     [Inject] private IOptions<ClientOptions> ClientOptions { get; init; } = null!;
@@ -43,6 +44,7 @@ public partial class ResetPasswordForm : ComponentBase
         await _form!.Validate();
         if (!_form.IsValid) return;
 
+        _overlayVisible = true;
         try
         {
             await AuthenticationService.ResetPasswordAsync(_request);
@@ -54,6 +56,10 @@ public partial class ResetPasswordForm : ComponentBase
         {
             var problemDetails = e.ToProblemDetails();
             Snackbar.Add(Localizer[problemDetails.Detail ?? "Error_Occured"], Severity.Error);
+        }
+        finally
+        {
+            _overlayVisible = false;
         }
     }
 }

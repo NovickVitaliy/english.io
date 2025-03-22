@@ -6,3 +6,6 @@
                OnClick="VerifyEmailAsync">@(UserState.Value.IsEmailVerified ? Localizer["Email_Already_Verified"] : Localizer["Verify_Button"])</MudButton>
     <MudText Typo="Typo.body1">@Localizer["Is_Verified"] @(UserState.Value.IsEmailVerified ? "✅" : "❌")</MudText>
 </div>
+<MudOverlay Visible="_overlayVisible" DarkBackground="true">
+    <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
+</MudOverlay>

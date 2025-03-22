@@ -15,6 +15,7 @@ namespace Learning.Features.Settings.Components.SecurityComponent;
 
 public partial class VerifyEmailComponent : FluxorComponent
 {
+    private bool _overlayVisible = false;
     [Inject]
     private IStringLocalizer<VerifyEmailComponent> Localizer { get; init; } = null!;
 
@@ -32,6 +33,7 @@ public partial class VerifyEmailComponent : FluxorComponent
 
     private async Task VerifyEmailAsync()
     {
+        _overlayVisible = true;
         try
         {
             var request = new SendVerifyingEmailMessageRequest(new Uri(ClientOptions.Value.GetClientBaseUrl(), "verify-email"));
@@ -42,6 +44,10 @@ public partial class VerifyEmailComponent : FluxorComponent
         {
             var problemDetails = e.ToProblemDetails();
             Snackbar.Add(Localizer[problemDetails.Detail ?? "Error_Occured"], Severity.Error);
+        }
+        finally
+        {
+            _overlayVisible = false;
         }
     }
 }

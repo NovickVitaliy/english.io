@@ -16,6 +16,7 @@ namespace Authentication.Features.Register.Components;
 
 public partial class RegisterForm : ComponentBase
 {
+    private bool _overlayVisible = false;
     private readonly RegisterRequest _registerRequest = new RegisterRequest();
     private bool _isValid = true;
     private MudForm _form = null!;
@@ -31,6 +32,7 @@ public partial class RegisterForm : ComponentBase
 
         if (_form.IsValid)
         {
+            _overlayVisible = true;
             try
             {
                 var response = await AuthenticationService.RegisterAsync(_registerRequest);
@@ -47,6 +49,10 @@ public partial class RegisterForm : ComponentBase
             {
                 ProblemDetails problemDetails = e.ToProblemDetails();
                 Snackbar.Add(Localizer[problemDetails.Detail ?? "Error_Occured"], Severity.Error);
+            }
+            finally
+            {
+                _overlayVisible = true;
             }
         }
     }
