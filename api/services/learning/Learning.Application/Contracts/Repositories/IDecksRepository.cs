@@ -11,4 +11,5 @@ public interface IDecksRepository
     Task<DeckWord?> CreateDeckWordAsync(Guid deckId, DeckWord deckWord);
     Task<int> GetWordsCountForDeckAsync(Guid deckId);
     Task DeleteDeckAsync(Guid deckId);
+    Task<bool> DeckWithNameForUserExistsAsync(string userEmail, string deckTopic);
 }

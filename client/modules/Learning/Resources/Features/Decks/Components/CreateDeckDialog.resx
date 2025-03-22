@@ -26,4 +26,7 @@
   <data name="Error_Occured">
     Error occcured
   </data>
+  <data name="Deck_Already_Exists">
+    Deck with the same topic already exists
+  </data>
 </root>

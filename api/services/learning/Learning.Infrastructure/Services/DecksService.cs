@@ -32,6 +32,11 @@ public class DecksService : IDecksService
         }
 
         var userEmail = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "email")!.Value;
+        if (await _decksRepository.DeckWithNameForUserExistsAsync(userEmail, request.DeckTopic))
+        {
+            return Result<Guid>.BadRequest(DeckAlreadyExists);
+        }
+
         var deck = new Deck
         {
             Topic = request.DeckTopic,
