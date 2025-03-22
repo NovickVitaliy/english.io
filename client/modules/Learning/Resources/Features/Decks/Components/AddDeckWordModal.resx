@@ -30,4 +30,7 @@
   <data name="Id_Cannot_Be_Empty">
     Id cannot be empty
   </data>
+  <data name="Word_Already_Exists_In_The_Deck">
+    Word already exists in the deck
+  </data>
 </root>

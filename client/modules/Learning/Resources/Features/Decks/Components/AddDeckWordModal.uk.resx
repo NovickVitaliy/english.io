@@ -26,4 +26,7 @@
   <data name="Error_Occured">
     Сталася помилка
   </data>
+  <data name="Word_Already_Exists_In_The_Deck">
+    Слово вже існує в колоді
+  </data>
 </root>
