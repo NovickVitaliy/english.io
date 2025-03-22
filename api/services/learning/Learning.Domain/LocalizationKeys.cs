@@ -19,4 +19,5 @@ public static class LocalizationKeys
     public const string NoProviderForChosenFileType = "No_Provider_For_Given_File_Type";
     public const string WordAlreadyExists = "Word_Already_Exists_In_The_Deck";
     public const string DeckAlreadyExists = "Deck_Already_Exists";
+    public const string DeckDoesNotBelongToTheUser = "Deck_Does_Not_Belong_To_The_User";
 }
