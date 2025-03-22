@@ -17,4 +17,5 @@ public static class LocalizationKeys
     public const string DailySessionsReminderTimesMustBePresent = "Daily_Sessions_Reminder_Times_Must_Be_Present";
     public const string NumberOfDailySessionsReminderTimesMustNotBeGreatedThan5 = "Number_Of_Daily_Sessions_Reminder_Times_Must_Not_Be_Greater_Than_5";
     public const string NoProviderForChosenFileType = "No_Provider_For_Given_File_Type";
+    public const string WordAlreadyExists = "Word_Already_Exists_In_The_Deck";
 }

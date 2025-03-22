@@ -1,12 +1,9 @@
-using System.Security.Claims;
 using Learning.Application.Contracts.Api;
 using Learning.Application.Contracts.Repositories;
 using Learning.Application.Contracts.Services;
 using Learning.Application.DTOs.Decks;
 using Learning.Domain.Models;
-using MassTransit.Initializers;
 using Microsoft.AspNetCore.Http;
-using MongoDB.Driver;
 using Shared;
 using Shared.ErrorHandling;
 using static Learning.Domain.LocalizationKeys;
@@ -101,6 +98,15 @@ public class DecksService : IDecksService
             return Result<DeckWordDto>.BadRequest(validationResult.ErrorMessage);
         }
         var deck = await _decksRepository.GetDeckAsync(request.DeckId);
+        if (deck is null)
+        {
+            return Result<DeckWordDto>.NotFound(request.DeckId);
+        }
+
+        if (deck.DeckWords.Any(x => x.EnglishVersion.Equals(request.Word, StringComparison.OrdinalIgnoreCase)))
+        {
+            return Result<DeckWordDto>.BadRequest(WordAlreadyExists);
+        }
 
         if (deck!.IsStrict && !await _aiLearningService.DoesWordComplyToTheArticle(request.Word, deck.Topic))
         {
