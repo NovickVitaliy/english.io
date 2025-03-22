@@ -19,6 +19,7 @@
             </MudButton>
             <MudText> <b>@Localizer["Ukrainian_Version"]: </b>@DeckWord.UkrainianVersion</MudText>
         </div>
+        <MudText Class="mb-3"><b>@Localizer["Explanation"]:</b> @DeckWord.Explanation</MudText>
         <MudText><b>@Localizer["Example_Sentences"]</b></MudText>
         <ol>
             @foreach (var exampleSentence in DeckWord.ExampleSentences)
