@@ -26,4 +26,7 @@
   <data name="Error_Occured">
     Сталася помилка
   </data>
+  <data name="Deck_Already_Exists">
+    Колода з такою самою темою вже існує
+  </data>
 </root>

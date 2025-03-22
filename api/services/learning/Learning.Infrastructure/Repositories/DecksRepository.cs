@@ -81,4 +81,11 @@ public class DecksRepository : IDecksRepository
 
         await _learningDbContext.Decks.DeleteOneAsync(filter);
     }
+    public async Task<bool> DeckWithNameForUserExistsAsync(string userEmail, string deckTopic)
+    {
+        var filter = Builders<Deck>.Filter.Eq(x => x.UserEmail, userEmail) & Builders<Deck>.Filter.Eq(x => x.Topic, deckTopic);
+
+        var deck = await (await _learningDbContext.Decks.FindAsync(filter)).FirstOrDefaultAsync();
+        return deck != null;
+    }
 }
