@@ -88,7 +88,7 @@ public class DecksService : IDecksService
             deck.Topic,
             deck.IsStrict,
             deck.DeckWords.Count,
-            deck.DeckWords.Select(x =>  new DeckWordDto(x.UkrainianVersion, x.EnglishVersion, x.ExampleSentences)).ToArray());
+            deck.DeckWords.Select(x =>  new DeckWordDto(x.UkrainianVersion, x.EnglishVersion, x.Explanation, x.ExampleSentences)).ToArray());
 
         return Result<DeckWithWordsDto>.Ok(dto);
     }
@@ -114,6 +114,7 @@ public class DecksService : IDecksService
         {
             Id = Guid.NewGuid(),
             EnglishVersion = deckWordDto.EnglishVersion,
+            Explanation = deckWordDto.Explanation,
             UkrainianVersion = deckWordDto.UkrainianVersion,
             ExampleSentences = deckWordDto.ExampleSentences
         };
