@@ -1,0 +1,8 @@
+<root>
+  <data name="Title">
+    Translate words from thia language: '{0}' to this '{1}'
+  </data>
+  <data name="Verify_Words">
+    Verify translated words
+  </data>
+</root>

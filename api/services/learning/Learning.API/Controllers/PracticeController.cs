@@ -15,7 +15,7 @@ public class PracticeController : ControllerBase
         _practiceService = practiceService;
     }
 
-    [HttpPost("translate-words-from-english-to-ukrainian")]
+    [HttpPost("translate-words")]
     public async Task<IActionResult> TranslateWordsFromEnglishToUkrainianTask(TranslateWordsRequest request)
     {
         return (await _practiceService.TranslateWords(request)).ToApiResponse();

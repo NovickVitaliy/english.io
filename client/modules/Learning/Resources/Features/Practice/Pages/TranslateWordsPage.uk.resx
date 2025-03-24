@@ -1,0 +1,8 @@
+<root>
+  <data name="Title">
+    Перекладіть слова з цієї мови: '{0}' на '{1}'
+  </data>
+  <data name="Verify_Words">
+    Перевірити перекладені слова
+  </data>
+</root>

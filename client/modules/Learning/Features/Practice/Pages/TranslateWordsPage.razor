@@ -1,0 +1,41 @@
+@page "/practice/translate-words"
+@using MudBlazor
+@using Shared.Layout
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@layout EmptyLayout
+
+<MudContainer MaxWidth="MaxWidth.Small">
+    <MudText Class="mb-3" Typo="Typo.h5">@Localizer["Title", OriginalLanguage, TranslateLanguage]</MudText>
+    <MudForm Model="_request">
+        @if (PracticeState.Value is not null)
+        {
+            @for (var i = 0; i < PracticeState.Value.WordsBeingPracticed.Length; i++)
+            {
+                var word = PracticeState.Value.WordsBeingPracticed[i];
+                var index = i;
+                _request.TranslatedWords[index].OriginalWord = word;
+                _request.TranslatedWords[index].OriginalLanguage = OriginalLanguage;
+                _request.TranslatedWords[index].TranslatedLanguage = TranslateLanguage;
+                <MudPaper Class="d-flex gap-3 p-2 mb-3 justify-content-between">
+                    @if (_response is not null)
+                    {
+                        var resultWord = _response.Results.First(x => x.OriginalWord == word);
+                        <MudText>@(resultWord.IsCorrect ? "✅" : "❌")</MudText>
+                    }
+                    <MudText Align="Align.Center" Class="w-25" Typo="Typo.h6">
+                        @word
+                    </MudText>
+                    <MudTextField T="string" @bind-Value="_request.TranslatedWords[index].Translated"></MudTextField>
+                </MudPaper>
+            }
+
+            <MudButton Class="mb-3" Color="Color.Primary" Variant="Variant.Filled" OnClick="VerifyTranslatedWords">
+                @Localizer["Verify_Words"]
+            </MudButton>
+        }
+    </MudForm>
+</MudContainer>
+<MudOverlay Visible="_overlayVisible" DarkBackground="true">
+    <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
+</MudOverlay>
+

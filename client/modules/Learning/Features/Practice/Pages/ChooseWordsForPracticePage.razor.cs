@@ -4,6 +4,7 @@ using Fluxor.Blazor.Web.Components;
 using Learning.LearningShared.Services;
 using Learning.Store.Deck;
 using Learning.Store.Deck.Actions;
+using Learning.Store.Practice.Actions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
@@ -22,6 +23,7 @@ public partial class ChooseWordsForPracticePage : FluxorComponent
     [Inject] private IDispatcher Dispatcher { get; init; } = null!;
     [Inject] private ISnackbar Snackbar { get; init; } = null!;
     [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; init; } = null!;
+    [Inject] private NavigationManager NavigationManager { get; init; } = null!;
     private readonly List<string> _wordsForPractice = [];
     private int _countOfWordsForPractice;
     protected override void OnInitialized()
@@ -54,7 +56,14 @@ public partial class ChooseWordsForPracticePage : FluxorComponent
         }
 
         _wordsForPractice.Add(word);
-        Console.WriteLine(string.Join(',', _wordsForPractice));
+    }
+
+    private void StartWordPractice()
+    {
+        if (_wordsForPractice.Count != _countOfWordsForPractice) return;
+
+        Dispatcher.Dispatch(new SetWordsBeingPracticedAction(_wordsForPractice.ToArray()));
+        NavigationManager.NavigateTo($"/practice/translate-words?originalLanguage=english&translateLanguage=ukrainian&wordsCount={_countOfWordsForPractice}");
     }
 }
 

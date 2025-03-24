@@ -15,7 +15,7 @@
             <MudContainer Class="mt-5 d-flex justify-content-center align-items-center flex-column">
                 <MudText Class="mb-5" Typo="Typo.h6" Align="Align.Center">@Localizer["Choose_Specific_Count_Of_Words", _countOfWordsForPractice]</MudText>
                 <div class="d-flex justify-content-end w-50 mb-5">
-                    <MudButton Disabled="_wordsForPractice.Count != _countOfWordsForPractice" Color="Color.Primary" Variant="Variant.Filled">@Localizer["Practice"]</MudButton>
+                    <MudButton OnClick="StartWordPractice" Disabled="_wordsForPractice.Count != _countOfWordsForPractice" Color="Color.Primary" Variant="Variant.Filled">@Localizer["Practice"]</MudButton>
                 </div>
                 @foreach (var word in DeckState.Value.DeckWithWordsDto!.DeckWords)
                 {
