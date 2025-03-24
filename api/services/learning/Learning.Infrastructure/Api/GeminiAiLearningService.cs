@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Learning.Application.Contracts.Api;
 using Learning.Application.DTOs.Decks;
+using Learning.Application.DTOs.Practice;
 using Learning.Infrastructure.Options;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -71,6 +72,43 @@ public class GeminiAiLearningService : IAiLearningService
         var deckWordDto = JsonSerializer.Deserialize<DoesWordComplyToTheTopicResponse>(textProperty!, new JsonSerializerOptions(){PropertyNameCaseInsensitive = true});
         return JsonSerializer.Deserialize<DoesWordComplyToTheTopicResponse>(textProperty!, new JsonSerializerOptions(){ PropertyNameCaseInsensitive = true})!.DoesComply;
 
+    }
+
+    public async Task<TranslatedWordResult[]> VerifyWordsTranslations(TranslateWordsRequest request)
+    {
+        var body = BuildRequestForVerifyingWordsTranslations(request);
+        var httpRequest = new HttpRequestMessage()
+        {
+            Method = HttpMethod.Post,
+            RequestUri = new Uri($"v1beta/models/gemini-2.0-flash-001:generateContent?key={_geminiOptions.ApiKey}", UriKind.Relative),
+            Content = new StringContent(JsonSerializer.Serialize(body))
+        };
+
+        var response = await _httpClient.SendAsync(httpRequest);
+        var json = await response.Content.ReadAsStringAsync();
+        using var doc = JsonDocument.Parse(json);
+        var textProperty = doc.RootElement
+            .GetProperty("candidates")[0]
+            .GetProperty("content")
+            .GetProperty("parts")[0]
+            .GetProperty("text")
+            .GetString();
+
+        return JsonSerializer.Deserialize<TranslatedWordResult[]>(textProperty!, new JsonSerializerOptions()
+        {
+            PropertyNameCaseInsensitive = true
+        })!;
+
+    }
+    private object BuildRequestForVerifyingWordsTranslations(TranslateWordsRequest request)
+    {
+        var prompt = _options.PromptForCheckingIfTranslationsAreCorrect
+            .Replace("{words}", string.Join(", ", request.TranslatedWords.Select(x => x.OriginalWord)), StringComparison.InvariantCulture)
+            .Replace("{originalLanguage}", request.TranslatedWords.Select(x => x.OriginalLanguage).First(), StringComparison.InvariantCulture)
+            .Replace("{translatedWords}", string.Join(", ", request.TranslatedWords.Select(x => x.Translated)), StringComparison.InvariantCulture)
+            .Replace("{translatedLanguage}", request.TranslatedWords.Select(x => x.TranslatedLanguage).First(), StringComparison.InvariantCulture);
+
+        return BuildRequestWithPrompt(prompt);
     }
 
     private object BuildRequestForCheckingIfWordCompliesToTheTopic(string word, string topic)

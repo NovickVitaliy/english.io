@@ -73,6 +73,8 @@ public static class DependencyInjection
         services.AddScoped<IDeckExporterFileProvider, ExcelDeckExporterFileProvider>();
         services.AddScoped<IDeckExporterFileProvider, PdfDeckExporterFileProvider>();
 
+        services.AddScoped<IPracticeService, PracticeService>();
+
         return services;
     }
 }
