@@ -43,7 +43,7 @@ public class UserPreferencesService : IUserPreferencesService
         };
 
         var id = await _userPreferencesRepository.CreateUserPreferencesAsync(userPreferences);
-        await _publishEndpoint.Publish(new UserCreatedPreferences(request.UserEmail!, userPreferences.NumberOfExampleSentencesPerWord));
+        await _publishEndpoint.Publish(new UserCreatedPreferences(request.UserEmail!, userPreferences.NumberOfExampleSentencesPerWord, userPreferences.DailyWordPracticeLimit));
         var createJwtTokenRequest = new CreateJwtTokenRequest(request.UserEmail!);
         var requestClient = _scopedClientFactory.CreateRequestClient<CreateJwtTokenRequest>();
         var jwtResponse = await requestClient.GetResponse<CreateJwtTokenResponse>(createJwtTokenRequest);

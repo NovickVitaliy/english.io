@@ -1,0 +1,17 @@
+<root>
+  <data name="Loading_Deck">
+    Завантаження колоди...
+  </data>
+  <data name="Choose_Words">
+    Виберіть слова для практики
+  </data>
+  <data name="Already_Added_Enough_Words">
+    Ви вже додали {0} слів
+  </data>
+  <data name="Choose_Specific_Count_Of_Words">
+    Виберіть {0} слів для практики
+  </data>
+  <data name="Practice">
+    Практикувати
+  </data>
+</root>

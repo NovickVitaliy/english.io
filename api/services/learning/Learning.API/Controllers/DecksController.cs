@@ -54,7 +54,6 @@ public class DecksController : ControllerBase
     }
 
     [HttpGet("export")]
-    [AllowAnonymous]
     public async Task<IActionResult> ExportDeckAsync([FromQuery] ExportDeckRequest request)
     {
         var response = await _deckExporterService.ExportDeckAsync(request);

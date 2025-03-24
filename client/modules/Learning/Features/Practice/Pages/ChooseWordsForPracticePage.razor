@@ -1,0 +1,39 @@
+@layout EmptyLayout
+@page "/practice/{deckId:guid}/choose-words"
+@using Shared.Layout
+@using MudBlazor
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+<MudContainer MaxWidth="MaxWidth.Large">
+    @if (DeckState.Value.IsLoading)
+    {
+        <MudText Typo="Typo.h6">@Localizer["Loading_Deck"]</MudText>
+    }
+    else
+    {
+        @if (DeckState.Value.DeckWithWordsDto is not null)
+        {
+            <MudContainer Class="mt-5 d-flex justify-content-center align-items-center flex-column">
+                <MudText Class="mb-5" Typo="Typo.h6" Align="Align.Center">@Localizer["Choose_Specific_Count_Of_Words", _countOfWordsForPractice]</MudText>
+                <div class="d-flex justify-content-end w-50 mb-5">
+                    <MudButton Disabled="_wordsForPractice.Count != _countOfWordsForPractice" Color="Color.Primary" Variant="Variant.Filled">@Localizer["Practice"]</MudButton>
+                </div>
+                @foreach (var word in DeckState.Value.DeckWithWordsDto!.DeckWords)
+                {
+                    <MudPaper Class="p-3 w-50 mb-3 d-flex">
+                        <div>
+                            <MudCheckBox Disabled="@(_wordsForPractice.Count == _countOfWordsForPractice && !_wordsForPractice.Contains(word.EnglishVersion))" T="bool" ValueChanged="@((value) => CheckWordForPractice(value, word.EnglishVersion))"></MudCheckBox>
+                        </div>
+                        <div>
+                            <MudText Typo="Typo.body1" Class="fw-bold mb-1">
+                                @word.EnglishVersion
+                            </MudText>
+                            <MudText Typo="Typo.body2">
+                                @word.UkrainianVersion
+                            </MudText>
+                        </div>
+                    </MudPaper>
+                }
+            </MudContainer>
+        }
+    }
+</MudContainer>

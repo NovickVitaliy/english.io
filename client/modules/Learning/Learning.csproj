@@ -20,6 +20,9 @@
     <ItemGroup>
       <Folder Include="Features\Home\Models\" />
       <Folder Include="Features\Home\Services\" />
+      <Folder Include="Features\Practice\Components\" />
+      <Folder Include="Features\Practice\Models\" />
+      <Folder Include="Features\Practice\Services\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -79,6 +82,9 @@
       </EmbeddedResource>
       <EmbeddedResource Update="Resources\Features\Decks\Components\ExportDeckModal.uk.resx">
         <DependentUpon>ExportDeckModal.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Practice\Pages\ChooseWordsForPracticePage.uk.resx">
+        <DependentUpon>ChooseWordsForPracticePage.resx</DependentUpon>
       </EmbeddedResource>
     </ItemGroup>
 

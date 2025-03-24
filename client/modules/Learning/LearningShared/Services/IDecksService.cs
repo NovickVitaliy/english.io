@@ -23,5 +23,5 @@ public interface IDecksService
     Task DeleteDeckAsync(Guid deckId, [Authorize] string token);
 
     [Get("/decks/export")]
-    Task<HttpResponseMessage> ExportToFile([Query]Guid deckId, [Query] ExportFileOptions type);
+    Task<HttpResponseMessage> ExportToFile([Query]Guid deckId, [Query] ExportFileOptions type, [Authorize] string token);
 }

@@ -1,0 +1,17 @@
+<root>
+  <data name="Loading_Deck">
+    Loading deck...
+  </data>
+  <data name="Choose_Words">
+    Choose words for practice
+  </data>
+  <data name="Already_Added_Enough_Words">
+    You have already added {0} words
+  </data>
+  <data name="Choose_Specific_Count_Of_Words">
+    Choose {0} words for the practice
+  </data>
+  <data name="Practice">
+    Practice
+  </data>
+</root>

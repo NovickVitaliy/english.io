@@ -6,6 +6,7 @@ public static class GlobalConstants
     {
         public const string PreferencesConfigured = "PreferencesConfigured";
         public const string ExampleSentencesPerWord = "ExampleSentencesPerWord";
+        public const string CountOfWordsForPractice = "CountOfWordsForPractice";
     }
 
     public static class Languages

@@ -29,5 +29,6 @@ public class UserCreatedPreferencesConsumer : IConsumer<UserCreatedPreferences>
         claim = new Claim(GlobalConstants.ApplicationClaimTypes.PreferencesConfigured, "true");
         await _userManager.AddClaimAsync(user, claim);
         await _userManager.AddClaimAsync(user, new Claim(GlobalConstants.ApplicationClaimTypes.ExampleSentencesPerWord, context.Message.ExampleSentences.ToString()));
+        await _userManager.AddClaimAsync(user, new Claim(GlobalConstants.ApplicationClaimTypes.CountOfWordsForPractice, context.Message.CountOfWordsForPractice.ToString()));
     }
 }
