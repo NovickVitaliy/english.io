@@ -2,6 +2,8 @@ using System.Text.Json;
 using Learning.Application.Contracts.Api;
 using Learning.Application.DTOs.Decks;
 using Learning.Application.DTOs.Practice;
+using Learning.Application.DTOs.Practice.FillInTheGaps;
+using Learning.Application.DTOs.Practice.TranslateWords;
 using Learning.Infrastructure.Options;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -100,6 +102,38 @@ public class GeminiAiLearningService : IAiLearningService
         })!;
 
     }
+
+    public async Task<SentenceWithGap[]> GenerateSentencesWithGaps(string[] words)
+    {
+        var request = BuildRequestForGeneratingSentencesWithGaps(words);
+        var httpRequest = new HttpRequestMessage()
+        {
+            Method = HttpMethod.Post,
+            Content = new StringContent(JsonSerializer.Serialize(request)),
+            RequestUri = new Uri($"v1beta/models/gemini-2.0-flash-001:generateContent?key={_geminiOptions.ApiKey}", UriKind.Relative)
+        };
+
+        var httpResponse = await _httpClient.SendAsync(httpRequest);
+        var json = await httpResponse.Content.ReadAsStringAsync();
+        using var doc = JsonDocument.Parse(json);
+        var text = doc.RootElement
+            .GetProperty("candidates")[0]
+            .GetProperty("content")
+            .GetProperty("parts")[0]
+            .GetProperty("text")
+            .ToString();
+
+        return JsonSerializer.Deserialize<SentenceWithGap[]>(text, new JsonSerializerOptions(){PropertyNameCaseInsensitive = true})!;
+    }
+
+    private object BuildRequestForGeneratingSentencesWithGaps(string[] words)
+    {
+        var prompt = _options.PromptForCheckingIfTranslationsAreCorrect
+            .Replace("{words}", string.Join(',', words), StringComparison.InvariantCulture);
+
+        return BuildRequestWithPrompt(prompt);
+    }
+
     private object BuildRequestForVerifyingWordsTranslations(TranslateWordsRequest request)
     {
         var prompt = _options.PromptForCheckingIfTranslationsAreCorrect

@@ -1,5 +1,6 @@
 using Learning.Application.Contracts.Services;
 using Learning.Application.DTOs.Practice;
+using Learning.Application.DTOs.Practice.TranslateWords;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Learning.Controllers;
@@ -16,8 +17,14 @@ public class PracticeController : ControllerBase
     }
 
     [HttpPost("translate-words")]
-    public async Task<IActionResult> TranslateWordsFromEnglishToUkrainianTask(TranslateWordsRequest request)
+    public async Task<IActionResult> TranslateWordsTask(TranslateWordsRequest request)
     {
         return (await _practiceService.TranslateWords(request)).ToApiResponse();
+    }
+
+    [HttpGet("sentences-with-gaps")]
+    public async Task<IActionResult> GetSentencesWithGaps([FromQuery] string[] words)
+    {
+        return (await _practiceService.GetSentencesWithGapsAsync(words)).ToApiResponse();
     }
 }

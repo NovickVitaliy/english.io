@@ -21,4 +21,5 @@ public static class LocalizationKeys
     public const string DeckAlreadyExists = "Deck_Already_Exists";
     public const string DeckDoesNotBelongToTheUser = "Deck_Does_Not_Belong_To_The_User";
     public const string IncorrectTranslateRequest = "Incorrect_Translate_Request";
+    public const string WordsMustBePresent = "Words_Must_Be_Present";
 }

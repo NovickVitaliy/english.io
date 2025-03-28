@@ -15,4 +15,7 @@ public class AiLearningPromptsOptions
 
     [Required]
     public string PromptForCheckingIfTranslationsAreCorrect { get; init; } = null!;
+
+    [Required]
+    public string PromptForGeneratingSentencesWithGaps { get; init; } = null!;
 }

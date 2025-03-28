@@ -1,7 +1,7 @@
 using Shared.Requests;
 using static Learning.Domain.LocalizationKeys;
 
-namespace Learning.Application.DTOs.Practice;
+namespace Learning.Application.DTOs.Practice.TranslateWords;
 
 public record TranslateWordsRequest(TranslatedWord[] TranslatedWords) : IBaseRequest
 {
