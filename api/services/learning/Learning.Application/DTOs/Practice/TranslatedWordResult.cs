@@ -1,3 +1,3 @@
 namespace Learning.Application.DTOs.Practice;
 
-public record TranslatedWordResult(string OriginalWord, string TranslatedWord, bool IsCorrect);
+public record TranslatedWordResult(string OriginalWord, string TranslatedWord, bool IsCorrect, bool CorrectTranslation);

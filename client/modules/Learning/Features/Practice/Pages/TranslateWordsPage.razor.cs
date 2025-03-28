@@ -69,7 +69,13 @@ public partial class TranslateWordsPage : FluxorComponent
 
     private void NextExercise()
     {
-        Dispatcher.Dispatch(new SetWordsBeingPracticedAction(_response?.Results.Select(x => x.TranslatedWord).ToArray() ?? []));
+        if (OriginalLanguage == ClientConstants.Languages.Ukrainian)
+        {
+            Dispatcher.Dispatch(new SetWordsBeingPracticedAction(_response?.Results.Select(x => x.CorrectTranslation).ToArray() ?? []));
+            NavigationManager.NavigateTo("/practice/fill-in-the-gaps");
+            return;
+        }
+        Dispatcher.Dispatch(new SetWordsBeingPracticedAction(_response?.Results.Select(x => x.CorrectTranslation).ToArray() ?? []));
         _response = null;
         NavigationManager.NavigateTo($"/practice/translate-words?originalLanguage=ukrainian&translateLanguage=english&wordsCount={WordsCount}");
     }
