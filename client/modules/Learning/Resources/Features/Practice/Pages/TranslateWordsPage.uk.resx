@@ -5,4 +5,10 @@
   <data name="Verify_Words">
     Перевірити перекладені слова
   </data>
+  <data name="Next_Exercise">
+    Наступна вправа
+  </data>
+  <data name="Already_Verified">
+    Ви вже звірили слова
+  </data>
 </root>

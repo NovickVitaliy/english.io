@@ -5,4 +5,10 @@
   <data name="Verify_Words">
     Verify translated words
   </data>
+  <data name="Next_Exercise">
+    Next exercise
+  </data>
+  <data name="Already_Verified">
+    You have already verified words
+  </data>
 </root>

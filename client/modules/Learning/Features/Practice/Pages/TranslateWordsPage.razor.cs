@@ -4,6 +4,7 @@ using Fluxor.Blazor.Web.Components;
 using Learning.Features.Practice.Models;
 using Learning.Features.Practice.Services;
 using Learning.Store.Practice;
+using Learning.Store.Practice.Actions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
@@ -23,6 +24,7 @@ public partial class TranslateWordsPage : FluxorComponent
     [Inject] private IPracticeService PracticeService { get; init; } = null!;
     [Inject] private ISnackbar Snackbar { get; init; } = null!;
     [Inject] private IState<UserState> UserState { get; init; } = null!;
+    [Inject] private IDispatcher Dispatcher { get; init; } = null!;
     [SupplyParameterFromQuery] private string OriginalLanguage { get; init; } = null!;
     [SupplyParameterFromQuery] private string TranslateLanguage { get; init; } = null!;
     [SupplyParameterFromQuery] private int WordsCount { get; init; }
@@ -45,6 +47,11 @@ public partial class TranslateWordsPage : FluxorComponent
     private async Task VerifyTranslatedWords()
     {
         _overlayVisible = true;
+        if (_response != null)
+        {
+            Snackbar.Add(Localizer["Already_Verified"], Severity.Info);
+        }
+
         try
         {
             _response = await PracticeService.TranslateWords(_request, UserState.Value.Token);
@@ -58,6 +65,13 @@ public partial class TranslateWordsPage : FluxorComponent
         {
             _overlayVisible = false;
         }
+    }
+
+    private void NextExercise()
+    {
+        Dispatcher.Dispatch(new SetWordsBeingPracticedAction(_response?.Results.Select(x => x.TranslatedWord).ToArray() ?? []));
+        _response = null;
+        NavigationManager.NavigateTo($"/practice/translate-words?originalLanguage=ukrainian&translateLanguage=english&wordsCount={WordsCount}");
     }
 }
 
