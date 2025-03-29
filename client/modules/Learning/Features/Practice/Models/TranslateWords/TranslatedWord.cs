@@ -1,4 +1,4 @@
-namespace Learning.Features.Practice.Models;
+namespace Learning.Features.Practice.Models.TranslateWords;
 
 public class TranslatedWord
 {

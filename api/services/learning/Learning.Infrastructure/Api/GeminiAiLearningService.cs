@@ -128,7 +128,7 @@ public class GeminiAiLearningService : IAiLearningService
 
     private object BuildRequestForGeneratingSentencesWithGaps(string[] words)
     {
-        var prompt = _options.PromptForCheckingIfTranslationsAreCorrect
+        var prompt = _options.PromptForGeneratingSentencesWithGaps
             .Replace("{words}", string.Join(',', words), StringComparison.InvariantCulture);
 
         return BuildRequestWithPrompt(prompt);

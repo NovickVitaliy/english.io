@@ -87,6 +87,9 @@
       <EmbeddedResource Update="Resources\Features\Practice\Pages\TranslateWordsPage.uk.resx">
         <DependentUpon>TranslateWordsPage.resx</DependentUpon>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Practice\Pages\FillInTheGapsPage.uk.resx">
+        <DependentUpon>FillInTheGapsPage.resx</DependentUpon>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

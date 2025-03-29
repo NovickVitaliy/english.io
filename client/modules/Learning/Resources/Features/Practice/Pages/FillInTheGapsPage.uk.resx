@@ -1,0 +1,17 @@
+<root>
+  <data name="Title">
+    Заповність пропуски в реченнях
+  </data>
+  <data name="Verify_Sentences">
+    Перевірити речення
+  </data>
+  <data name="Correct_Answer">
+    Правильна відповідь
+  </data>
+  <data name="Loading_Sentences">
+    Завантажуємо речення
+  </data>
+  <data name="Next_Exercise">
+    Наступна вправа
+  </data>
+</root>

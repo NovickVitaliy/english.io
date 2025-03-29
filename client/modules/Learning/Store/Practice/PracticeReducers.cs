@@ -6,5 +6,8 @@ namespace Learning.Store.Practice;
 public static class PracticeReducers
 {
     [ReducerMethod]
-    public static PracticeState SetWordsBeingPracticed(PracticeState state, SetWordsBeingPracticedAction action) => new PracticeState(WordsBeingPracticed: action.Words);
+    public static TranslateWordsState SetWordsBeingPracticed(TranslateWordsState state, SetWordsBeingPracticedAction action) => new TranslateWordsState(WordsBeingPracticed: action.Words);
+
+    [ReducerMethod]
+    public static FIllInTheGapsState SetFillInTheGapsWords(FIllInTheGapsState state, SetWordsForFillInTheGapsPracticeAction action) => new FIllInTheGapsState(action.Words);
 }

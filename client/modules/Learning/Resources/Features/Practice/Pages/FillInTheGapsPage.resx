@@ -1,0 +1,17 @@
+<root>
+  <data name="Title">
+    Fill in the gaps next sentences
+  </data>
+  <data name="Verify_Sentences">
+    Verify sentences
+  </data>
+  <data name="Correct_Answer">
+    Correct answer
+  </data>
+  <data name="Loading_Sentences">
+    Loading sentences
+  </data>
+  <data name="Next_Exercise">
+    Next exercise
+  </data>
+</root>

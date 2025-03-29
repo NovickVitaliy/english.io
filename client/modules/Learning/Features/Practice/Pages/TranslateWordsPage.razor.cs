@@ -20,7 +20,7 @@ public partial class TranslateWordsPage : FluxorComponent
 {
     [Inject] private IStringLocalizer<TranslateWordsPage> Localizer { get; init; } = null!;
     [Inject] private NavigationManager NavigationManager { get; init; } = null!;
-    [Inject] private IState<PracticeState> PracticeState { get; init; } = null!;
+    [Inject] private IState<TranslateWordsState> PracticeState { get; init; } = null!;
     [Inject] private IPracticeService PracticeService { get; init; } = null!;
     [Inject] private ISnackbar Snackbar { get; init; } = null!;
     [Inject] private IState<UserState> UserState { get; init; } = null!;
@@ -31,6 +31,7 @@ public partial class TranslateWordsPage : FluxorComponent
     private TranslateWordsRequest _request = null!;
     private TranslateWordsResponse? _response = null!;
     private bool _overlayVisible = false;
+    private string[]? _wordsFromFirstIteration = null;
 
     protected override void OnParametersSet()
     {
@@ -42,6 +43,7 @@ public partial class TranslateWordsPage : FluxorComponent
         }
 
         _request = new TranslateWordsRequest(WordsCount);
+        _wordsFromFirstIteration ??= PracticeState.Value.WordsBeingPracticed;
     }
 
     private async Task VerifyTranslatedWords()
@@ -69,10 +71,11 @@ public partial class TranslateWordsPage : FluxorComponent
 
     private void NextExercise()
     {
-        if (OriginalLanguage == ClientConstants.Languages.Ukrainian)
+        if (OriginalLanguage == "ukrainian")
         {
-            Dispatcher.Dispatch(new SetWordsBeingPracticedAction(_response?.Results.Select(x => x.CorrectTranslation).ToArray() ?? []));
+            Dispatcher.Dispatch(new SetWordsForFillInTheGapsPracticeAction(_response?.Results.Select(x => x.CorrectTranslation).ToArray() ?? []));
             NavigationManager.NavigateTo("/practice/fill-in-the-gaps");
+            _response = null;
             return;
         }
         Dispatcher.Dispatch(new SetWordsBeingPracticedAction(_response?.Results.Select(x => x.CorrectTranslation).ToArray() ?? []));

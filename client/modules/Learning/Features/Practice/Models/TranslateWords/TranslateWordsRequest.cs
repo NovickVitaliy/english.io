@@ -1,3 +1,5 @@
+using Learning.Features.Practice.Models.TranslateWords;
+
 namespace Learning.Features.Practice.Models;
 
 public class TranslateWordsRequest
