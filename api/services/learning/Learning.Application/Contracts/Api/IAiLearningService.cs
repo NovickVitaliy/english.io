@@ -12,4 +12,5 @@ public interface IAiLearningService
     Task<bool> DoesWordComplyToTheArticle(string word, string topic);
     Task<TranslatedWordResult[]> VerifyWordsTranslations(TranslateWordsRequest request);
     Task<SentenceWithGap[]> GenerateSentencesWithGaps(string[] words);
+    Task<string> GenerateExampleTextAsync(string[] words);
 }

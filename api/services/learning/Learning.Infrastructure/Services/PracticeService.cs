@@ -1,6 +1,7 @@
 using Learning.Application.Contracts.Api;
 using Learning.Application.Contracts.Services;
 using Learning.Application.DTOs.Practice;
+using Learning.Application.DTOs.Practice.ExampleText;
 using Learning.Application.DTOs.Practice.FillInTheGaps;
 using Learning.Application.DTOs.Practice.TranslateWords;
 using Learning.Infrastructure.Options;
@@ -43,5 +44,17 @@ public class PracticeService : IPracticeService
         var sentencesWithGaps = await _aiLearningService.GenerateSentencesWithGaps(words);
 
         return Result<SentenceWithGap[]>.Ok(sentencesWithGaps);
+    }
+    public async Task<Result<GetExampleTextResponse>> GetExampleTextAsync(string[] words)
+    {
+        var isValid = words.Length > 0 && !words.All(string.IsNullOrWhiteSpace);
+        if (!isValid)
+        {
+            return Result<GetExampleTextResponse>.BadRequest(WordsMustBePresent);
+        }
+
+        var result = await _aiLearningService.GenerateExampleTextAsync(words);
+
+        return Result<GetExampleTextResponse>.Ok(new GetExampleTextResponse(result));
     }
 }

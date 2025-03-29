@@ -18,4 +18,7 @@ public class AiLearningPromptsOptions
 
     [Required]
     public string PromptForGeneratingSentencesWithGaps { get; init; } = null!;
+
+    [Required]
+    public string PromptForGeneratingExampleText { get; init; } = null!;
 }

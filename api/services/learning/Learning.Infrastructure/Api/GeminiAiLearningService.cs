@@ -125,6 +125,37 @@ public class GeminiAiLearningService : IAiLearningService
 
         return JsonSerializer.Deserialize<SentenceWithGap[]>(text, new JsonSerializerOptions(){PropertyNameCaseInsensitive = true})!;
     }
+    public async Task<string> GenerateExampleTextAsync(string[] words)
+    {
+        var request = BuildRequestForGeneratingExampleText(words);
+        var httpRequest = new HttpRequestMessage()
+        {
+            Method = HttpMethod.Post,
+            Content = new StringContent(JsonSerializer.Serialize(request)),
+            RequestUri = new Uri($"v1beta/models/gemini-2.0-flash-001:generateContent?key={_geminiOptions.ApiKey}", UriKind.Relative)
+        };
+
+        var response = await _httpClient.SendAsync(httpRequest);
+        var json = await response.Content.ReadAsStringAsync();
+        var jsonDoc = JsonDocument.Parse(json);
+        var jsonText = jsonDoc.RootElement
+            .GetProperty("candidates")[0]
+            .GetProperty("content")
+            .GetProperty("parts")[0]
+            .GetProperty("text")
+            .ToString();
+
+        var exampleText = JsonDocument.Parse(jsonText).RootElement.GetProperty("text").ToString();
+        return exampleText;
+    }
+
+    private object BuildRequestForGeneratingExampleText(string[] words)
+    {
+        var prompt = _options.PromptForGeneratingExampleText
+            .Replace("{words}", string.Join(',', words), StringComparison.InvariantCultureIgnoreCase);
+
+        return BuildRequestWithPrompt(prompt);
+    }
 
     private object BuildRequestForGeneratingSentencesWithGaps(string[] words)
     {

@@ -27,4 +27,10 @@ public class PracticeController : ControllerBase
     {
         return (await _practiceService.GetSentencesWithGapsAsync(words)).ToApiResponse();
     }
+
+    [HttpGet("example-text")]
+    public async Task<IActionResult> GetExampleText([FromQuery] string[] words)
+    {
+        return (await _practiceService.GetExampleTextAsync(words)).ToApiResponse();
+    }
 }
