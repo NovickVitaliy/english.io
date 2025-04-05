@@ -1,3 +1,4 @@
+using Learning.Features.Practice.Services;
 using Learning.Features.PreferenceConfiguring.Services;
 using Learning.Features.Settings.Service;
 using Learning.LearningShared.Services;
@@ -21,6 +22,7 @@ public static class DependencyInjection
         services.ConfigureApiService<IDecksService>(configuration, IDecksService.ApiUrlKey);
         services.ConfigureApiService<IAuthenticationSettingsService>(configuration, IAuthenticationSettingsService.ApiUrlKey);
         services.ConfigureApiService<ITextToSpeechService>(configuration, ITextToSpeechService.ApiUrlKey);
+        services.ConfigureApiService<IPracticeService>(configuration, IPracticeService.ApiUrlKey);
 
         return services;
     }

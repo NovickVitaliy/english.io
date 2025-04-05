@@ -80,6 +80,21 @@
       <EmbeddedResource Update="Resources\Features\Decks\Components\ExportDeckModal.uk.resx">
         <DependentUpon>ExportDeckModal.resx</DependentUpon>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Practice\Pages\ChooseWordsForPracticePage.uk.resx">
+        <DependentUpon>ChooseWordsForPracticePage.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Practice\Pages\TranslateWordsPage.uk.resx">
+        <DependentUpon>TranslateWordsPage.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Practice\Pages\FillInTheGapsPage.uk.resx">
+        <DependentUpon>FillInTheGapsPage.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Practice\Pages\ExampleTextPage.uk.resx">
+        <DependentUpon>ExampleTextPage.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Practice\Components\SessionResultModal.uk.resx">
+        <DependentUpon>SessionResultModal.resx</DependentUpon>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

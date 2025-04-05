@@ -1,0 +1,20 @@
+<root>
+  <data name="Title">
+    Read the text with these word used in the context
+  </data>
+  <data name="Finish_Practice">
+    Finish practice
+  </data>
+  <data name="Loading">
+    Loading text...
+  </data>
+  <data name="Session_Result_Saved">
+    Session result has been saved.
+  </data>
+  <data name="Error_Occured">
+    Error Occured
+  </data>
+  <data name="Dialog_Name">
+    Session result
+  </data>
+</root>

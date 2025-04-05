@@ -10,6 +10,7 @@ public class LearningDbContext
 {
     private const string UserPreferencesCollectionName = "PreferencesCollection";
     private const string DecksCollectionName = "DecksCollection";
+    private const string SessionResultsCollectionName = "SessionResults";
     private readonly IMongoDatabase _mongoDatabase;
 
     public LearningDbContext(IMongoClient mongoClient, IOptions<MongoOptions> mongoOptions)
@@ -19,4 +20,5 @@ public class LearningDbContext
 
     public IMongoCollection<UserPreferences> UserPreferences => _mongoDatabase.GetCollection<UserPreferences>(UserPreferencesCollectionName);
     public IMongoCollection<Deck> Decks => _mongoDatabase.GetCollection<Deck>(DecksCollectionName);
+    public IMongoCollection<SessionResult> SessionResults => _mongoDatabase.GetCollection<SessionResult>(SessionResultsCollectionName);
 }

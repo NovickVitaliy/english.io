@@ -1,0 +1,20 @@
+<root>
+  <data name="Title">
+    Прочитайте текст з даними словами використаними в контексті
+  </data>
+  <data name="Finish_Practice">
+    Закінчити практику
+  </data>
+  <data name="Loading">
+    Завантажуємо текст...
+  </data>
+  <data name="Session_Result_Saved">
+    Результат сесії був збережений
+  </data>
+  <data name="Error_Occured">
+    Сталася помилка
+  </data>
+  <data name="Dialog_Name">
+    Результат сесії
+  </data>
+</root>

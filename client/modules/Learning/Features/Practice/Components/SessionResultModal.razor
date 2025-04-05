@@ -1,0 +1,30 @@
+@using Microsoft.Extensions.Localization
+@using MudBlazor
+@inject IStringLocalizer<SessionResultModal> Localizer
+<MudDialog Class="w-m">
+    <DialogContent>
+        @Localizer["Content"]
+        <div class="mb-3 mt-3">
+            <MudText>@Localizer["From_English_To_Ukrainian"]</MudText>
+            <MudProgressLinear Color="GetColorBasedOnSuccessPercentage(SaveSessionResultDto.FirstTaskPercentageSuccess)" Rounded="true" Size="Size.Small"
+                               Value="SaveSessionResultDto.FirstTaskPercentageSuccess"/>
+        </div>
+
+        <div class="mb-3">
+            <MudText>@Localizer["From_Ukrainian_To_English"]</MudText>
+            <MudProgressLinear Color="GetColorBasedOnSuccessPercentage(SaveSessionResultDto.SecondTaskPercentageSuccess)" Rounded="true" Size="Size.Small"
+                               Value="SaveSessionResultDto.SecondTaskPercentageSuccess"/>
+        </div>
+
+        <div class="mb-3">
+            <MudText>@Localizer["Fill_In_The_Gaps"]</MudText>
+            <MudProgressLinear Color="GetColorBasedOnSuccessPercentage(SaveSessionResultDto.ThirdTaskPercentageSuccess)" Rounded="true" Size="Size.Small"
+                               Value="SaveSessionResultDto.ThirdTaskPercentageSuccess"/>
+        </div>
+
+        @Localizer["See_In_Personal_Profile"]
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Submit" Color="Color.Primary" Variant="Variant.Filled">OK</MudButton>
+    </DialogActions>
+</MudDialog>

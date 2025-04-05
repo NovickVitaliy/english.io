@@ -1,0 +1,57 @@
+@page "/practice/fill-in-the-gaps"
+@using MudBlazor
+@using Shared.Layout
+@using Microsoft.AspNetCore.Components.Forms
+@layout EmptyLayout
+<MudContainer MaxWidth="MaxWidth.Medium">
+    <div>
+        @if (_sentencesWithGaps is null)
+        {
+            <MudText>@Localizer["Loading_Sentences"]...</MudText>
+        }
+        @if (_sentencesWithGaps is not null)
+        {
+            <MudText Align="Align.Center" Typo="Typo.h6">@Localizer["Title"]</MudText>
+            @if (_hasVerified)
+            {
+                <div class="d-flex justify-content-end">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="NextExercise">@Localizer["Next_Exercise"]</MudButton>
+                </div>
+            }
+            @for (var i = 0; i < _sentencesWithGaps.Length; i++)
+            {
+                var sentence = _sentencesWithGaps[i];
+                var splitSentence = sentence.Sentence.Split("*****").Select(x => x.Trim()).ToArray();
+                var beforeGap = splitSentence[0];
+                var afterGap = splitSentence[1];
+                var index = i;
+
+                <div class="d-flex gap-3 align-items-center justify-content-start">
+                    @if (_hasVerified)
+                    {
+                        var isCorrect = sentence.CorrectWord.Equals(_fillInTheGapsData!.Words[index], StringComparison.InvariantCultureIgnoreCase);
+                        _fillInTheGapsData!.FillInTheGapsResult[sentence.CorrectWord] = _fillInTheGapsData!.Words[index];
+                        <MudText>@(isCorrect ? "✅" : "❌")</MudText>
+                    }
+                    <MudPaper class="d-flex mb-5 p-3 text-nowrap">
+                        <MudText>
+                            @beforeGap
+                        </MudText>
+                        <InputText style="border: 1px solid #a19b9b; border-radius: 5px; padding: 3px" Class="ms-3 me-3"
+                                   @bind-value="_fillInTheGapsData!.Words[index]"/>
+                        <MudText>
+                            @afterGap
+                        </MudText>
+                    </MudPaper>
+                    @if (_hasVerified)
+                    {
+                        <MudText>@Localizer["Correct_Answer"]: @sentence.CorrectWord</MudText>
+                    }
+                </div>
+            }
+
+            <MudButton Disabled="_hasVerified" OnClick="VerifySentences" Variant="Variant.Filled"
+                       Color="Color.Primary">@Localizer["Verify_Sentences"]</MudButton>
+        }
+    </div>
+</MudContainer>

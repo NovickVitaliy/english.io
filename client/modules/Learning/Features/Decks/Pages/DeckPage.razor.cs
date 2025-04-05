@@ -17,6 +17,7 @@ public partial class DeckPage : ComponentBase
     [Inject] private IDialogService DialogService { get; init; } = null!;
     [Inject] private IDecksService DecksService { get; init; } = null!;
     [Inject] private IJSRuntime JsRuntime { get; init; } = null!;
+    [Inject] private NavigationManager NavigationManager { get; init; } = null!;
 
     private Task<IDialogReference> ShowAddWordDialog()
     {
@@ -49,5 +50,10 @@ public partial class DeckPage : ComponentBase
         };
 
         return DialogService.ShowAsync<ExportDeckModal>(@Localizer["Export_Dialog_Name"], parameters, options);
+    }
+
+    private void StartPracticeSetup()
+    {
+        NavigationManager.NavigateTo($"/practice/{DeckId}/choose-words");
     }
 }

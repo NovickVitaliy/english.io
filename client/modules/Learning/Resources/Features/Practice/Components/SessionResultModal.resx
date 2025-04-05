@@ -1,0 +1,17 @@
+<root>
+  <data name="Content">
+    Here are your results of the session
+  </data>
+  <data name="From_English_To_Ukrainian">
+    Translation from English to Ukrainian
+  </data>
+  <data name="From_Ukrainian_To_English">
+    Translation from Ukrainian to English
+  </data>
+  <data name="Fill_In_The_Gaps">
+    Fill in the gaps
+  </data>
+  <data name="See_In_Personal_Profile">
+    You can see the results in the personal profile as well
+  </data>
+</root>
