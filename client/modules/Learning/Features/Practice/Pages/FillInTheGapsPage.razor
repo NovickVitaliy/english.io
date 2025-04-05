@@ -29,7 +29,9 @@
                 <div class="d-flex gap-3 align-items-center justify-content-start">
                     @if (_hasVerified)
                     {
-                        <MudText>@(sentence.CorrectWord.Equals(_fillInTheGapsData!.Words[index], StringComparison.InvariantCultureIgnoreCase) ? "✅" : "❌")</MudText>
+                        var isCorrect = sentence.CorrectWord.Equals(_fillInTheGapsData!.Words[index], StringComparison.InvariantCultureIgnoreCase);
+                        _fillInTheGapsData!.FillInTheGapsResult[sentence.CorrectWord] = _fillInTheGapsData!.Words[index];
+                        <MudText>@(isCorrect ? "✅" : "❌")</MudText>
                     }
                     <MudPaper class="d-flex mb-5 p-3 text-nowrap">
                         <MudText>

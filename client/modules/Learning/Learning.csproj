@@ -20,7 +20,6 @@
     <ItemGroup>
       <Folder Include="Features\Home\Models\" />
       <Folder Include="Features\Home\Services\" />
-      <Folder Include="Features\Practice\Components\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -92,6 +91,9 @@
       </EmbeddedResource>
       <EmbeddedResource Update="Resources\Features\Practice\Pages\ExampleTextPage.uk.resx">
         <DependentUpon>ExampleTextPage.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Practice\Components\SessionResultModal.uk.resx">
+        <DependentUpon>SessionResultModal.resx</DependentUpon>
       </EmbeddedResource>
     </ItemGroup>
 

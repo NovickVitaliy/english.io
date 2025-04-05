@@ -18,4 +18,7 @@ public interface IPracticeService
 
     [Get("/practice/example-text")]
     Task<GenerateExampleTextResponse> GenerateExampleTextAsync([Query(CollectionFormat.Multi)] string[] words, [Authorize] string token);
+
+    [Post("/practice/save-session-result")]
+    Task<SaveSessionResultDto> SaveSessionResult(SaveSessionResultRequest request);
 }

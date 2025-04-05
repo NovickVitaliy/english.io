@@ -11,4 +11,5 @@ public interface IPracticeService
     Task<Result<TranslateWordsResponse>> TranslateWords(TranslateWordsRequest request);
     Task<Result<SentenceWithGap[]>> GetSentencesWithGapsAsync(string[] words);
     Task<Result<GetExampleTextResponse>> GetExampleTextAsync(string[] words);
+    Task<Result<SaveSessionResultDto>> SaveSessionResultAsync(SaveSessionResultRequest request);
 }

@@ -5,6 +5,7 @@ using Learning.Features.Practice.Models;
 using Learning.Features.Practice.Services;
 using Learning.Store.Practice;
 using Learning.Store.Practice.Actions;
+using Learning.Store.PracticeStatus.Actions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
@@ -73,11 +74,13 @@ public partial class TranslateWordsPage : FluxorComponent
     {
         if (OriginalLanguage == "ukrainian")
         {
+            Dispatcher.Dispatch(new SetSecondTaskPercentageSuccessAction((_response?.Results!).Count(x => x.IsCorrect) / (double)_response?.Results!.Length! * 100));
             Dispatcher.Dispatch(new SetWordsForFillInTheGapsPracticeAction(_response?.Results.Select(x => x.CorrectTranslation).ToArray() ?? []));
             NavigationManager.NavigateTo("/practice/fill-in-the-gaps");
             _response = null;
             return;
         }
+        Dispatcher.Dispatch(new SetFirstTaskPercentageSuccessAction((_response?.Results!).Count(x => x.IsCorrect) / (double)_response?.Results!.Length! * 100));
         Dispatcher.Dispatch(new SetWordsBeingPracticedAction(_response?.Results.Select(x => x.CorrectTranslation).ToArray() ?? []));
         _response = null;
         NavigationManager.NavigateTo($"/practice/translate-words?originalLanguage=ukrainian&translateLanguage=english&wordsCount={WordsCount}");

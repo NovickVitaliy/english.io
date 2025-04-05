@@ -33,4 +33,10 @@ public class PracticeController : ControllerBase
     {
         return (await _practiceService.GetExampleTextAsync(words)).ToApiResponse();
     }
+
+    [HttpPost("save-session-result")]
+    public async Task<IActionResult> SaveSessionResultAsync(SaveSessionResultRequest request)
+    {
+        return (await _practiceService.SaveSessionResultAsync(request)).ToApiResponse();
+    }
 }

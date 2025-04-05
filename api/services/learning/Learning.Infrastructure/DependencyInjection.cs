@@ -16,6 +16,7 @@ using MongoDB.Driver;
 using OfficeOpenXml;
 using QuestPDF.Infrastructure;
 using Shared.MessageBus;
+using Shared.Services;
 
 namespace Learning.Infrastructure;
 
@@ -57,7 +58,6 @@ public static class DependencyInjection
             return new MongoClient(mongoOptions.ConnectionString);
         });
 
-        services.AddHttpContextAccessor();
         services.AddHttpClient();
 
         services.AddScoped<LearningDbContext>();
@@ -73,7 +73,11 @@ public static class DependencyInjection
         services.AddScoped<IDeckExporterFileProvider, ExcelDeckExporterFileProvider>();
         services.AddScoped<IDeckExporterFileProvider, PdfDeckExporterFileProvider>();
 
+        services.AddScoped<IPracticeRepository, PracticeRepository>();
         services.AddScoped<IPracticeService, PracticeService>();
+
+        services.AddHttpContextAccessor();
+        services.AddSharedServices();
 
         return services;
     }
