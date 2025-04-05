@@ -1,0 +1,11 @@
+<root>
+  <data name="Title">
+    Read the text with these word used in the context
+  </data>
+  <data name="Finish_Practice">
+    Finish practice
+  </data>
+  <data name="Loading">
+    Loading text...
+  </data>
+</root>

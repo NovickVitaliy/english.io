@@ -35,7 +35,7 @@ public partial class FillInTheGapsPage : ComponentBase
 
     private void NextExercise()
     {
-        NavigationManager.NavigateTo("/practice/text-with-examples");
+        NavigationManager.NavigateTo("/practice/example-text");
     }
 }
 

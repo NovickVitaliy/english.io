@@ -1,0 +1,11 @@
+<root>
+  <data name="Title">
+    Прочитайте текст з даними словами використаними в контексті
+  </data>
+  <data name="Finish_Practice">
+    Закінчити практику
+  </data>
+  <data name="Loading">
+    Завантажуємо текст...
+  </data>
+</root>
