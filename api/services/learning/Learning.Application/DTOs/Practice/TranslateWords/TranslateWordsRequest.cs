@@ -7,7 +7,8 @@ public record TranslateWordsRequest(TranslatedWord[] TranslatedWords, string Ori
 {
     public RequestValidationResult IsValid()
     {
-        var result = TranslatedWords.Length > 0 && TranslatedWords.All(x => !string.IsNullOrWhiteSpace(x.OriginalWord));
+        var result = TranslatedWords.Length > 0 && TranslatedWords.All(x => !string.IsNullOrWhiteSpace(x.OriginalWord))
+            && !string.IsNullOrWhiteSpace(OriginalLanguage) && !string.IsNullOrWhiteSpace(TranslatedLanguage);
 
         return result
             ? new RequestValidationResult(true)
