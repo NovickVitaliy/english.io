@@ -11,4 +11,6 @@ public class UserPreferences
     public int DailyWordPracticeLimit { get; set; }
 
     public List<TimeSpan> DailySessionsReminderTimes { get; set; } = [];
+
+    public NotificationChannel NotificationChannel { get; set; } = NotificationChannel.Email;
 }
