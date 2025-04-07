@@ -33,6 +33,7 @@ public partial class ConfigurePreferenceForm : ComponentBase
 
     private void HandleDailySessionsNumberChange(int sessionsCount)
     {
+        _request.DailySessionsCount = sessionsCount;
         if (sessionsCount > _request.DailySessionsReminderTimes.Count)
         {
             _request.DailySessionsReminderTimes.AddRange(Enumerable.Range(0, sessionsCount - _request.DailySessionsReminderTimes.Count).Select(_ => TimeSpan.Zero));

@@ -63,4 +63,16 @@
   <data name="Error_Occured">
     Сталася помилка
   </data>
+  <data name="Notification_Channel">
+    Канал нагадувань
+  </data>
+  <data name="Choose_Notification_Channel">
+    Виберіть канал нагадувань
+  </data>
+  <data name="Email">
+    Електронна адреса
+  </data>
+  <data name="Telegram">
+    Телеграм
+  </data>
 </root>

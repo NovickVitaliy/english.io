@@ -1,3 +1,4 @@
+@using Learning.Features.PreferenceConfiguring.Models
 @using Microsoft.Extensions.Localization
 @using MudBlazor
 @inject IStringLocalizer<ConfigurePreferenceForm> Localizer
@@ -55,6 +56,15 @@
                                           @bind-Value="_request.DailySessionsReminderTimes[index]"
                                           Required="true">
                             </MudTextField>
+                        }
+
+                        @if (_request.DailySessionsReminderTimes.All(x => x != TimeSpan.Zero))
+                        {
+                            <MudText Typo="Typo.h5">@Localizer["Notification_Channel"]</MudText>
+                            <MudSelect @bind-Value="_request.NotificationChannel">
+                                <MudSelectItem Value="NotificationChannel.Email">@Localizer["Email"]</MudSelectItem>
+                                <MudSelectItem Value="NotificationChannel.Telegram">@Localizer["Telegram"]</MudSelectItem>
+                            </MudSelect>
                         }
                     }
                 </MudForm>
