@@ -43,7 +43,7 @@ public partial class TranslateWordsPage : FluxorComponent
             return;
         }
 
-        _request = new TranslateWordsRequest(WordsCount);
+        _request = new TranslateWordsRequest(WordsCount, OriginalLanguage, TranslateLanguage);
         _wordsFromFirstIteration ??= PracticeState.Value.WordsBeingPracticed;
     }
 
