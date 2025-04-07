@@ -22,8 +22,6 @@
                 var word = PracticeState.Value.WordsBeingPracticed[i];
                 var index = i;
                 _request.TranslatedWords[index].OriginalWord = word;
-                _request.TranslatedWords[index].OriginalLanguage = OriginalLanguage;
-                _request.TranslatedWords[index].TranslatedLanguage = TranslateLanguage;
                 <MudPaper Class="d-flex gap-3 p-2 mb-3 justify-content-between">
                     @if (_response is not null)
                     {

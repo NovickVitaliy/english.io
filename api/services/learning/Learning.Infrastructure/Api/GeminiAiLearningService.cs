@@ -169,9 +169,9 @@ public class GeminiAiLearningService : IAiLearningService
     {
         var prompt = _options.PromptForCheckingIfTranslationsAreCorrect
             .Replace("{words}", string.Join("; ", request.TranslatedWords.Select(x => x.OriginalWord)), StringComparison.InvariantCulture)
-            .Replace("{originalLanguage}", request.TranslatedWords.Select(x => x.OriginalLanguage).First(), StringComparison.InvariantCulture)
+            .Replace("{originalLanguage}", request.OriginalLanguage, StringComparison.InvariantCulture)
             .Replace("{translatedWords}", string.Join("; ", request.TranslatedWords.Select(x => x.Translated)), StringComparison.InvariantCulture)
-            .Replace("{translatedLanguage}", request.TranslatedWords.Select(x => x.TranslatedLanguage).First(), StringComparison.InvariantCulture);
+            .Replace("{translatedLanguage}", request.TranslatedLanguage, StringComparison.InvariantCulture);
 
         return BuildRequestWithPrompt(prompt);
     }
