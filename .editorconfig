@@ -87,6 +87,7 @@ dotnet_diagnostic.CA1031.severity = none
 dotnet_diagnostic.CA1305.severity = none
 dotnet_diagnostic.CA2000.severity = none
 dotnet_diagnostic.S6960.severity = none
+dotnet_diagnostic.CA5394.severity = none
 # static fields should have s_ prefix
 dotnet_naming_rule.static_fields_should_have_prefix.severity = suggestion
 dotnet_naming_rule.static_fields_should_have_prefix.symbols  = static_fields

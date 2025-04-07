@@ -15,11 +15,11 @@
         }
     </div>
     <MudForm Model="_request">
-        @if (PracticeState.Value is not null)
+        @if (PracticeState.Value is not null && _shuffledWords is not null)
         {
             @for (var i = 0; i < PracticeState.Value.WordsBeingPracticed.Length; i++)
             {
-                var word = PracticeState.Value.WordsBeingPracticed[i];
+                var word = _shuffledWords[i];
                 var index = i;
                 _request.TranslatedWords[index].OriginalWord = word;
                 <MudPaper Class="d-flex gap-3 p-2 mb-3 justify-content-between">

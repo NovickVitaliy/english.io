@@ -29,6 +29,7 @@ public partial class TranslateWordsPage : FluxorComponent
     [SupplyParameterFromQuery] private string OriginalLanguage { get; init; } = null!;
     [SupplyParameterFromQuery] private string TranslateLanguage { get; init; } = null!;
     [SupplyParameterFromQuery] private int WordsCount { get; init; }
+    private string[]? _shuffledWords;
     private TranslateWordsRequest _request = null!;
     private TranslateWordsResponse? _response = null!;
     private bool _overlayVisible = false;
@@ -44,6 +45,9 @@ public partial class TranslateWordsPage : FluxorComponent
         }
 
         _request = new TranslateWordsRequest(WordsCount, OriginalLanguage, TranslateLanguage);
+        _shuffledWords = new string[PracticeState.Value.WordsBeingPracticed.Length];
+        Array.Copy(PracticeState.Value.WordsBeingPracticed, _shuffledWords, PracticeState.Value.WordsBeingPracticed.Length);
+        Random.Shared.Shuffle(_shuffledWords);
         _wordsFromFirstIteration ??= PracticeState.Value.WordsBeingPracticed;
     }
 
