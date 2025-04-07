@@ -1,9 +1,16 @@
 using Learning.Application.Validation.UserPreferences;
+using Learning.Domain.Models;
 using Shared.Requests;
 
 namespace Learning.Application.DTOs.UserPreferences;
 
-public record DeleteUserPreferencesRequest(Guid? Id, string? UserEmail, int? NumberOfExampleSentencesPerWord, int? DailyWordPracticeLimit, TimeSpan[]? DailySessionsReminderTimes)
+public record DeleteUserPreferencesRequest(
+    Guid? Id,
+    string? UserEmail,
+    int? NumberOfExampleSentencesPerWord,
+    int? DailyWordPracticeLimit,
+    TimeSpan[]? DailySessionsReminderTimes,
+    NotificationChannel NotificationChannel)
     : IBaseUserPreferencesRequest
 {
     public RequestValidationResult IsValid()

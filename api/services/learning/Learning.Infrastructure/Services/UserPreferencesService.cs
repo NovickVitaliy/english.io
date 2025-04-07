@@ -1,7 +1,6 @@
 using Learning.Application.Contracts.Repositories;
 using Learning.Application.Contracts.Services;
 using Learning.Application.DTOs.UserPreferences;
-using Learning.Domain;
 using Learning.Domain.Models;
 using MassTransit;
 using Shared.ErrorHandling;
@@ -39,7 +38,8 @@ public class UserPreferencesService : IUserPreferencesService
             UserEmail = request.UserEmail!,
             DailySessionsReminderTimes = request.DailySessionsReminderTimes!.ToList(),
             DailyWordPracticeLimit = request.DailyWordPracticeLimit!.Value,
-            NumberOfExampleSentencesPerWord = request.NumberOfExampleSentencesPerWord!.Value
+            NumberOfExampleSentencesPerWord = request.NumberOfExampleSentencesPerWord!.Value,
+            NotificationChannel = request.NotificationChannel
         };
 
         var id = await _userPreferencesRepository.CreateUserPreferencesAsync(userPreferences);
@@ -67,7 +67,8 @@ public class UserPreferencesService : IUserPreferencesService
                 userPreferences.UserEmail,
                 userPreferences.NumberOfExampleSentencesPerWord,
                 userPreferences.DailyWordPracticeLimit,
-                userPreferences.DailySessionsReminderTimes));
+                userPreferences.DailySessionsReminderTimes,
+                userPreferences.NotificationChannel));
     }
 
     public async Task<Result<bool>> UpdateUserPreferencesAsync(UpdateUserPreferencesRequest request)
