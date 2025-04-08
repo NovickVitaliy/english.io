@@ -30,5 +30,7 @@ public class UserCreatedPreferencesConsumer : IConsumer<UserCreatedPreferences>
         await _userManager.AddClaimAsync(user, claim);
         await _userManager.AddClaimAsync(user, new Claim(GlobalConstants.ApplicationClaimTypes.ExampleSentencesPerWord, context.Message.ExampleSentences.ToString()));
         await _userManager.AddClaimAsync(user, new Claim(GlobalConstants.ApplicationClaimTypes.CountOfWordsForPractice, context.Message.CountOfWordsForPractice.ToString()));
+        await _userManager.AddClaimAsync(user, new Claim(GlobalConstants.ApplicationClaimTypes.NotificationChannel, context.Message.NotificationChannel));
+        await _userManager.AddClaimAsync(user, new Claim(GlobalConstants.ApplicationClaimTypes.IsTelegramConnected, context.Message.IsTelegramConnected.ToString()));
     }
 }
