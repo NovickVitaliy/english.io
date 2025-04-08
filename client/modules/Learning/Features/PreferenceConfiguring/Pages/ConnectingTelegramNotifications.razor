@@ -1,0 +1,25 @@
+@page "/preference-configuration/telegram-connect"
+@using Shared.Layout
+@using MudBlazor
+@layout EmptyLayout
+<MudGrid Class="d-flex justify-center align-center mt-20">
+    <MudItem md="4" sm="8" xs="12">
+        <MudCard>
+            <MudCardHeader>
+                <MudText Typo="Typo.h4" Align="Align.Center">@Localizer["Connecting_Telegram_Title"]</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                @if (_code is null)
+                {
+                    @Localizer["Loading_Code"]
+                }
+                else
+                {
+                    <MudText Typo="Typo.h6">@_code</MudText>
+                }
+            </MudCardContent>
+            <MudCardActions class="d-flex gap-1 ml-auto">
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+</MudGrid>

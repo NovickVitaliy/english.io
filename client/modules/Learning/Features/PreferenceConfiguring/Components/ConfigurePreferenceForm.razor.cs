@@ -72,9 +72,22 @@ public partial class ConfigurePreferenceForm : ComponentBase
                 await LocalStorageService.SetItemAsync(ClientConstants.UserDataKey, JsonSerializer.Serialize(authData));
                 Dispatcher.Dispatch(new SetUserStateAction(authData.AuthToken, authData.Role, authData.Email, authData.Username, authData.IsEmailVerified));
 
-                Snackbar.Add(Localizer["User_Preferences_Configured"], Severity.Success);
+                var isTelegram = _request.NotificationChannel == NotificationChannel.Telegram;
+                var localizationKey = isTelegram
+                    ? "Configure_Telegram"
+                    : "User_Preferences_Configured";
+
+                Snackbar.Add(Localizer[localizationKey], Severity.Success);
                 await Task.Delay(2000);
                 var query = $"?token={Uri.EscapeDataString(token)}";
+                if (isTelegram)
+                {
+                    query += "&isTelegram=true";
+                }
+                else
+                {
+                    query += "&isTelegram=false";
+                }
                 NavigationManager.NavigateTo("Learning/ConfigurePreference" + query, forceLoad: true);
             }
             catch (ApiException e)
