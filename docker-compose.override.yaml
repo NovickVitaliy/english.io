@@ -32,6 +32,7 @@ services:
       - AiLearningPrompts__PromptForCheckingIfWordCompliesToTheTopic=${PROMPT_FOR_CHECKING_IF_WORD_COMPLIES_TO_THE_TOPIC}
       - GeminiOptions__ApiKey=${GEMINI_API_KEY}
       - GeminiOptions__GenerateContentUrl=${GEMINI_GENERATE_CONTENT_URL}
+      - ConnectionStrings__RedisCache=redis-cache:6379
     ports:
       - "${LEARNING_API_PORT}:${ASPNETCORE_HTTP_PORTS}"
     env_file:

@@ -5,4 +5,7 @@
   <data name="Loading_Code">
     Створюємо код...
   </data>
+  <data name="Input_Code">
+    Введіть код нижче в телеграм бота. Бот доступний за посиланням нижче.
+  </data>
 </root>

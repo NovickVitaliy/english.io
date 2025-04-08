@@ -81,6 +81,11 @@ public static class DependencyInjection
 
         services.AddSignalR();
 
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = configuration.GetConnectionString("RedisCache");
+        });
+
         return services;
     }
 }
