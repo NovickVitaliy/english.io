@@ -152,3 +152,6 @@ services:
     container_name: english.io.telegram.bot
     environment:
       - ConnectionStrings__Default=Host=localhost;Database=telegram.bot.db;Username=telegram.bot;Password=12345
+      - TelegramBotToken=${TELEGRAM_BOT_TOKEN}
+    env_file:
+      - .env
