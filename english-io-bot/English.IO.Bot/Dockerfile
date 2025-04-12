@@ -1,4 +1,4 @@
-﻿FROM mcr.microsoft.com/dotnet/runtime:8.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
 
@@ -7,6 +7,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["english-io-bot/English.IO.Bot/English.IO.Bot.csproj", "english-io-bot/English.IO.Bot/"]
 COPY ["shared/Shared.MessageBus/Shared.MessageBus.csproj", "shared/Shared.MessageBus/"]
+COPY ["/Directory.Packages.props","/"]
 RUN dotnet restore "english-io-bot/English.IO.Bot/English.IO.Bot.csproj"
 COPY . .
 WORKDIR "/src/english-io-bot/English.IO.Bot"
