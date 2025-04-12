@@ -136,3 +136,15 @@ services:
     restart: always
     ports:
       - "${REDIS_CACHE_PORT}:6379"
+
+  telegram.bot.db:
+    restart: always
+    container_name: telegram.bot.db
+    ports:
+      - "${TELEGRAM_BOT_DB}:5433"
+
+  english.io.telegram.bot:
+    restart: always
+    container_name: english.io.telegram.bot
+    environment:
+      - ConnectionStrings__Default=Host=localhost;Database=telegram.bot.db;Username=telegram.bot;Password=12345

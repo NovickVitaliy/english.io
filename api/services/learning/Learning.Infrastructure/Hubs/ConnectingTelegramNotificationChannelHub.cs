@@ -14,6 +14,7 @@ public class ConnectingTelegramNotificationChannelHub : Hub
     {
         _distributedCache = distributedCache;
     }
+
     public override async Task OnConnectedAsync()
     {
         var cacheKey = $"{Context.ConnectionId}-code";
