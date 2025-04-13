@@ -1,4 +1,5 @@
 using English.IO.Bot.Database;
+using English.IO.Bot.Extensions;
 using English.IO.Bot.Models;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
@@ -27,11 +28,11 @@ public class UserConfiguredTelegramNotificationsConsumer : IConsumer<UserConfigu
             var user = await _dbContext.Users.SingleOrDefaultAsync(x => x.TelegramChatId == chatId);
             if (user is null) return;
             user.HasSubmittedCode = true;
-            await _telegramBotClient.SendMessage(chatId, "You have successfuly configured notifications via telegram.");
+            await _telegramBotClient.SendMessageSynchronized(chatId, "You have successfuly configured notifications via telegram.");
         }
         else
         {
-            await _telegramBotClient.SendMessage(chatId, "There was an error configuring notifications via telegram.");
+            await _telegramBotClient.SendMessageSynchronized(chatId, "There was an error configuring notifications via telegram.");
         }
     }
 }

@@ -1,4 +1,5 @@
 using English.IO.Bot.Database;
+using English.IO.Bot.Extensions;
 using English.IO.Bot.Handlers.Commands.Common;
 using English.IO.Bot.Managers.UserStates;
 using English.IO.Bot.Models;
@@ -27,7 +28,7 @@ public class StartCommandHandler : ICommandHandler
         var user = _dbContext.Users.SingleOrDefault(x => x.TelegramChatId == chatId);
         if (user is {HasSubmittedCode: true})
         {
-            await botClient.SendMessage(chatId!, "You have already submitted the code from the web app.", cancellationToken: cancellationToken);
+            await botClient.SendMessageSynchronized(chatId!, "You have already submitted the code from the web app.", cancellationToken: cancellationToken);
         }
         else
         {
@@ -40,7 +41,7 @@ public class StartCommandHandler : ICommandHandler
             await _dbContext.Users.AddAsync(user, cancellationToken: cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
             await _userStateManager.SetStateForUser(chatId.Value, UserState.SubmittingCode);
-            await botClient.SendMessage(chatId!, "Submit the code from the ENGLISH.IO web app.", cancellationToken: cancellationToken);
+            await botClient.SendMessageSynchronized(chatId!, "Submit the code from the ENGLISH.IO web app.", cancellationToken: cancellationToken);
         }
     }
 }

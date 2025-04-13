@@ -1,4 +1,5 @@
 using English.IO.Bot.Database;
+using English.IO.Bot.Extensions;
 using English.IO.Bot.Handlers.States.Common;
 using English.IO.Bot.Models;
 using MassTransit;
@@ -32,11 +33,11 @@ public class SubmittingCodeStateHandler : IUserStateHandler
 
         if (code is null)
         {
-            await botClient.SendMessage(chatId, "Incorrect code", cancellationToken: cancellationToken);
+            await botClient.SendMessageSynchronized(chatId, "Incorrect code", cancellationToken: cancellationToken);
             return;
         }
 
         await publishEndpoint.Publish(new UserTypedInTelegramNotificationsConfigurationCode(code, chatId), cancellationToken);
-        await botClient.SendMessage(chatId, "Code was sent. Waiting for the response...", cancellationToken: cancellationToken);
+        await botClient.SendMessageSynchronized(chatId, "Code was sent. Waiting for the response...", cancellationToken: cancellationToken);
     }
 }
