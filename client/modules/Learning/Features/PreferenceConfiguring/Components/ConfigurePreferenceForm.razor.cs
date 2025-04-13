@@ -73,11 +73,7 @@ public partial class ConfigurePreferenceForm : ComponentBase
                 Dispatcher.Dispatch(new SetUserStateAction(authData.AuthToken, authData.Role, authData.Email, authData.Username, authData.IsEmailVerified));
 
                 var isTelegram = _request.NotificationChannel == NotificationChannel.Telegram;
-                var localizationKey = isTelegram
-                    ? "Configure_Telegram"
-                    : "User_Preferences_Configured";
 
-                Snackbar.Add(Localizer[localizationKey], Severity.Success);
                 await Task.Delay(2000);
                 var query = $"?token={Uri.EscapeDataString(token)}";
                 if (isTelegram)

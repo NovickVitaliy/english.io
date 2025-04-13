@@ -38,6 +38,7 @@ public class StartCommandHandler : ICommandHandler
             };
 
             await _dbContext.Users.AddAsync(user, cancellationToken: cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
             await _userStateManager.SetStateForUser(chatId.Value, UserState.SubmittingCode);
             await botClient.SendMessage(chatId!, "Submit the code from the ENGLISH.IO web app.", cancellationToken: cancellationToken);
         }

@@ -21,7 +21,7 @@ public class DbContextUserStateProvider : IUserStateProvider
 
     public async Task SetStateForUser(long userTelegramId, UserState state)
     {
-        var user = await _dbContext.Users.SingleOrDefaultAsync(x => x.UserState == state);
+        var user = await _dbContext.Users.SingleOrDefaultAsync(x => x.TelegramChatId == userTelegramId);
         if (user is null)
         {
             return;

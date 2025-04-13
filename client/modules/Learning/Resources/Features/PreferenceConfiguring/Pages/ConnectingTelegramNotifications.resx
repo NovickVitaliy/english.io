@@ -8,4 +8,7 @@
   <data name="Input_Code">
     Input the code below in the telegram bot. Bot is accessible via link below.
   </data>
+  <data name="Telegram_Notifications_Configured">
+    Telegram notifications have been configured
+  </data>
 </root>

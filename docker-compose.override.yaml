@@ -146,12 +146,14 @@ services:
       - POSTGRES_PASSWORD=${TELEGRAM_BOT_DB_POSTGRES_PASSWORD}
       - POSTGRES_USER=${TELEGRAM_BOT_DB_POSTGRES_USER}
       - POSTGRES_DB=${TELEGRAM_BOT_DB_POSTGRES_DB}
+    volumes:
+      - telegram.bot.db.volume:/var/lib/postgresql/data
 
   english.io.telegram.bot:
     restart: always
     container_name: english.io.telegram.bot
     environment:
-      - ConnectionStrings__Default=Host=localhost;Database=telegram.bot.db;Username=telegram.bot;Password=12345
+      - ConnectionStrings__Default=Host=telegram.bot.db;Database=telegram.bot.db;Username=telegram.bot;Password=12345
       - TelegramBotToken=${TELEGRAM_BOT_TOKEN}
     env_file:
       - .env

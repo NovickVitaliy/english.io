@@ -39,6 +39,7 @@ await Host.CreateDefaultBuilder()
         services.AddSingleton<ITelegramBotClient>(_ => new TelegramBotClient(botToken));
         services.AddSingleton<UpdateHandler>();
         services.AddHostedService<BotHostedService>();
+        services.AddHostedService<ApplyMigrationsBackgroundService>();
 
         services.Scan(scan => scan.FromAssemblyOf<IUserStateHandler>()
             .AddClasses(classes => classes.AssignableTo<IUserStateHandler>())
@@ -55,7 +56,9 @@ await Host.CreateDefaultBuilder()
             .AsImplementedInterfaces()
             .WithSingletonLifetime());
 
-        services.AddDbContext<EnglishIOBotDbContext>(options => options.UseNpgsql());
+        services.AddDbContext<EnglishIOBotDbContext>(options =>
+            options.UseNpgsql(context.Configuration.GetConnectionString(EnglishIOBotDbContext.ConnectionStringKey)),
+            ServiceLifetime.Singleton);
 
         services.ConfigureRabbitMq(Assembly.GetExecutingAssembly());
     }).RunConsoleAsync();
