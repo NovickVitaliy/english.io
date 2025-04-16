@@ -8,7 +8,7 @@ namespace English.IO.Bot.Extensions;
 
 public static class TelegramBotClientExtensions
 {
-    private static readonly SemaphoreSlim s_semaphoreSlim = new SemaphoreSlim(1, 1);
+    private static readonly SemaphoreSlim s_semaphoreSlim = new SemaphoreSlim(1,1);
 
     public static async Task<Message> SendMessageSynchronized(
         this ITelegramBotClient botClient,
@@ -52,5 +52,10 @@ public static class TelegramBotClientExtensions
         {
             s_semaphoreSlim.Release();
         }
+    }
+
+    public static void Dispose()
+    {
+        s_semaphoreSlim.Dispose();
     }
 }

@@ -40,6 +40,7 @@ await Host.CreateDefaultBuilder()
         services.AddSingleton<UpdateHandler>();
         services.AddHostedService<BotHostedService>();
         services.AddHostedService<ApplyMigrationsBackgroundService>();
+        services.AddHostedService<ResourceManagerHostedService>();
 
         services.Scan(scan => scan.FromAssemblyOf<IUserStateHandler>()
             .AddClasses(classes => classes.AssignableTo<IUserStateHandler>())
