@@ -1,3 +1,4 @@
+using Fluxor;
 using Learning.Features.PreferenceConfiguring.Options;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -5,12 +6,14 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using MudBlazor;
 using Shared;
+using Shared.Store.User;
 
 namespace Learning.Features.PreferenceConfiguring.Pages;
 
 public partial class ConnectingTelegramNotifications : ComponentBase, IDisposable
 {
     [Inject] private ISnackbar Snackbar { get; init; } = null!;
+    [Inject] private IState<UserState> UserState { get; init; } = null!;
     [Inject] private NavigationManager NavigationManager { get; init; } = null!;
     [Inject] private IStringLocalizer<ConnectingTelegramNotifications> Localizer { get; init; } = null!;
     [Inject] private IOptions<PreferencesConfiguringHubOptions> PreferencesConfiguringHubOptions { get; init; } = null!;
@@ -18,16 +21,30 @@ public partial class ConnectingTelegramNotifications : ComponentBase, IDisposabl
     private string? _code;
     private bool _disposed;
 
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
+    {
+        UserState.StateChanged += async (_, _) =>
+        {
+            if (!string.IsNullOrWhiteSpace(UserState.Value.Email))
+            {
+                await ConnectToTheHub();
+            }
+        };
+
+        return Task.CompletedTask;
+    }
+    private async Task ConnectToTheHub()
     {
         _hubConnection = new HubConnectionBuilder()
-            .WithUrl(PreferencesConfiguringHubOptions.Value.HubUrl)
+            .WithUrl(PreferencesConfiguringHubOptions.Value.HubUrl, options =>
+                options.AccessTokenProvider = () => Task.FromResult(UserState.Value.Token)!)
             .Build();
 
         _hubConnection.On<string>(ConnectingTelegramNotificationChannelHubMessages.UserConnected, async (code) =>
         {
             if (_code is null)
             {
+                Console.WriteLine(code);
                 _code = code;
                 await InvokeAsync(StateHasChanged);
             }
@@ -62,4 +79,3 @@ public partial class ConnectingTelegramNotifications : ComponentBase, IDisposabl
         }
     }
 }
-

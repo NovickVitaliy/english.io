@@ -27,7 +27,14 @@ public class UserConfiguredTelegramNotificationsConsumer : IConsumer<UserConfigu
         {
             var user = await _dbContext.Users.SingleOrDefaultAsync(x => x.TelegramChatId == chatId);
             if (user is null) return;
+            if (user.HasSubmittedCode)
+            {
+                await _telegramBotClient.SendMessageSynchronized(chatId, "You have already configured notifications via telegram.");
+                return;
+            }
             user.HasSubmittedCode = true;
+            user.UserEmail = context.Message.UserEmail;
+            await _dbContext.SaveChangesAsync();
             await _telegramBotClient.SendMessageSynchronized(chatId, "You have successfuly configured notifications via telegram.");
         }
         else

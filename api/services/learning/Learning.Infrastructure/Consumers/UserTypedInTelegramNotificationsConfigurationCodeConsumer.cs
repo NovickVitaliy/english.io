@@ -28,14 +28,18 @@ public class UserTypedInTelegramNotificationsConfigurationCodeConsumer : IConsum
         var code = context.Message.Code;
         var chatId = context.Message.ChatId;
         var connectionId = await _distributedCache.GetStringAsync(code);
+        var email = await _distributedCache.GetStringAsync($"{code}-email");
         if (!string.IsNullOrWhiteSpace(connectionId))
         {
             await _hubContext.Clients.Client(connectionId).SendAsync(ConnectingTelegramNotificationChannelHubMessages.NotificationsConfigured);
-            await _publishEndpoint.Publish(new UserConfiguredTelegramNotifications(chatId, true));
+            await _publishEndpoint.Publish(new UserConfiguredTelegramNotifications(chatId, email!, true));
+            await _distributedCache.RemoveAsync(code);
+            await _distributedCache.RemoveAsync($"{code}-email");
+            await _distributedCache.RemoveAsync($"{connectionId}-code");
         }
         else
         {
-            await _publishEndpoint.Publish(new UserConfiguredTelegramNotifications(chatId, false));
+            await _publishEndpoint.Publish(new UserConfiguredTelegramNotifications(chatId, email!, false));
         }
     }
 }

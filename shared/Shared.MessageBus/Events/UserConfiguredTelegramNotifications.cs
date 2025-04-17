@@ -1,3 +1,3 @@
 namespace Shared.MessageBus.Events;
 
-public record UserConfiguredTelegramNotifications(long ChatId, bool Success);
+public record UserConfiguredTelegramNotifications(long ChatId, string UserEmail, bool Success);

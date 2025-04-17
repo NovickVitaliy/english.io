@@ -31,6 +31,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapHub<ConnectingTelegramNotificationChannelHub>("/connect-telegram-notification-channel-hub");
+app.MapHub<ConnectingTelegramNotificationChannelHub>("/hubs/connect-telegram-notification-channel-hub");
 
 await app.RunAsync();
