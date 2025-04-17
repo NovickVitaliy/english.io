@@ -33,6 +33,7 @@ services:
       - GeminiOptions__ApiKey=${GEMINI_API_KEY}
       - GeminiOptions__GenerateContentUrl=${GEMINI_GENERATE_CONTENT_URL}
       - ConnectionStrings__RedisCache=redis-cache:6379
+      - ConnectionStrings__SchedulingDatabase=${SCHEDULE_DATABASE_CONNECTION_STRING}
     ports:
       - "${LEARNING_API_PORT}:${ASPNETCORE_HTTP_PORTS}"
     env_file:
@@ -157,3 +158,15 @@ services:
       - TelegramBotToken=${TELEGRAM_BOT_TOKEN}
     env_file:
       - .env
+
+  schedule-database:
+    restart: always
+    container_name: english.io.schedule.database
+    environment:
+      - POSTGRES_PASSWORD=${SCHEDULE_DB_POSTGRES_PASSWORD}
+      - POSTGRES_USER=${SCHEDULE_DB_POSTGRES_USER}
+      - POSTGRES_DB=${SCHEDULE_DB_POSTGRES_DB}
+    ports:
+      - "${SCHEDULE_DB_PORT}:5432"
+    volumes:
+      - english.io.schedule.database.volume:/var/lib/postgresql/data
