@@ -13,4 +13,6 @@ public class CreateUserPreferencesRequest
     public List<TimeSpan> DailySessionsReminderTimes { get; set; } = new List<TimeSpan>();
 
     public NotificationChannel NotificationChannel { get; set; } = NotificationChannel.Email;
+
+    public string TimezoneId { get; set; } = null!;
 }

@@ -22,4 +22,5 @@ public static class LocalizationKeys
     public const string DeckDoesNotBelongToTheUser = "Deck_Does_Not_Belong_To_The_User";
     public const string IncorrectTranslateRequest = "Incorrect_Translate_Request";
     public const string WordsMustBePresent = "Words_Must_Be_Present";
+    public const string TimezoneInfoMustBePresent = "Timezone_Info_Must_Be_Present";
 }

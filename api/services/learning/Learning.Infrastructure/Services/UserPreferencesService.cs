@@ -49,14 +49,14 @@ public class UserPreferencesService : IUserPreferencesService
         var id = await _userPreferencesRepository.CreateUserPreferencesAsync(userPreferences);
         await _publishEndpoint.Publish(new UserCreatedPreferences(request.UserEmail!, userPreferences.NumberOfExampleSentencesPerWord, userPreferences.DailyWordPracticeLimit,
             userPreferences.NotificationChannel.ToString(), false));
-        await ConfigureNotificationsAsync(request.UserEmail!, request.NotificationChannel.ToString(), [.. request.DailySessionsReminderTimes!]);
+        await ConfigureNotificationsAsync(request.UserEmail!, request.NotificationChannel.ToString(), [.. request.DailySessionsReminderTimes!], request.TimezoneId!);
         var createJwtTokenRequest = new CreateJwtTokenRequest(request.UserEmail!);
         var requestClient = _scopedClientFactory.CreateRequestClient<CreateJwtTokenRequest>();
         var jwtResponse = await requestClient.GetResponse<CreateJwtTokenResponse>(createJwtTokenRequest);
         return Result<string>.Created($"/api/user-preferences/{id}", jwtResponse.Message.JwtToken);
     }
 
-    private async Task ConfigureNotificationsAsync(string userEmail, string notificationChannel, TimeSpan[] reminderTimes)
+    private async Task ConfigureNotificationsAsync(string userEmail, string notificationChannel, TimeSpan[] reminderTimes, string timezoneId)
     {
         var scheduler = await _schedulerFactory.GetScheduler();
 
@@ -74,6 +74,7 @@ public class UserPreferencesService : IUserPreferencesService
                 .WithDailyTimeIntervalSchedule(y =>
                     y.OnEveryDay()
                         .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(x.Hours, x.Minutes))
+                        .InTimeZone(TimeZoneInfo.TryFindSystemTimeZoneById(timezoneId, out var timeZone) ? timeZone : TimeZoneInfo.Utc)
                         .EndingDailyAfterCount(1))
                 .Build();
 
