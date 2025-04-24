@@ -42,7 +42,7 @@ public class PracticeController : ControllerBase
     }
 
     [HttpGet("reading-comprehension")]
-    public async Task<IActionResult> GetReadingComprehensionExercise(CreateReadingComprehensionExerciseRequest request)
+    public async Task<IActionResult> GetReadingComprehensionExercise([FromQuery] CreateReadingComprehensionExerciseRequest request)
     {
         return (await _practiceService.CreateReadingComprehensionExerciseAsync(request)).ToApiResponse();
     }
