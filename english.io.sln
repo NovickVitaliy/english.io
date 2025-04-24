@@ -64,6 +64,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notifications.API", "api\se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Services", "shared\Shared.Services\Shared.Services.csproj", "{1C327005-91BF-4015-A994-E76E24C8FDD4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "english-io-bot", "english-io-bot", "{CD3738AB-7577-4C42-9A4F-7937899DAA42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "English.IO.Bot", "english-io-bot\English.IO.Bot\English.IO.Bot.csproj", "{B75EE537-11F2-4750-B971-DD3D704A4EE5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +96,7 @@ Global
 		{D6951F4E-51C0-4616-8B15-038FF3357F1C} = {8A7929D2-27E4-438F-9A14-DBFE659411A2}
 		{0D912752-A31E-462B-831C-BF7D2EC51DB3} = {D6951F4E-51C0-4616-8B15-038FF3357F1C}
 		{1C327005-91BF-4015-A994-E76E24C8FDD4} = {7E469C5B-FA63-4BAE-B48C-C63476F42DA8}
+		{B75EE537-11F2-4750-B971-DD3D704A4EE5} = {CD3738AB-7577-4C42-9A4F-7937899DAA42}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C340E3F4-62B2-413C-8E8B-406C427B1DC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -150,5 +155,9 @@ Global
 		{1C327005-91BF-4015-A994-E76E24C8FDD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C327005-91BF-4015-A994-E76E24C8FDD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C327005-91BF-4015-A994-E76E24C8FDD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B75EE537-11F2-4750-B971-DD3D704A4EE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B75EE537-11F2-4750-B971-DD3D704A4EE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B75EE537-11F2-4750-B971-DD3D704A4EE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B75EE537-11F2-4750-B971-DD3D704A4EE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

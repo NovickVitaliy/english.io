@@ -1,0 +1,9 @@
+namespace Shared.MessageBus.Events.PracticeNotifications;
+
+public record EmailPracticeNotification(string Email) : IBasePracticeNotification
+{
+    public Task AcceptAsync(IPracticeNotificationVisitor practiceNotificationVisitor)
+    {
+        return practiceNotificationVisitor.VisitAsync(this);
+    }
+}

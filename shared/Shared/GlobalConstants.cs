@@ -7,6 +7,8 @@ public static class GlobalConstants
         public const string PreferencesConfigured = "PreferencesConfigured";
         public const string ExampleSentencesPerWord = "ExampleSentencesPerWord";
         public const string CountOfWordsForPractice = "CountOfWordsForPractice";
+        public const string NotificationChannel = "NotificationChannel";
+        public const string IsTelegramConnected = "IsTelegramConnected";
     }
 
     public static class Languages

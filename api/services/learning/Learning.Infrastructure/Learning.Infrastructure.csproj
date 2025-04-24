@@ -14,11 +14,21 @@
 
     <ItemGroup>
       <PackageReference Include="CsvHelper" />
+      <PackageReference Include="dbup-postgresql" />
       <PackageReference Include="EPPlus" />
+      <PackageReference Include="Microsoft.AspNetCore.SignalR" />
+      <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
       <PackageReference Include="Microsoft.Extensions.Http" />
       <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
       <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" />
       <PackageReference Include="MongoDB.Driver" />
+      <PackageReference Include="Quartz.AspNetCore" />
+      <PackageReference Include="Quartz.Serialization.Json" />
       <PackageReference Include="QuestPDF" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Persistence\Scheduling\setup.sql" />
+      <EmbeddedResource Include="Persistence\Scheduling\setup.sql" />
     </ItemGroup>
 </Project>

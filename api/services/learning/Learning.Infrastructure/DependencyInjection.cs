@@ -5,7 +5,9 @@ using Learning.Application.Contracts.Repositories;
 using Learning.Application.Contracts.Services;
 using Learning.Infrastructure.Api;
 using Learning.Infrastructure.Database;
+using Learning.Infrastructure.Jobs;
 using Learning.Infrastructure.Options;
+using Learning.Infrastructure.Persistence;
 using Learning.Infrastructure.Providers.DeckExporter;
 using Learning.Infrastructure.Repositories;
 using Learning.Infrastructure.Services;
@@ -14,9 +16,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using OfficeOpenXml;
+using Quartz;
+using Quartz.AspNetCore;
 using QuestPDF.Infrastructure;
 using Shared.MessageBus;
 using Shared.Services;
+using Shared.Services.Options;
 
 namespace Learning.Infrastructure;
 
@@ -78,6 +83,42 @@ public static class DependencyInjection
 
         services.AddHttpContextAccessor();
         services.AddSharedServices();
+
+        services.AddSignalR();
+
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = configuration.GetConnectionString("RedisCache");
+        });
+
+        services.AddQuartz(options =>
+        {
+            options.AddJob<NotificationJob>(c => c.StoreDurably().WithIdentity(NotificationJob.Name));
+
+            options.UsePersistentStore(storeOptions =>
+            {
+                storeOptions.UsePostgres(cfg =>
+                {
+                    cfg.ConnectionString = configuration.GetConnectionString("SchedulingDatabase")!;
+                    cfg.TablePrefix = "qrtz_";
+                }, dataSourceName: "schedule-database");
+
+                storeOptions.UseNewtonsoftJsonSerializer();
+                storeOptions.UseProperties = true;
+            });
+        });
+
+        services.AddQuartzServer(options =>
+        {
+            options.WaitForJobsToComplete = true;
+        });
+
+        Setup.InitializeDatabase(configuration);
+
+        services.AddOptions<NotificationsApiOptions>()
+            .BindConfiguration(NotificationsApiOptions.ConfigurationKey)
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
 
         return services;
     }

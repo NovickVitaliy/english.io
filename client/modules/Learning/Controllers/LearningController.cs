@@ -16,11 +16,16 @@ public class LearningController : ControllerBase
     {
         _jwtSecurityTokenHandler = new();
     }
-    
-    public async Task<IActionResult> ConfigurePreference(string token)
+
+    public async Task<IActionResult> ConfigurePreference(string token, bool isTelegram)
     {
+        if (!ModelState.IsValid)
+        {
+            throw new InvalidOperationException();
+        }
+
         await HttpContext.SignOutAsync();
-        
+
         var claims = _jwtSecurityTokenHandler.ReadJwtToken(token).Claims.ToList();
         claims = claims.Where(x => x.Type != GlobalConstants.ApplicationClaimTypes.PreferencesConfigured).ToList();
         claims.Add(new Claim(GlobalConstants.ApplicationClaimTypes.PreferencesConfigured, "true"));
@@ -28,6 +33,8 @@ public class LearningController : ControllerBase
         var principal = new ClaimsPrincipal(identity);
         await HttpContext.SignInAsync(principal);
 
-        return LocalRedirect("/learning/home");
+        return isTelegram
+            ? LocalRedirect("/preference-configuration/telegram-connect")
+            : LocalRedirect("/learning/home");
     }
 }

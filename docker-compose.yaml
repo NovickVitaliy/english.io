@@ -41,7 +41,21 @@
   redis-cache:
     image: redis
 
+  telegram.bot.db:
+    image: postgres
+
+  english.io.telegram.bot:
+    image: english.io.telegram.bot
+    build:
+      context: .
+      dockerfile: /english-io-bot/English.IO.Bot/Dockerfile
+
+  schedule-database:
+    image: postgres
+
 volumes:
   auth.db.volume:
   learning.db.volume:
   notifications.db.volume:
+  telegram.bot.db.volume:
+  english.io.schedule.database.volume:

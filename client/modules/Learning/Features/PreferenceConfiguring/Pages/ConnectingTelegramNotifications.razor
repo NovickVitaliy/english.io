@@ -1,0 +1,27 @@
+@page "/preference-configuration/telegram-connect"
+@using Shared.Layout
+@using MudBlazor
+@layout EmptyLayout
+<MudGrid Class="d-flex justify-center align-center mt-20">
+    <MudItem md="4" sm="8" xs="12">
+        <MudCard>
+            <MudCardHeader>
+                <MudText Typo="Typo.h4" Align="Align.Center">@Localizer["Connecting_Telegram_Title"]</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                @if (_code is null)
+                {
+                    @Localizer["Loading_Code"]
+                }
+                else
+                {
+                    <MudText Align="Align.Center">@Localizer["Input_Code"]</MudText>
+                    <MudText Align="Align.Center" Typo="Typo.h6">@_code</MudText>
+                    <MudLink Href="https://t.me/english_io_bot" Target="_blank" Underline="Underline.Always">Telegram</MudLink>
+                }
+            </MudCardContent>
+            <MudCardActions class="d-flex gap-1 ml-auto">
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+</MudGrid>

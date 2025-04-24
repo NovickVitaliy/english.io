@@ -1,3 +1,5 @@
+using Learning.Domain.Models;
+
 namespace Learning.Application.DTOs.UserPreferences;
 
 public record UserPreferencesDto(
@@ -5,4 +7,5 @@ public record UserPreferencesDto(
     string UserEmail,
     int NumberOfExampleSentencesPerWord,
     int DailyWordPracticeLimit,
-    List<TimeSpan> DailySessionsReminderTimes);
+    List<TimeSpan> DailySessionsReminderTimes,
+    NotificationChannel NotificationChannel);

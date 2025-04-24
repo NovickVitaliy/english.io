@@ -63,4 +63,16 @@
   <data name="Error_Occured">
     Error occured
   </data>
+  <data name="Notification_Channel">
+    Notification channel
+  </data>
+  <data name="Choose_Notification_Channel">
+    Choose notification channel
+  </data>
+  <data name="Email">
+    Email
+  </data>
+  <data name="Telegram">
+    Telegram
+  </data>
 </root>

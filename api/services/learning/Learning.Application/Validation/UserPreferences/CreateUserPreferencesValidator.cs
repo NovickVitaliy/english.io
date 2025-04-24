@@ -10,5 +10,6 @@ public class CreateUserPreferencesValidator : BaseUserPreferencesValidator<Creat
         ValidateNumberOfExampleSentencesPerWord();
         ValidateDailyWordPracticeLimit();
         ValidateDailySessionsReminderTimes();
+        ValidateNotificationChannel();
     }
 }

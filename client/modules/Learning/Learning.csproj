@@ -11,6 +11,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" />
     </ItemGroup>
 
     <ItemGroup>
@@ -94,6 +95,9 @@
       </EmbeddedResource>
       <EmbeddedResource Update="Resources\Features\Practice\Components\SessionResultModal.uk.resx">
         <DependentUpon>SessionResultModal.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\PreferenceConfiguring\Pages\ConnectingTelegramNotifications.uk.resx">
+        <DependentUpon>ConnectingTelegramNotifications.resx</DependentUpon>
       </EmbeddedResource>
     </ItemGroup>
 

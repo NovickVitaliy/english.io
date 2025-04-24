@@ -2,6 +2,7 @@
 using DotNetEnv;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.MessageBus.Events.PracticeNotifications;
 
 namespace Shared.MessageBus;
 
@@ -10,7 +11,9 @@ public static class MessageBusConfiguration
     public static IServiceCollection ConfigureRabbitMq(this IServiceCollection services, Assembly? assembly = null)
     {
         Env.TraversePath().Load();
-        
+
+        services.AddScoped<IPracticeNotificationVisitor, PracticeNotificationVisitor>();
+
         services.AddMassTransit(configurator =>
         {
             configurator.SetKebabCaseEndpointNameFormatter();
@@ -19,7 +22,7 @@ public static class MessageBusConfiguration
             {
                 configurator.AddConsumers(assembly);
             }
-            
+
             configurator.UsingRabbitMq((context, factoryConfigurator) =>
             {
                 factoryConfigurator.Host(new Uri(Env.GetString("MESSAGE_BROKER_HOST")), hostConfigurator =>
@@ -27,11 +30,11 @@ public static class MessageBusConfiguration
                     hostConfigurator.Username(Env.GetString("MESSAGE_BROKER_USERNAME"));
                     hostConfigurator.Password(Env.GetString("MESSAGE_BROKER_PASSWORD"));
                 });
-                
+
                 factoryConfigurator.ConfigureEndpoints(context);
             });
         });
-        
+
         return services;
     }
 }

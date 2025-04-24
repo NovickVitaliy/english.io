@@ -1,0 +1,14 @@
+<root>
+  <data name="Connecting_Telegram_Title">
+    Підключення Телеграм Сповіщень
+  </data>
+  <data name="Loading_Code">
+    Створюємо код...
+  </data>
+  <data name="Input_Code">
+    Введіть код нижче в телеграм бота. Бот доступний за посиланням нижче.
+  </data>
+  <data name="Telegram_Notifications_Configured">
+    Нагадування за допомогою телеграма були сконфігуровані
+  </data>
+</root>

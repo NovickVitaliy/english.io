@@ -38,4 +38,10 @@ public abstract class BaseUserPreferencesValidator<T> : AbstractValidator<T> whe
             .NotEmpty().WithMessage(DailySessionsReminderTimesMustBePresent)
             .Must(x => x is { Length: <= 5 }).WithMessage(NumberOfDailySessionsReminderTimesMustNotBeGreatedThan5);
     }
+
+    protected void ValidateNotificationChannel()
+    {
+        RuleFor(x => x.NotificationChannel)
+            .IsInEnum();
+    }
 }

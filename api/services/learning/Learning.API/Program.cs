@@ -1,6 +1,7 @@
 using Learning.Application;
 using Learning.Infrastructure;
 using Learning.Infrastructure.Database;
+using Learning.Infrastructure.Hubs;
 using Shared.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,5 +31,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ConnectingTelegramNotificationChannelHub>("/hubs/connect-telegram-notification-channel-hub");
 
 await app.RunAsync();

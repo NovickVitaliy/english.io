@@ -1,3 +1,4 @@
+using Learning.Domain.Models;
 using Shared.Requests;
 
 namespace Learning.Application.DTOs.UserPreferences;
@@ -9,4 +10,5 @@ public interface IBaseUserPreferencesRequest : IBaseRequest
     int? NumberOfExampleSentencesPerWord { get; init; }
     int? DailyWordPracticeLimit { get; init; }
     TimeSpan[]? DailySessionsReminderTimes { get; init; }
+    NotificationChannel NotificationChannel { get; init; }
 }
