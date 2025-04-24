@@ -21,6 +21,7 @@ using Quartz.AspNetCore;
 using QuestPDF.Infrastructure;
 using Shared.MessageBus;
 using Shared.Services;
+using Shared.Services.Options;
 
 namespace Learning.Infrastructure;
 
@@ -113,6 +114,11 @@ public static class DependencyInjection
         });
 
         Setup.InitializeDatabase(configuration);
+
+        services.AddOptions<NotificationsApiOptions>()
+            .BindConfiguration(NotificationsApiOptions.ConfigurationKey)
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
 
         return services;
     }
