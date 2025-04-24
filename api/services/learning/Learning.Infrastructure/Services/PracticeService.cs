@@ -4,6 +4,7 @@ using Learning.Application.Contracts.Services;
 using Learning.Application.DTOs.Practice;
 using Learning.Application.DTOs.Practice.ExampleText;
 using Learning.Application.DTOs.Practice.FillInTheGaps;
+using Learning.Application.DTOs.Practice.ReadingComprehension.Create;
 using Learning.Application.DTOs.Practice.TranslateWords;
 using Learning.Domain.Models;
 using Learning.Infrastructure.Options;
@@ -88,5 +89,18 @@ public class PracticeService : IPracticeService
         var dto = new SaveSessionResultDto(sessionResult.Words, sessionResult.FirstTaskPercentageSuccess, sessionResult.SecondTaskPercentageSuccess,
             sessionResult.ThirdTaskPercentageSuccess, sessionResult.PracticeDate);
         return Result<SaveSessionResultDto>.Created($"/api/session-results/{id}", dto);
+    }
+
+    public async Task<Result<CreateReadingComprehensionExerciseResponse>> CreateReadingComprehensionExerciseAsync(CreateReadingComprehensionExerciseRequest request)
+    {
+        var validationResult = request.IsValid();
+        if (!validationResult.IsValid)
+        {
+            return Result<CreateReadingComprehensionExerciseResponse>.BadRequest(validationResult.ErrorMessage);
+        }
+
+        var readingComprehension = await _aiLearningService.GenerateReadingComprehensionExerciseAsync(request);
+
+        return Result<CreateReadingComprehensionExerciseResponse>.Ok(readingComprehension);
     }
 }

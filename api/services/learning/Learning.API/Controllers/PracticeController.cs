@@ -1,5 +1,6 @@
 using Learning.Application.Contracts.Services;
 using Learning.Application.DTOs.Practice;
+using Learning.Application.DTOs.Practice.ReadingComprehension.Create;
 using Learning.Application.DTOs.Practice.TranslateWords;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,5 +39,11 @@ public class PracticeController : ControllerBase
     public async Task<IActionResult> SaveSessionResultAsync(SaveSessionResultRequest request)
     {
         return (await _practiceService.SaveSessionResultAsync(request)).ToApiResponse();
+    }
+
+    [HttpGet("reading-comprehension")]
+    public async Task<IActionResult> GetReadingComprehensionExercise(CreateReadingComprehensionExerciseRequest request)
+    {
+        return (await _practiceService.CreateReadingComprehensionExerciseAsync(request)).ToApiResponse();
     }
 }

@@ -3,6 +3,7 @@ using Learning.Application.Contracts.Api;
 using Learning.Application.DTOs.Decks;
 using Learning.Application.DTOs.Practice;
 using Learning.Application.DTOs.Practice.FillInTheGaps;
+using Learning.Application.DTOs.Practice.ReadingComprehension.Create;
 using Learning.Application.DTOs.Practice.TranslateWords;
 using Learning.Infrastructure.Options;
 using Microsoft.Extensions.Options;
@@ -147,6 +148,36 @@ public class GeminiAiLearningService : IAiLearningService
 
         var exampleText = JsonDocument.Parse(jsonText).RootElement.GetProperty("text").ToString();
         return exampleText;
+    }
+
+    public async Task<CreateReadingComprehensionExerciseResponse> GenerateReadingComprehensionExerciseAsync(CreateReadingComprehensionExerciseRequest request)
+    {
+        var aiRequest = BuildRequestForGeneratingReadingComprehension(request.Words);
+        var httpRequest = new HttpRequestMessage()
+        {
+            Method = HttpMethod.Post,
+            Content = new StringContent(JsonSerializer.Serialize(aiRequest)),
+            RequestUri = new Uri($"v1beta/models/gemini-2.0-flash-001:generateContent?key={_geminiOptions.ApiKey}", UriKind.Relative)
+        };
+
+        var response = await _httpClient.SendAsync(httpRequest);
+        var json = await response.Content.ReadAsStringAsync();
+        var jsonDoc = JsonDocument.Parse(json);
+        var jsonText = jsonDoc.RootElement
+            .GetProperty("candidates")[0]
+            .GetProperty("content")
+            .GetProperty("parts")[0]
+            .GetProperty("text")
+            .ToString();
+
+        return JsonSerializer.Deserialize<CreateReadingComprehensionExerciseResponse>(jsonText, new JsonSerializerOptions(){PropertyNameCaseInsensitive = true})!;
+    }
+
+    private object BuildRequestForGeneratingReadingComprehension(string[] words)
+    {
+        var prompt = _options.PromptForGeneratingReadingComprehensionExercise
+            .Replace("{words}", string.Join(',', words), StringComparison.InvariantCulture);
+        return BuildRequestWithPrompt(prompt);
     }
 
     private object BuildRequestForGeneratingExampleText(string[] words)

@@ -1,6 +1,7 @@
 using Learning.Application.DTOs.Decks;
 using Learning.Application.DTOs.Practice;
 using Learning.Application.DTOs.Practice.FillInTheGaps;
+using Learning.Application.DTOs.Practice.ReadingComprehension.Create;
 using Learning.Application.DTOs.Practice.TranslateWords;
 
 namespace Learning.Application.Contracts.Api;
@@ -13,4 +14,5 @@ public interface IAiLearningService
     Task<TranslatedWordResult[]> VerifyWordsTranslations(TranslateWordsRequest request);
     Task<SentenceWithGap[]> GenerateSentencesWithGaps(string[] words);
     Task<string> GenerateExampleTextAsync(string[] words);
+    Task<CreateReadingComprehensionExerciseResponse> GenerateReadingComprehensionExerciseAsync(CreateReadingComprehensionExerciseRequest request);
 }

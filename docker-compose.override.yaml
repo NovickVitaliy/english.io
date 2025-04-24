@@ -30,6 +30,7 @@ services:
       - MongoOptions__DatabaseName=${MONGO_OPTIONS_DATABASE_NAME}
       - AiLearningPrompts__PromptForWordTranslatingWithExampleSentences=${PROMPT_FOR_TRANSLATING_WORD_WITH_EXAMPLE}
       - AiLearningPrompts__PromptForCheckingIfWordCompliesToTheTopic=${PROMPT_FOR_CHECKING_IF_WORD_COMPLIES_TO_THE_TOPIC}
+      - AiLearningPrompts__PromptForGeneratingReadingComprehensionExercise=${PROMPT_FOR_GENERATING_THE_READING_COMPREHENSION}
       - GeminiOptions__ApiKey=${GEMINI_API_KEY}
       - GeminiOptions__GenerateContentUrl=${GEMINI_GENERATE_CONTENT_URL}
       - ConnectionStrings__RedisCache=redis-cache:6379
