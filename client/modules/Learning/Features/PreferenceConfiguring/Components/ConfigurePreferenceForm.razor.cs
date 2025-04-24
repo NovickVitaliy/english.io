@@ -58,6 +58,7 @@ public partial class ConfigurePreferenceForm : ComponentBase
                 var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
                 var token = UserState.Value.Token;
                 _request.UserEmail = authState.User.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Email).Value;
+                _request.TimezoneId = TimeZoneInfo.Local.Id;
                 var jwtToken = await UserPreferencesService.CreateUserPreferencesAsync(_request, token);
                 var json = await LocalStorageService.GetItemAsStringAsync(ClientConstants.UserDataKey);
                 json = System.Text.RegularExpressions.Regex.Unescape(json!);
