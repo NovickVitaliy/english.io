@@ -1,5 +1,6 @@
 using Learning.Application.Contracts.Services;
 using Learning.Application.DTOs.Practice;
+using Learning.Application.DTOs.Practice.ReadingComprehension.Check;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Create;
 using Learning.Application.DTOs.Practice.TranslateWords;
 using Microsoft.AspNetCore.Mvc;
@@ -45,5 +46,11 @@ public class PracticeController : ControllerBase
     public async Task<IActionResult> GetReadingComprehensionExercise([FromQuery] CreateReadingComprehensionExerciseRequest request)
     {
         return (await _practiceService.CreateReadingComprehensionExerciseAsync(request)).ToApiResponse();
+    }
+
+    [HttpPost("reading-comprehension-check")]
+    public async Task<IActionResult> CheckReadingComprehensionExercise([FromQuery] CheckReadingComprehensionExerciseRequest request)
+    {
+        return (await _practiceService.CheckReadingComprehensionExerciseAsync(request)).ToApiResponse();
     }
 }

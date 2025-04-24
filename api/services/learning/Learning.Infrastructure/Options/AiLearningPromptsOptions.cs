@@ -24,4 +24,7 @@ public class AiLearningPromptsOptions
 
     [Required]
     public string PromptForGeneratingReadingComprehensionExercise { get; init; } = null!;
+
+    [Required]
+    public string PromptForCheckingIfReadingComprehensionExercise { get; init; } = null!;
 }

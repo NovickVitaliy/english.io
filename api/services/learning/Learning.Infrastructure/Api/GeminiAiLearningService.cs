@@ -3,6 +3,7 @@ using Learning.Application.Contracts.Api;
 using Learning.Application.DTOs.Decks;
 using Learning.Application.DTOs.Practice;
 using Learning.Application.DTOs.Practice.FillInTheGaps;
+using Learning.Application.DTOs.Practice.ReadingComprehension.Check;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Create;
 using Learning.Application.DTOs.Practice.TranslateWords;
 using Learning.Infrastructure.Options;
@@ -171,6 +172,39 @@ public class GeminiAiLearningService : IAiLearningService
             .ToString();
 
         return JsonSerializer.Deserialize<CreateReadingComprehensionExerciseResponse>(jsonText, new JsonSerializerOptions(){PropertyNameCaseInsensitive = true})!;
+    }
+
+    public async Task<CheckReadingComprehensionExerciseResponse> CheckReadingComprehensionExerciseAsync(CheckReadingComprehensionExerciseRequest request)
+    {
+        var aiRequest = BuildRequestForCheckingTheReadingComprehensionExercise(request);
+        var httpRequest = new HttpRequestMessage()
+        {
+            Method = HttpMethod.Post,
+            Content = new StringContent(JsonSerializer.Serialize(aiRequest)),
+            RequestUri = new Uri($"v1beta/models/gemini-2.0-flash-001:generateContent?key={_geminiOptions.ApiKey}", UriKind.Relative)
+        };
+
+        var response = await _httpClient.SendAsync(httpRequest);
+        var json = await response.Content.ReadAsStringAsync();
+        var jsonDoc = JsonDocument.Parse(json);
+        var jsonText = jsonDoc.RootElement
+            .GetProperty("candidates")[0]
+            .GetProperty("content")
+            .GetProperty("parts")[0]
+            .GetProperty("text")
+            .ToString();
+
+        return JsonSerializer.Deserialize<CheckReadingComprehensionExerciseResponse>(jsonText, new JsonSerializerOptions(){PropertyNameCaseInsensitive = true})!;
+    }
+
+    private object BuildRequestForCheckingTheReadingComprehensionExercise(CheckReadingComprehensionExerciseRequest request)
+    {
+        var prompt = _options.PromptForCheckingIfReadingComprehensionExercise
+            .Replace("{text}", request.Text, StringComparison.InvariantCulture)
+            .Replace("{questions}", string.Join(',', request.Questions), StringComparison.InvariantCulture)
+            .Replace("{answers}", string.Join(',', request.Answers), StringComparison.InvariantCulture);
+
+        return BuildRequestWithPrompt(prompt);
     }
 
     private object BuildRequestForGeneratingReadingComprehension(string[] words)

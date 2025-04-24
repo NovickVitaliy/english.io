@@ -4,6 +4,7 @@ using Learning.Application.Contracts.Services;
 using Learning.Application.DTOs.Practice;
 using Learning.Application.DTOs.Practice.ExampleText;
 using Learning.Application.DTOs.Practice.FillInTheGaps;
+using Learning.Application.DTOs.Practice.ReadingComprehension.Check;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Create;
 using Learning.Application.DTOs.Practice.TranslateWords;
 using Learning.Domain.Models;
@@ -102,5 +103,18 @@ public class PracticeService : IPracticeService
         var readingComprehension = await _aiLearningService.GenerateReadingComprehensionExerciseAsync(request);
 
         return Result<CreateReadingComprehensionExerciseResponse>.Ok(readingComprehension);
+    }
+
+    public async Task<Result<CheckReadingComprehensionExerciseResponse>> CheckReadingComprehensionExerciseAsync(CheckReadingComprehensionExerciseRequest request)
+    {
+        var validationResult = request.IsValid();
+        if (!validationResult.IsValid)
+        {
+            return Result<CheckReadingComprehensionExerciseResponse>.BadRequest(validationResult.ErrorMessage);
+        }
+
+        var response = await _aiLearningService.CheckReadingComprehensionExerciseAsync(request);
+
+        return Result<CheckReadingComprehensionExerciseResponse>.Ok(response);
     }
 }
