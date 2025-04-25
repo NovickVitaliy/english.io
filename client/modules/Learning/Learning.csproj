@@ -99,6 +99,9 @@
       <EmbeddedResource Update="Resources\Features\PreferenceConfiguring\Pages\ConnectingTelegramNotifications.uk.resx">
         <DependentUpon>ConnectingTelegramNotifications.resx</DependentUpon>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Practice\Pages\ReadingComprehension.uk.resx">
+        <DependentUpon>ReadingComprehension.resx</DependentUpon>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

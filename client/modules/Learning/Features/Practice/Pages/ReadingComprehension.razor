@@ -1,0 +1,26 @@
+@page "/practice/reading-comprehension"
+@using MudBlazor
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+    @if (_readingComprehensionExercise is null)
+    {
+        <MudText Typo="Typo.h5">@Localizer["Loading"]</MudText>
+    }
+    else
+    {
+        <MudText Typo="Typo.h5">@Localizer["Header"]</MudText>
+        <MudPaper>
+            <MudText>@_readingComprehensionExercise.Text</MudText>
+        </MudPaper>
+        @for (var index = 0; index < _readingComprehensionExercise.Questions.Length; index++)
+        {
+            var i = index;
+            var question = _readingComprehensionExercise.Questions[index];
+            <MudPaper>
+                <MudText>@question</MudText>
+                <MudInput @bind-Value="_checkReadingComprehensionExerciseRequest!.Answers[i]"></MudInput>
+            </MudPaper>
+        }
+        <MudButton OnClick="CheckReadingComprehension" Color="Color.Primary" Variant="Variant.Filled">@Localizer["Check_Button"]</MudButton>
+    }
+</MudContainer>

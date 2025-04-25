@@ -6,9 +6,10 @@ namespace Learning.Store.PracticeStatus;
 public record PracticeStatusState(
     double FirstTaskPercentageSuccess,
     double SecondTaskPercentageSuccess,
-    double ThirdTaskPercentageSuccess)
+    double ThirdTaskPercentageSuccess,
+    double FourthTaskPercentageSuccess)
 {
-    private PracticeStatusState() : this(0,0,0)
+    private PracticeStatusState() : this(0,0,0, 0)
     {
 
     }
