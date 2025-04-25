@@ -3,6 +3,7 @@ using Learning.Features.Practice.Models.ReadingComprehension;
 using Learning.Features.Practice.Services;
 using Learning.Store.Practice;
 using Learning.Store.PracticeStatus;
+using Learning.Store.PracticeStatus.Actions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
@@ -25,6 +26,7 @@ public partial class ReadingComprehension : ComponentBase
     [Inject] private ISnackbar Snackbar { get; init; } = null!;
     private ReadingComprehensionExercise? _readingComprehensionExercise;
     private CheckReadingComprehensionExerciseRequest? _checkReadingComprehensionExerciseRequest;
+    private CheckReadingComprehensionExerciseResult? _checkReadingComprehensionExerciseResult;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -41,13 +43,19 @@ public partial class ReadingComprehension : ComponentBase
 
         try
         {
-            var response = await PracticeService.CheckReadingComprehensionExercise(_checkReadingComprehensionExerciseRequest, UserState.Value.Token);
+            _checkReadingComprehensionExerciseResult = await PracticeService.CheckReadingComprehensionExercise(_checkReadingComprehensionExerciseRequest, UserState.Value.Token);
+            Dispatcher.Dispatch(new SetFourthTaskPercentageSuccessAction((double)_checkReadingComprehensionExerciseResult!.AnswersCorrect / _checkReadingComprehensionExerciseRequest.Questions.Length * 100));
         }
         catch (ApiException e)
         {
             var problemDetails = e.ToProblemDetails();
             Snackbar.Add(Localizer[problemDetails.Detail ?? "Error_Occured"], Severity.Error);
         }
+    }
+
+    private void NextExercise()
+    {
+        NavigationManager.NavigateTo("/practice/example-text");
     }
 }
 

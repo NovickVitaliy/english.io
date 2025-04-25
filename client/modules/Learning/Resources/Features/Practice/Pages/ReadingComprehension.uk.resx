@@ -8,4 +8,10 @@
   <data name="Check_Button">
     Перевірити вправу
   </data>
+  <data name="Correct_Answer">
+    Правильна відповідь:
+  </data>
+  <data name="Next_Exercise_Button">
+    Наступна вправа
+  </data>
 </root>

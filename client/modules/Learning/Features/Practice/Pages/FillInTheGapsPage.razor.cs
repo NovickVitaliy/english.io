@@ -38,7 +38,7 @@ public partial class FillInTheGapsPage : ComponentBase
     private void NextExercise()
     {
         Dispatcher.Dispatch(new SetThirdTaskPercentageSuccessAction((double)_fillInTheGapsData!.FillInTheGapsResult.Count(x => x.Key == x.Value) / _fillInTheGapsData.Words.Length * 100));
-        NavigationManager.NavigateTo("/practice/example-text");
+        NavigationManager.NavigateTo("/practice/reading-comprehension");
     }
 }
 

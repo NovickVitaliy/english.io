@@ -27,5 +27,5 @@ public interface IPracticeService
     Task<ReadingComprehensionExercise> GetReadingComprehensionExercise([Query(CollectionFormat.Multi)]string[] words, [Authorize] string token);
 
     [Post("/practice/reading-comprehension-check")]
-    Task<CheckReadingComprehensionExerciseRequest> CheckReadingComprehensionExercise(CheckReadingComprehensionExerciseRequest request, [Authorize] string token);
+    Task<CheckReadingComprehensionExerciseResult> CheckReadingComprehensionExercise(CheckReadingComprehensionExerciseRequest request, [Authorize] string token);
 }

@@ -17,10 +17,31 @@
             var i = index;
             var question = _readingComprehensionExercise.Questions[index];
             <MudPaper>
-                <MudText>@question</MudText>
+                <div class="d-flex justify-content-start align-items-center">
+                    @if (_checkReadingComprehensionExerciseResult is not null)
+                    {
+                        var checkAnswerResult = _checkReadingComprehensionExerciseResult.AnswersResults[i];
+                        <MudText>@(checkAnswerResult.IsCorrect ? "✅" : "❌")</MudText>
+                    }
+                    <MudText>@question</MudText>
+                </div>
                 <MudInput @bind-Value="_checkReadingComprehensionExerciseRequest!.Answers[i]"></MudInput>
+                @if (_checkReadingComprehensionExerciseResult is not null)
+                {
+                    var checkAnswerResult = _checkReadingComprehensionExerciseResult.AnswersResults[i];
+                    @if (!checkAnswerResult.IsCorrect)
+                    {
+                        <MudText>@Localizer["Correct_Answer"] @checkAnswerResult.CorrectAnswer</MudText>
+                    }
+                }
             </MudPaper>
         }
-        <MudButton OnClick="CheckReadingComprehension" Color="Color.Primary" Variant="Variant.Filled">@Localizer["Check_Button"]</MudButton>
+        <MudButton OnClick="CheckReadingComprehension" Color="Color.Primary"
+                   Variant="Variant.Filled">@Localizer["Check_Button"]</MudButton>
+        @if (_checkReadingComprehensionExerciseResult is not null)
+        {
+            <MudButton OnClick="NextExercise" Color="Color.Primary"
+                       Variant="Variant.Filled">@Localizer["Next_Exercise_Button"]</MudButton>
+        }
     }
 </MudContainer>
