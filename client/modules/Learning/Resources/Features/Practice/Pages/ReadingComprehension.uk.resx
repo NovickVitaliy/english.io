@@ -1,0 +1,17 @@
+<root>
+  <data name="Header">
+    Прочитайте текст та дайте відповіді на запитання про нього
+  </data>
+  <data name="Loading">
+    Завдання на читання завантажується
+  </data>
+  <data name="Check_Button">
+    Перевірити вправу
+  </data>
+  <data name="Correct_Answer">
+    Правильна відповідь:
+  </data>
+  <data name="Next_Exercise_Button">
+    Наступна вправа
+  </data>
+</root>

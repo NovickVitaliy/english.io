@@ -1,0 +1,54 @@
+@page "/practice/reading-comprehension"
+@layout EmptyLayout
+@using MudBlazor
+@using Shared.Layout
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+    @if (_readingComprehensionExercise is null)
+    {
+        <MudText Typo="Typo.h5">@Localizer["Loading"]</MudText>
+    }
+    else
+    {
+        <MudText Typo="Typo.h5">@Localizer["Header"]</MudText>
+        <MudPaper Class="p-3 mb-3">
+            <MudText>@_readingComprehensionExercise.Text</MudText>
+        </MudPaper>
+        @for (var index = 0; index < _readingComprehensionExercise.Questions.Length; index++)
+        {
+            var i = index;
+            var question = _readingComprehensionExercise.Questions[index];
+            <MudPaper Class="p-3 mb-3">
+                <div class="d-flex justify-content-start align-items-center">
+                    @if (_checkReadingComprehensionExerciseResult is not null)
+                    {
+                        var checkAnswerResult = _checkReadingComprehensionExerciseResult.AnswersResults[i];
+                        <MudText>@(checkAnswerResult.IsCorrect ? "✅" : "❌")</MudText>
+                    }
+                    <MudText>@question</MudText>
+                </div>
+                <MudInput @bind-Value="_checkReadingComprehensionExerciseRequest!.Answers[i]"></MudInput>
+                @if (_checkReadingComprehensionExerciseResult is not null)
+                {
+                    var checkAnswerResult = _checkReadingComprehensionExerciseResult.AnswersResults[i];
+                    @if (!checkAnswerResult.IsCorrect)
+                    {
+                        <MudText>@Localizer["Correct_Answer"] @checkAnswerResult.CorrectAnswer</MudText>
+                    }
+                }
+            </MudPaper>
+        }
+        <div class="d-flex justify-content-start gap-3">
+            <MudButton OnClick="CheckReadingComprehension" Color="Color.Primary"
+                       Variant="Variant.Filled">@Localizer["Check_Button"]</MudButton>
+            @if (_checkReadingComprehensionExerciseResult is not null)
+            {
+                <MudButton OnClick="NextExercise" Color="Color.Primary"
+                           Variant="Variant.Filled">@Localizer["Next_Exercise_Button"]</MudButton>
+            }
+        </div>
+    }
+</MudContainer>
+<MudOverlay Visible="_overlayVisible" DarkBackground="true">
+    <MudProgressCircular Color="Color.Secondary" Indeterminate="true"/>
+</MudOverlay>

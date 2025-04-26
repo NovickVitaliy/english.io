@@ -1,6 +1,7 @@
 using Learning.Features.Practice.Models;
 using Learning.Features.Practice.Models.ExampleText;
 using Learning.Features.Practice.Models.FillInTheGaps;
+using Learning.Features.Practice.Models.ReadingComprehension;
 using Microsoft.AspNetCore.Mvc;
 using Refit;
 
@@ -21,4 +22,10 @@ public interface IPracticeService
 
     [Post("/practice/save-session-result")]
     Task<SaveSessionResultDto> SaveSessionResult(SaveSessionResultRequest request);
+
+    [Get("/practice/reading-comprehension")]
+    Task<ReadingComprehensionExercise> GetReadingComprehensionExercise([Query(CollectionFormat.Multi)]string[] words, [Authorize] string token);
+
+    [Post("/practice/reading-comprehension-check")]
+    Task<CheckReadingComprehensionExerciseResult> CheckReadingComprehensionExercise(CheckReadingComprehensionExerciseRequest request, [Authorize] string token);
 }

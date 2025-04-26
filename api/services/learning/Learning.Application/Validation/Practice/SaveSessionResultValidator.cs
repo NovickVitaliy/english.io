@@ -18,5 +18,8 @@ public class SaveSessionResultValidator : AbstractValidator<SaveSessionResultReq
 
         RuleFor(x => x.ThirdTaskPercentageSuccess)
             .InclusiveBetween(0, 100);
+
+        RuleFor(x => x.FourthTaskPercentageSuccess)
+            .InclusiveBetween(0, 100);
     }
 }

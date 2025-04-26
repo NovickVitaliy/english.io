@@ -8,6 +8,7 @@ public class FillInTheGapsData
     public FillInTheGapsData(int wordsCount, string[] words)
     {
         Words = new string[wordsCount];
-        FillInTheGapsResult = words.ToDictionary(x => x, _ => "");
+        // distinct is used because sometimes ai translates two synonyms to the same word and it may cause problems
+        FillInTheGapsResult = words.Distinct().ToDictionary(x => x, _ => "");
     }
 }

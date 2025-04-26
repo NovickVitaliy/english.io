@@ -1,0 +1,17 @@
+<root>
+  <data name="Header">
+    Read the text and answer the questions to it
+  </data>
+  <data name="Loading">
+    Reading comprehension is being loaded...
+  </data>
+  <data name="Check_Button">
+    Check exercise
+  </data>
+  <data name="Correct_Answer">
+    Correct Answer:
+  </data>
+  <data name="Next_Exercise_Button">
+    Next exercise
+  </data>
+</root>

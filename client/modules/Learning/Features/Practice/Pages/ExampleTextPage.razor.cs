@@ -41,10 +41,12 @@ public partial class ExampleTextPage : ComponentBase
     {
         try
         {
-            var response = await PracticeService.SaveSessionResult(new SaveSessionResultRequest(FillInTheGapsState.Value.Words,
+            var response = await PracticeService.SaveSessionResult(new SaveSessionResultRequest(
+                FillInTheGapsState.Value.Words,
                 PracticeStatusState.Value.FirstTaskPercentageSuccess,
                 PracticeStatusState.Value.SecondTaskPercentageSuccess,
-                PracticeStatusState.Value.ThirdTaskPercentageSuccess));
+                PracticeStatusState.Value.ThirdTaskPercentageSuccess,
+                PracticeStatusState.Value.FourthTaskPercentageSuccess));
 
             var options = new DialogOptions()
             {
@@ -67,4 +69,3 @@ public partial class ExampleTextPage : ComponentBase
         }
     }
 }
-

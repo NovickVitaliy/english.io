@@ -22,4 +22,10 @@ public static class PracticeStatusReducers
     {
         ThirdTaskPercentageSuccess = action.Percentage
     };
+
+    [ReducerMethod]
+    public static PracticeStatusState SetFourhtTaskPercentageSUccess(PracticeStatusState state, SetFourthTaskPercentageSuccessAction action) => state with
+    {
+        FourthTaskPercentageSuccess = action.Percentage
+    };
 }

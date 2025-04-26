@@ -8,5 +8,6 @@ public class SessionResult
     public double FirstTaskPercentageSuccess { get; init; }
     public double SecondTaskPercentageSuccess { get; init; }
     public double ThirdTaskPercentageSuccess { get; init; }
+    public double FourthTaskPercentageSuccess { get; init; }
     public DateTime PracticeDate { get; init; }
 }
