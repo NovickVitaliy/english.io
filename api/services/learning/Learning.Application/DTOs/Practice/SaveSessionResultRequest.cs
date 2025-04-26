@@ -7,7 +7,8 @@ public record SaveSessionResultRequest(
     string[] Words,
     double FirstTaskPercentageSuccess,
     double SecondTaskPercentageSuccess,
-    double ThirdTaskPercentageSuccess) : IBaseRequest
+    double ThirdTaskPercentageSuccess,
+    double FourthTaskPercentageSuccess) : IBaseRequest
 {
     public RequestValidationResult IsValid()
     {

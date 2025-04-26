@@ -5,4 +5,5 @@ public record SaveSessionResultDto(
     double FirstTaskPercentageSuccess,
     double SecondTaskPercentageSuccess,
     double ThirdTaskPercentageSuccess,
+    double FourthTaskPercentageSuccess,
     DateTime PracticeDate);

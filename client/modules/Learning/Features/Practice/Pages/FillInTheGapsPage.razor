@@ -18,7 +18,7 @@
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="NextExercise">@Localizer["Next_Exercise"]</MudButton>
                 </div>
             }
-            @for (var i = 0; i < _sentencesWithGaps.Length; i++)
+            @for (var i = 0; i < FillInTheGapsState.Value.Words.Length; i++)
             {
                 var sentence = _sentencesWithGaps[i];
                 var splitSentence = sentence.Sentence.Split("*****").Select(x => x.Trim()).ToArray();

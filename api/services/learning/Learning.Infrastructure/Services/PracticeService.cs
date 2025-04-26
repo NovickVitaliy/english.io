@@ -82,13 +82,14 @@ public class PracticeService : IPracticeService
             FirstTaskPercentageSuccess = request.FirstTaskPercentageSuccess,
             SecondTaskPercentageSuccess = request.SecondTaskPercentageSuccess,
             ThirdTaskPercentageSuccess = request.ThirdTaskPercentageSuccess,
+            FourthTaskPercentageSuccess = request.FourthTaskPercentageSuccess,
             PracticeDate = DateTime.UtcNow
         };
 
         var id = await _practiceRepository.CreateSessionResultAsync(sessionResult);
 
         var dto = new SaveSessionResultDto(sessionResult.Words, sessionResult.FirstTaskPercentageSuccess, sessionResult.SecondTaskPercentageSuccess,
-            sessionResult.ThirdTaskPercentageSuccess, sessionResult.PracticeDate);
+            sessionResult.ThirdTaskPercentageSuccess, sessionResult.FourthTaskPercentageSuccess, sessionResult.PracticeDate);
         return Result<SaveSessionResultDto>.Created($"/api/session-results/{id}", dto);
     }
 

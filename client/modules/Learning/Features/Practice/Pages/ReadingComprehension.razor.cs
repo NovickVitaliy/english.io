@@ -27,6 +27,7 @@ public partial class ReadingComprehension : ComponentBase
     private ReadingComprehensionExercise? _readingComprehensionExercise;
     private CheckReadingComprehensionExerciseRequest? _checkReadingComprehensionExerciseRequest;
     private CheckReadingComprehensionExerciseResult? _checkReadingComprehensionExerciseResult;
+    private bool _overlayVisible = false;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -41,6 +42,7 @@ public partial class ReadingComprehension : ComponentBase
     {
         if (_checkReadingComprehensionExerciseRequest is null) return;
 
+        _overlayVisible = true;
         try
         {
             _checkReadingComprehensionExerciseResult = await PracticeService.CheckReadingComprehensionExercise(_checkReadingComprehensionExerciseRequest, UserState.Value.Token);
@@ -50,6 +52,10 @@ public partial class ReadingComprehension : ComponentBase
         {
             var problemDetails = e.ToProblemDetails();
             Snackbar.Add(Localizer[problemDetails.Detail ?? "Error_Occured"], Severity.Error);
+        }
+        finally
+        {
+            _overlayVisible = false;
         }
     }
 

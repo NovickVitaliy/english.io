@@ -49,7 +49,7 @@ public class PracticeController : ControllerBase
     }
 
     [HttpPost("reading-comprehension-check")]
-    public async Task<IActionResult> CheckReadingComprehensionExercise([FromQuery] CheckReadingComprehensionExerciseRequest request)
+    public async Task<IActionResult> CheckReadingComprehensionExercise(CheckReadingComprehensionExerciseRequest request)
     {
         return (await _practiceService.CheckReadingComprehensionExerciseAsync(request)).ToApiResponse();
     }

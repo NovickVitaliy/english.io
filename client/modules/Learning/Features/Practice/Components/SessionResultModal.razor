@@ -21,6 +21,11 @@
             <MudProgressLinear Color="GetColorBasedOnSuccessPercentage(SaveSessionResultDto.ThirdTaskPercentageSuccess)" Rounded="true" Size="Size.Small"
                                Value="SaveSessionResultDto.ThirdTaskPercentageSuccess"/>
         </div>
+        <div class="mb-3">
+            <MudText>@Localizer["Reading_Comprehension"]</MudText>
+            <MudProgressLinear Color="GetColorBasedOnSuccessPercentage(SaveSessionResultDto.FourthTaskPercentageSuccess)" Rounded="true" Size="Size.Small"
+                               Value="SaveSessionResultDto.FourthTaskPercentageSuccess"/>
+        </div>
 
         @Localizer["See_In_Personal_Profile"]
     </DialogContent>
