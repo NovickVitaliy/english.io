@@ -91,6 +91,27 @@ services:
     volumes:
       - ${AUTH_AUTH_DB_VOLUME}:/var/lib/postgresql/data
 
+  client.app:
+    container_name: client.app
+    restart: always
+    ports:
+      - "${CLIENT_APP_PORT}:${ASPNETCORE_HTTP_PORTS}"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS}
+      - Services__Authentication=${CLIENT_SERVICES_AUTHENTICATION}
+      - Services__Learning=${CLIENT_SERVICES_LEARNING}
+      - Services__TextToSpeech=${CLIENT_SERVICES_TEXT_TO_SPEECH}
+      - PreferencesConfiguringHubOptions__HubUrl=${CLIENT_PREFERENCES_CONFIGURATION_HUB_URL}
+      - ClientOptions__Domain=localhost
+      - ClientOptions__HttpPort=5100
+      - ClientOptions__HttpsPort=5101
+      - ClientOptions__IsHttps=false
+    depends_on:
+      - authentication.api
+      - learning.api
+      - text-to-speech.api
+
   learning.db:
     container_name: learning.db
     restart: always
