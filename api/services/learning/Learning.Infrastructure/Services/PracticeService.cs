@@ -6,9 +6,11 @@ using Learning.Application.DTOs.Practice.ExampleText;
 using Learning.Application.DTOs.Practice.FillInTheGaps;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Check;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Create;
+using Learning.Application.DTOs.Practice.Sessions;
 using Learning.Application.DTOs.Practice.TranslateWords;
 using Learning.Domain.Models;
 using Learning.Infrastructure.Options;
+using MassTransit.Initializers;
 using Microsoft.Extensions.Options;
 using Shared.ErrorHandling;
 using Shared.Services.Contracts;
@@ -117,5 +119,18 @@ public class PracticeService : IPracticeService
         var response = await _aiLearningService.CheckReadingComprehensionExerciseAsync(request);
 
         return Result<CheckReadingComprehensionExerciseResponse>.Ok(response);
+    }
+    public async Task<Result<GetPracticeSessionsForUserResponse>> GetSessionsForUserAsync(GetSessionsForUserRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.UserEmail))
+        {
+            return Result<GetPracticeSessionsForUserResponse>.BadRequest(UserEmailCannotBeEmpty);
+        }
+
+        var (results, count) = await _practiceRepository.GetSessionsResultsForUserAsync(request);
+
+        return Result<GetPracticeSessionsForUserResponse>.Ok(new GetPracticeSessionsForUserResponse(
+                results.Select(x => new SessionDto(x.Words, x.FirstTaskPercentageSuccess, x.SecondTaskPercentageSuccess, x.ThirdTaskPercentageSuccess, x.FourthTaskPercentageSuccess, x.PracticeDate)).ToArray(),
+                count));
     }
 }

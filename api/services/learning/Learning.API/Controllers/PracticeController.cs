@@ -2,6 +2,7 @@ using Learning.Application.Contracts.Services;
 using Learning.Application.DTOs.Practice;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Check;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Create;
+using Learning.Application.DTOs.Practice.Sessions;
 using Learning.Application.DTOs.Practice.TranslateWords;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,5 +53,11 @@ public class PracticeController : ControllerBase
     public async Task<IActionResult> CheckReadingComprehensionExercise(CheckReadingComprehensionExerciseRequest request)
     {
         return (await _practiceService.CheckReadingComprehensionExerciseAsync(request)).ToApiResponse();
+    }
+
+    [HttpGet("{userEmail:alpha}/sessions")]
+    public async Task<IActionResult> GetSessionsForUser([FromQuery] GetSessionsForUserRequest request)
+    {
+        return (await _practiceService.GetSessionsForUserAsync(request)).ToApiResponse();
     }
 }
