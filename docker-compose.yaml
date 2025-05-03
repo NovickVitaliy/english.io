@@ -23,6 +23,12 @@
       context: api/services/text-to-speech
       dockerfile: Dockerfile
 
+  client.app:
+    image: client.app
+    build:
+      context: client/Client
+      dockerfile: Dockerfile
+
   auth.db:
     image: postgres
 

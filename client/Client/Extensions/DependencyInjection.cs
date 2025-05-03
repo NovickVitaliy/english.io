@@ -65,25 +65,25 @@ public static class DependencyInjection
 
     public static WebApplicationBuilder ConfigureBlazorCore(this WebApplicationBuilder builder)
     {
-        builder.WebHost.ConfigureKestrel(options =>
-        {
-            var ipv4Address = GetIpv4();
-            options.Listen(IPAddress.Loopback, 4998);
-            options.Listen(IPAddress.Parse(ipv4Address), 4998);
-        });
+        // builder.WebHost.ConfigureKestrel(options =>
+        // {
+        //     var ipv4Address = GetIpv4();
+        //     options.Listen(IPAddress.Loopback, 4998);
+        //     options.Listen(IPAddress.Parse(ipv4Address), 4998);
+        // });
 
         return builder;
     }
 
-    /// <summary>
-    /// for development purposes only
-    /// </summary>
-    /// <returns></returns>
-    private static string GetIpv4()
-    {
-        return Dns.GetHostEntry(Dns.GetHostName())
-            .AddressList
-            .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)
-            ?.ToString() ?? throw new NetworkInformationException();
-    }
+    // /// <summary>
+    // /// for development purposes only
+    // /// </summary>
+    // /// <returns></returns>
+    // private static string GetIpv4()
+    // {
+    //     return Dns.GetHostEntry(Dns.GetHostName())
+    //         .AddressList
+    //         .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)
+    //         ?.ToString() ?? throw new NetworkInformationException();
+    // }
 }
