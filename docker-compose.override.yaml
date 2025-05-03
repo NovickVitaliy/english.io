@@ -37,6 +37,9 @@ services:
       - ConnectionStrings__RedisCache=redis-cache:6379
       - ConnectionStrings__SchedulingDatabase=${SCHEDULE_DATABASE_CONNECTION_STRING}
       - NotificationsApi__Key=${LEARNING_NOTIFICATIONS_API_KEY}
+      - NotificationsApi__Http=${LEARNING_NOTIFICATIONS_HTTP}
+      - NotificationsApi__Https=${LEARNING_NOTIFICATIONS_HTTPS}
+      - NotificationsApi__IsHttps=${LEARNING_NOTIFICATIONS_IS_HTTPS}
     ports:
       - "${LEARNING_API_PORT}:${ASPNETCORE_HTTP_PORTS}"
     env_file:
