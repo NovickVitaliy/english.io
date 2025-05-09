@@ -22,7 +22,7 @@ public interface IPracticeService
     Task<GenerateExampleTextResponse> GenerateExampleTextAsync([Query(CollectionFormat.Multi)] string[] words, [Authorize] string token);
 
     [Post("/practice/save-session-result")]
-    Task<SaveSessionResultDto> SaveSessionResult(SaveSessionResultRequest request);
+    Task<SaveSessionResultDto> SaveSessionResult(SaveSessionResultRequest request, [Authorize] string token);
 
     [Get("/practice/reading-comprehension")]
     Task<ReadingComprehensionExercise> GetReadingComprehensionExercise([Query(CollectionFormat.Multi)]string[] words, [Authorize] string token);

@@ -46,7 +46,8 @@ public partial class ExampleTextPage : ComponentBase
                 PracticeStatusState.Value.FirstTaskPercentageSuccess,
                 PracticeStatusState.Value.SecondTaskPercentageSuccess,
                 PracticeStatusState.Value.ThirdTaskPercentageSuccess,
-                PracticeStatusState.Value.FourthTaskPercentageSuccess));
+                PracticeStatusState.Value.FourthTaskPercentageSuccess),
+                UserState.Value.Token);
 
             var options = new DialogOptions()
             {

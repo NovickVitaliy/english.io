@@ -4,11 +4,13 @@ using Learning.Application.DTOs.Practice.ReadingComprehension.Check;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Create;
 using Learning.Application.DTOs.Practice.Sessions;
 using Learning.Application.DTOs.Practice.TranslateWords;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Learning.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/practice")]
 public class PracticeController : ControllerBase
 {

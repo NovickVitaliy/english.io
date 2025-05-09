@@ -53,14 +53,14 @@ public partial class SessionsHistory : FluxorComponent
         await FetchSessionsFromApi();
     }
 
-    private static Color GetColorBasedOnSuccessPercentage(double taskPercentageSuccess)
+    private static string GetColorBasedOnSuccessPercentage(double taskPercentageSuccess)
     {
         return taskPercentageSuccess switch
         {
-            >= 75 => Color.Success,
-            >= 50 and < 75 => Color.Warning,
-            < 50 => Color.Error,
-            _ => Color.Default
+            >= 75 => "#00FF00", // Green
+            >= 50 and < 75 => "#FFFF00", // Yellow
+            < 50 => "#FF0000", // Red
+            _ => "#808080" // Gray
         };
     }
 }
