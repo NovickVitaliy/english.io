@@ -1,0 +1,40 @@
+@using MudBlazor
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+<MudContainer Class="d-flex justify-content-center flex-column" MaxWidth="MaxWidth.ExtraLarge">
+    @if (SessionsState.Value.IsLoading)
+    {
+        <MudText Typo="Typo.h5" Align="Align.Center">@Localizer["Sessions_Are_Loading"]</MudText>
+    }
+    @if (SessionsState.Value.Sessions is not null)
+    {
+        @if (SessionsState.Value.Sessions.Length == 0)
+        {
+            <MudText Typo="Typo.h5" Align="Align.Center">@Localizer["Empty"]</MudText>
+        }
+        @if (SessionsState.Value.Sessions.Length > 0)
+        {
+            @foreach (var session in SessionsState.Value.Sessions)
+            {
+                <MudPaper Class="p-3 d-flex gap-1">
+                    <MudPaper Class="p-1">
+                        1 <div style="height: 5px; width: 5px; background-color: @(GetColorBasedOnSuccessPercentage(session.FirstTaskPercentageSuccess))"></div>
+                    </MudPaper>
+                    <MudPaper Class="p-1">
+                        2 <div style="height: 5px; width: 5px; background-color: @(GetColorBasedOnSuccessPercentage(session.SecondTaskPercentageSuccess))"></div>
+                    </MudPaper>
+                    <MudPaper Class="p-1">
+                        3 <div style="height: 5px; width: 5px; background-color: @(GetColorBasedOnSuccessPercentage(session.ThirdTaskPercentageSuccess))"></div>
+                    </MudPaper>
+                    <MudPaper Class="p-1">
+                        4 <div style="height: 5px; width: 5px; background-color: @(GetColorBasedOnSuccessPercentage(session.FourthTaskPercentageSuccess))"></div>
+                    </MudPaper>
+                </MudPaper>
+            }
+            <div class="d-flex justify-content-center align-items-center w-100">
+                <MudPagination Color="Color.Primary"
+                               Count="@((int)_totalPageCount)"
+                               SelectedChanged="ChangePage"></MudPagination>
+            </div>
+        }
+    }
+</MudContainer>

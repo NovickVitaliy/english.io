@@ -102,6 +102,9 @@
       <EmbeddedResource Update="Resources\Features\Practice\Pages\ReadingComprehension.uk.resx">
         <DependentUpon>ReadingComprehension.resx</DependentUpon>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Settings\SessionsHistory.uk.resx">
+        <DependentUpon>SessionsHistory.resx</DependentUpon>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

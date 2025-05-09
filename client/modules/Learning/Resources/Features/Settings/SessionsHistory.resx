@@ -1,0 +1,8 @@
+<root>
+  <data name="Sessions_Are_Loading">
+    Sessions are being loaded...
+  </data>
+  <data name="Empty">
+    You don't have any completed sessions yet
+  </data>
+</root>

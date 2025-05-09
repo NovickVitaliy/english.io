@@ -55,7 +55,7 @@ public class PracticeController : ControllerBase
         return (await _practiceService.CheckReadingComprehensionExerciseAsync(request)).ToApiResponse();
     }
 
-    [HttpGet("{userEmail:alpha}/sessions")]
+    [HttpGet("sessions")]
     public async Task<IActionResult> GetSessionsForUser([FromQuery] GetSessionsForUserRequest request)
     {
         return (await _practiceService.GetSessionsForUserAsync(request)).ToApiResponse();
