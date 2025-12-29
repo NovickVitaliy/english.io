@@ -35,7 +35,7 @@ public class GeminiAiLearningService : IAiLearningService
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Post,
-            RequestUri = new Uri($"v1beta/models/gemini-2.0-flash-001:generateContent?key={_geminiOptions.ApiKey}", UriKind.Relative),
+            RequestUri = new Uri($"v1beta/models/gemini-2.0-flash:generateContent?key={_geminiOptions.ApiKey}", UriKind.Relative),
             Content = new StringContent(JsonSerializer.Serialize(body))
         };
 
@@ -47,7 +47,8 @@ public class GeminiAiLearningService : IAiLearningService
             .GetProperty("content")
             .GetProperty("parts")[0]
             .GetProperty("text")
-            .GetString();
+            .ToString();
+
 
         var deckWordDto = JsonSerializer.Deserialize<DeckWordDto>(textProperty!, new JsonSerializerOptions(){PropertyNameCaseInsensitive = true});
         return JsonSerializer.Deserialize<DeckWordDto>(textProperty!, new JsonSerializerOptions(){ PropertyNameCaseInsensitive = true})!;

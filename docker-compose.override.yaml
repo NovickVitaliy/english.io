@@ -89,7 +89,7 @@ services:
     ports:
       - "${AUTH_POSTGRES_PORT}:5432"
     volumes:
-      - ${AUTH_AUTH_DB_VOLUME}:/var/lib/postgresql/data
+      - ${AUTH_AUTH_DB_VOLUME}:/var/lib/postgresql
 
   client.app:
     container_name: client.app
@@ -107,6 +107,7 @@ services:
       - ClientOptions__HttpPort=5100
       - ClientOptions__HttpsPort=5101
       - ClientOptions__IsHttps=false
+      - DetailedErrors=true
     depends_on:
       - authentication.api
       - learning.api
@@ -130,7 +131,7 @@ services:
     ports:
       - "${NOTIFICATIONS_POSTGRES_PORT}:5432"
     volumes:
-      - ${NOTIFICATIONS_DB_VOLUME}:/var/lib/postgresql/data
+      - ${NOTIFICATIONS_DB_VOLUME}:/var/lib/postgresql
 
   mongo-ui:
     container_name: mongo-ui
@@ -175,7 +176,7 @@ services:
       - POSTGRES_USER=${TELEGRAM_BOT_DB_POSTGRES_USER}
       - POSTGRES_DB=${TELEGRAM_BOT_DB_POSTGRES_DB}
     volumes:
-      - telegram.bot.db.volume:/var/lib/postgresql/data
+      - telegram.bot.db.volume:/var/lib/postgresql
 
   english.io.telegram.bot:
     restart: always
@@ -196,4 +197,4 @@ services:
     ports:
       - "${SCHEDULE_DB_PORT}:5432"
     volumes:
-      - english.io.schedule.database.volume:/var/lib/postgresql/data
+      - english.io.schedule.database.volume:/var/lib/postgresql
