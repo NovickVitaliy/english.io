@@ -75,4 +75,25 @@
   <data name="Telegram">
     Телеграм
   </data>
+  <data name="Practice_Difficulty">
+    Складність практики
+  </data>
+  <data name="Practice_Difficulty_Tooltip">
+    Від рівня складності залежить те, наскільки частіше потрібно буде практикувати слово, щоб вивчити його
+  </data>
+  <data name="Difficulty_VeryEasy">
+    Дуже легко
+  </data>
+  <data name="Difficulty_Easy">
+    Легко
+  </data>
+  <data name="Difficulty_Medium">
+    Середньо
+  </data>
+  <data name="Difficulty_Hard">
+    Складно
+  </data>
+  <data name="Difficulty_VeryHard">
+    Дуже складно
+  </data>
 </root>

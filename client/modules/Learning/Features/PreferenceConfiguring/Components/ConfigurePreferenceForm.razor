@@ -11,7 +11,23 @@
             </MudCardHeader>
             <MudCardContent>
                 <MudForm @ref="_form" Model="_request">
-                    <div class="d-flex align-end">
+                    <div class="d-flex mb-3 align-end">
+                        <MudSelect Label="@Localizer["Practice_Difficulty"]" @bind-Value="_request.PracticeDifficulty">
+                            <MudSelectItem
+                                Value="PracticeDifficulty.VeryEasy">@Localizer["Difficulty_VeryEasy"]</MudSelectItem>
+                            <MudSelectItem Value="PracticeDifficulty.Easy">@Localizer["Difficulty_Easy"]</MudSelectItem>
+                            <MudSelectItem
+                                Value="PracticeDifficulty.Medium">@Localizer["Difficulty_Medium"]</MudSelectItem>
+                            <MudSelectItem Value="PracticeDifficulty.Hard">@Localizer["Difficulty_Hard"]</MudSelectItem>
+                            <MudSelectItem
+                                Value="PracticeDifficulty.VeryHard">@Localizer["Difficulty_VeryHard"]</MudSelectItem>
+                        </MudSelect>
+                        <MudTooltip Text="@Localizer["Practice_Difficulty_Tooltip"]">
+                            <MudIcon Icon="@Icons.Material.Filled.Info"/>
+                        </MudTooltip>
+                    </div>
+
+                    <div class="d-flex mb-3 align-end">
                         <MudTextField Required="true"
                                       InputType="InputType.Number"
                                       Label="@Localizer["Example_Sentences_Number"]"
@@ -22,7 +38,7 @@
                         </MudTooltip>
                     </div>
 
-                    <div class="d-flex align-end">
+                    <div class="d-flex mb-3 align-end">
                         <MudTextField Required="true"
                                       InputType="InputType.Number"
                                       Label="@Localizer["Daily_Word_Practice_Limit"]"
@@ -33,13 +49,12 @@
                         </MudTooltip>
                     </div>
 
-                    <div class="d-flex align-end">
+                    <div class="d-flex mb-3 align-end">
                         <MudTextField Required="true"
                                       InputType="InputType.Number"
                                       Label="@Localizer["Daily_Sessions_Count"]"
                                       For="() => _request.DailySessionsCount"
-                                      ValueChanged="@((int sessionsCount) => HandleDailySessionsNumberChange(sessionsCount))"
-                        ></MudTextField>
+                                      ValueChanged="@((int sessionsCount) => HandleDailySessionsNumberChange(sessionsCount))"></MudTextField>
                         <MudTooltip Text="@Localizer["Daily_Sessions_Count_Tooltip"]">
                             <MudIcon Icon="@Icons.Material.Filled.Info"/>
                         </MudTooltip>
@@ -51,7 +66,7 @@
                         @for (int i = 0; i < _request.DailySessionsReminderTimes.Count; i++)
                         {
                             int index = i;
-                            <MudTextField InputType="InputType.Time"
+                            <MudTextField Class="mb-3" InputType="InputType.Time"
                                           Label=@(@$"{Localizer["Session"]} - {i + 1}")
                                           @bind-Value="_request.DailySessionsReminderTimes[index]"
                                           Required="true">
@@ -60,10 +75,11 @@
 
                         @if (_request.DailySessionsReminderTimes.All(x => x != TimeSpan.Zero))
                         {
-                            <MudText Typo="Typo.h5">@Localizer["Notification_Channel"]</MudText>
-                            <MudSelect @bind-Value="_request.NotificationChannel">
+                            <MudSelect Label="@Localizer["Notification_Channel"]"
+                                       @bind-Value="_request.NotificationChannel">
                                 <MudSelectItem Value="NotificationChannel.Email">@Localizer["Email"]</MudSelectItem>
-                                <MudSelectItem Value="NotificationChannel.Telegram">@Localizer["Telegram"]</MudSelectItem>
+                                <MudSelectItem
+                                    Value="NotificationChannel.Telegram">@Localizer["Telegram"]</MudSelectItem>
                             </MudSelect>
                         }
                     }
@@ -77,5 +93,5 @@
     </MudItem>
 </MudGrid>
 <MudOverlay Visible="_overlayVisible" DarkBackground="true">
-    <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
+    <MudProgressCircular Color="Color.Secondary" Indeterminate="true"/>
 </MudOverlay>

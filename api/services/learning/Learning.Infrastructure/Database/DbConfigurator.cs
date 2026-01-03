@@ -33,5 +33,7 @@ public static class DbConfigurator
     private static void ConfigureConventions()
     {
         BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
+        BsonSerializer.RegisterSerializer(new EnumSerializer<NotificationChannel>(BsonType.String));
+        BsonSerializer.RegisterSerializer(new EnumSerializer<PracticeDifficulty>(BsonType.String));
     }
 }

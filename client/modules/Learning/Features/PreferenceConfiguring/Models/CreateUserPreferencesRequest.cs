@@ -15,4 +15,6 @@ public class CreateUserPreferencesRequest
     public NotificationChannel NotificationChannel { get; set; } = NotificationChannel.Email;
 
     public string TimezoneId { get; set; } = null!;
+
+    public PracticeDifficulty PracticeDifficulty { get; set; }
 }

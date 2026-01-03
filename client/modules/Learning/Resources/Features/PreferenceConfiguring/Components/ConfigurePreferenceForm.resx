@@ -75,4 +75,25 @@
   <data name="Telegram">
     Telegram
   </data>
+  <data name="Practice_Difficulty">
+    Practice Difficulty
+  </data>
+  <data name="Practice_Difficulty_Tooltip">
+    Practice difficulty implies how frequently you will need to practice the word in order to learn it
+  </data>
+  <data name="Difficulty_VeryEasy">
+    Very easy
+  </data>
+  <data name="Difficulty_Easy">
+    Easy
+  </data>
+  <data name="Difficulty_Medium">
+    Medium
+  </data>
+  <data name="Difficulty_Hard">
+    Hard
+  </data>
+  <data name="Difficulty_VeryHard">
+    Very hard
+  </data>
 </root>
