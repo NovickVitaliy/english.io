@@ -61,4 +61,10 @@ public class DecksController : ControllerBase
 
         return File(data.FileStream, data.ContentType, data.FileName);
     }
+
+    [HttpDelete("{deckId:guid}/words/{wordId:guid}")]
+    public async Task<IActionResult> DeleteDeckEntryAsync(Guid deckId, Guid wordId)
+    {
+        return (await _decksService.DeleteDeckEntryAsync(deckId, wordId)).ToApiResponse();
+    }
 }

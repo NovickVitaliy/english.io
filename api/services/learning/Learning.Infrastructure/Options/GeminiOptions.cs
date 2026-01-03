@@ -11,4 +11,7 @@ public class GeminiOptions
 
     [Required]
     public string GenerateContentUrl { get; init; } = null!;
+
+    [Required]
+    public string Model { get; init; } = null!;
 }

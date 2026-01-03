@@ -15,5 +15,6 @@ public class CreateUserPreferencesValidator : BaseUserPreferencesValidator<Creat
         ValidateNotificationChannel();
         RuleFor(x => x.TimezoneId)
             .NotEmpty().WithMessage(TimezoneInfoMustBePresent);
+        ValidatePracticeDifficulty();
     }
 }

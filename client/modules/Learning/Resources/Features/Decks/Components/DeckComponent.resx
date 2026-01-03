@@ -5,4 +5,10 @@
   <data name="Deck_Is_Loading">
     Deck is being loaded...
   </data>
+  <data name="Delete_Word_From_Deck">
+    Delete
+  </data>
+  <data name="Delete_Deck_Entry">
+    Delete deck entry
+  </data>
 </root>

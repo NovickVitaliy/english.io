@@ -2,7 +2,6 @@ using Fluxor;
 using Learning.Features.Settings.Models;
 using Learning.Features.Settings.Service;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
 using Refit;

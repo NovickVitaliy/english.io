@@ -1,9 +1,7 @@
-using System.Security.Claims;
 using Fluxor;
 using Fluxor.Blazor.Web.Components;
-using Learning.LearningShared.Services;
 using Learning.Store.Deck;
-using Learning.Store.Deck.Actions;
+using Learning.Store.Deck.Actions.Fetch;
 using Learning.Store.Practice.Actions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -39,6 +37,7 @@ public partial class ChooseWordsForPracticePage : FluxorComponent
     {
         _countOfWordsForPractice = int.Parse((await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Claims
             .SingleOrDefault(x => x.Type == GlobalConstants.ApplicationClaimTypes.CountOfWordsForPractice)?.Value ?? "10");
+        CheckWordForPractice(true, "123");
     }
 
     private void CheckWordForPractice(bool added, string word)

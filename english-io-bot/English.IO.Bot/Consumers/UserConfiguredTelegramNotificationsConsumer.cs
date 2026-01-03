@@ -1,6 +1,5 @@
 using English.IO.Bot.Database;
 using English.IO.Bot.Extensions;
-using English.IO.Bot.Models;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Shared.MessageBus.Events;

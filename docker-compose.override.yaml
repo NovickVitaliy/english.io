@@ -1,10 +1,14 @@
 services:
   authentication.api:
+    image: authentication.api
+    build:
+      context: .
+      dockerfile: api/services/authentication/Authentication.API/Dockerfile
     container_name: authentication.api
     restart: always
     environment:
-      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS}
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
       - ConnectionStrings__Default=${AUTH_DB_CONNECTION_STRING}
       - NotificationsApi__Http=http://notifications-api:8080/
       - NotificationsApi__Https=https://notifications-api:8081/
@@ -13,7 +17,7 @@ services:
     env_file:
       - .env
     ports:
-      - "${AUTH_API_PORT}:${ASPNETCORE_HTTP_PORTS}"
+      - "${AUTH_API_PORT}:8080"
     depends_on:
       auth.db:
         condition: service_started
@@ -21,19 +25,24 @@ services:
         condition: service_healthy
 
   learning.api:
+    image: learning.api
+    build:
+      context: .
+      dockerfile: api/services/learning/Learning.API/Dockerfile
     container_name: learning.api
     restart: always
     environment:
-      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS}
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
       - MongoOptions__ConnectionString=${MONGO_OPTIONS_CONNECTION_STRING}
       - MongoOptions__DatabaseName=${MONGO_OPTIONS_DATABASE_NAME}
       - AiLearningPrompts__PromptForWordTranslatingWithExampleSentences=${PROMPT_FOR_TRANSLATING_WORD_WITH_EXAMPLE}
       - AiLearningPrompts__PromptForCheckingIfWordCompliesToTheTopic=${PROMPT_FOR_CHECKING_IF_WORD_COMPLIES_TO_THE_TOPIC}
       - AiLearningPrompts__PromptForGeneratingReadingComprehensionExercise=${PROMPT_FOR_GENERATING_THE_READING_COMPREHENSION}
       - AiLearningPrompts__PromptForCheckingIfReadingComprehensionExercise=${PROMPT_FOR_CHECKING_THE_READING_COMPREHENSION}
-      - GeminiOptions__ApiKey=${GEMINI_API_KEY}
-      - GeminiOptions__GenerateContentUrl=${GEMINI_GENERATE_CONTENT_URL}
+      - GeminiOptions__ApiKey=${GEMINIOPTIONS__APIKEY}
+      - GeminiOptions__GenerateContentUrl=${GEMINIOPTIONS__GENERATECONTENTURL}
+      - GeminiOptions__Model=${GEMINIOPTIONS__MODEL}
       - ConnectionStrings__RedisCache=redis-cache:6379
       - ConnectionStrings__SchedulingDatabase=${SCHEDULE_DATABASE_CONNECTION_STRING}
       - NotificationsApi__Key=${LEARNING_NOTIFICATIONS_API_KEY}
@@ -41,7 +50,7 @@ services:
       - NotificationsApi__Https=${LEARNING_NOTIFICATIONS_HTTPS}
       - NotificationsApi__IsHttps=${LEARNING_NOTIFICATIONS_IS_HTTPS}
     ports:
-      - "${LEARNING_API_PORT}:${ASPNETCORE_HTTP_PORTS}"
+      - "${LEARNING_API_PORT}:8080"
     env_file:
       - .env
     depends_on:
@@ -51,15 +60,19 @@ services:
         condition: service_healthy
 
   notifications.api:
+    image: notifications.api
+    build:
+      context: .
+      dockerfile: api/services/notifications/Notifications.API/Dockerfile
     container_name: notifications-api
     restart: always
     env_file:
       - .env
     ports:
-      - "${NOTIFICATIONS_API_PORT}:${ASPNETCORE_HTTP_PORTS}"
+      - "${NOTIFICATIONS_API_PORT}:8080"
     environment:
-      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS}
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
       - MailSettings__Server=${MAILSETTINGS_SERVER}
       - MailSettings__Port=${MAILSETTINGS_PORT}
       - MailSettings__SenderName=${MAILSETTINGS_SENDERNAME}
@@ -71,6 +84,10 @@ services:
       - notifications.db
 
   text-to-speech.api:
+    image: text-to-speech.api
+    build:
+      context: api/services/text-to-speech
+      dockerfile: Dockerfile
     container_name: text-to-speech.api
     ports:
       - "${TTS_PORT}:5003"
@@ -80,6 +97,7 @@ services:
     restart: unless-stopped
 
   auth.db:
+    image: postgres
     container_name: auth.db
     restart: always
     environment:
@@ -92,13 +110,17 @@ services:
       - ${AUTH_AUTH_DB_VOLUME}:/var/lib/postgresql
 
   client.app:
+    image: client.app
+    build:
+      context: client/Client
+      dockerfile: Dockerfile
     container_name: client.app
     restart: always
     ports:
-      - "${CLIENT_APP_PORT}:${ASPNETCORE_HTTP_PORTS}"
+      - "${CLIENT_APP_PORT}:8080"
     environment:
-      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS}
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
       - Services__Authentication=${CLIENT_SERVICES_AUTHENTICATION}
       - Services__Learning=${CLIENT_SERVICES_LEARNING}
       - Services__TextToSpeech=${CLIENT_SERVICES_TEXT_TO_SPEECH}
@@ -114,6 +136,7 @@ services:
       - text-to-speech.api
 
   learning.db:
+    image: mongo
     container_name: learning.db
     restart: always
     ports:
@@ -122,6 +145,7 @@ services:
       - ${LEARNING_DB_VOLUME}:/data/db
 
   notifications.db:
+    image: postgres
     container_name: notifications.db
     restart: always
     environment:
@@ -134,6 +158,7 @@ services:
       - ${NOTIFICATIONS_DB_VOLUME}:/var/lib/postgresql
 
   mongo-ui:
+    image: mongo-express
     container_name: mongo-ui
     restart: always
     ports:
@@ -141,10 +166,9 @@ services:
     environment:
       - ME_CONFIG_MONGODB_URL=${MONGO_DB_URL}
       - ME_CONFIG_BASICAUTH=${MONGO_UI_AUTH}
-    profiles:
-      - development
 
   rabbitmq-broker:
+    image: rabbitmq:3-management
     container_name: rabbitmq-broker
     restart: always
     hostname: english-io
@@ -161,12 +185,14 @@ services:
       retries: 5
 
   redis-cache:
+    image: redis
     container_name: redis-cache
     restart: always
     ports:
       - "${REDIS_CACHE_PORT}:6379"
 
   telegram.bot.db:
+    image: postgres
     restart: always
     container_name: telegram.bot.db
     ports:
@@ -179,6 +205,10 @@ services:
       - telegram.bot.db.volume:/var/lib/postgresql
 
   english.io.telegram.bot:
+    image: english.io.telegram.bot
+    build:
+      context: .
+      dockerfile: /english-io-bot/English.IO.Bot/Dockerfile
     restart: always
     container_name: english.io.telegram.bot
     environment:
@@ -188,6 +218,7 @@ services:
       - .env
 
   schedule-database:
+    image: postgres
     restart: always
     container_name: english.io.schedule.database
     environment:
@@ -198,3 +229,10 @@ services:
       - "${SCHEDULE_DB_PORT}:5432"
     volumes:
       - english.io.schedule.database.volume:/var/lib/postgresql
+
+volumes:
+  auth.db.volume:
+  learning.db.volume:
+  notifications.db.volume:
+  telegram.bot.db.volume:
+  english.io.schedule.database.volume:

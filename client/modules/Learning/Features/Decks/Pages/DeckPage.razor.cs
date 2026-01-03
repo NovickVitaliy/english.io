@@ -1,12 +1,9 @@
-using Fluxor;
 using Learning.Features.Decks.Components;
-using Learning.Features.Decks.Models;
 using Learning.LearningShared.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using MudBlazor;
-using Shared.Store.User;
 
 namespace Learning.Features.Decks.Pages;
 

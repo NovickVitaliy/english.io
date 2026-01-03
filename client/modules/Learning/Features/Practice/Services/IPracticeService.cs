@@ -3,7 +3,6 @@ using Learning.Features.Practice.Models.ExampleText;
 using Learning.Features.Practice.Models.FillInTheGaps;
 using Learning.Features.Practice.Models.ReadingComprehension;
 using Learning.Features.Settings.Models.Sessions;
-using Microsoft.AspNetCore.Mvc;
 using Refit;
 
 namespace Learning.Features.Practice.Services;

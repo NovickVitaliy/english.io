@@ -6,7 +6,6 @@ using Notifications.API.Authentication;
 using Notifications.API.Database;
 using Notifications.API.Extensions;
 using Notifications.API.Options;
-using Notifications.API.Services;
 using Notifications.API.Services.ApiKey;
 using Notifications.API.Services.Email;
 

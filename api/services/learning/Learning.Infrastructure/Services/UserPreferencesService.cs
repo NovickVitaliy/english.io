@@ -43,12 +43,19 @@ public class UserPreferencesService : IUserPreferencesService
             DailySessionsReminderTimes = request.DailySessionsReminderTimes!.ToList(),
             DailyWordPracticeLimit = request.DailyWordPracticeLimit!.Value,
             NumberOfExampleSentencesPerWord = request.NumberOfExampleSentencesPerWord!.Value,
-            NotificationChannel = request.NotificationChannel
+            NotificationChannel = request.NotificationChannel,
+            PracticeDifficulty = request.PracticeDifficulty
         };
 
         var id = await _userPreferencesRepository.CreateUserPreferencesAsync(userPreferences);
-        await _publishEndpoint.Publish(new UserCreatedPreferences(request.UserEmail!, userPreferences.NumberOfExampleSentencesPerWord, userPreferences.DailyWordPracticeLimit,
-            userPreferences.NotificationChannel.ToString(), false));
+        await _publishEndpoint.Publish(new UserCreatedPreferences(
+            request.UserEmail!,
+            userPreferences.NumberOfExampleSentencesPerWord,
+            userPreferences.DailyWordPracticeLimit,
+            userPreferences.NotificationChannel.ToString(),
+            false,
+            userPreferences.PracticeDifficulty.ToString()));
+
         await ConfigureNotificationsAsync(request.UserEmail!, request.NotificationChannel.ToString(), [.. request.DailySessionsReminderTimes!], request.TimezoneId!);
         var createJwtTokenRequest = new CreateJwtTokenRequest(request.UserEmail!);
         var requestClient = _scopedClientFactory.CreateRequestClient<CreateJwtTokenRequest>();
@@ -102,7 +109,8 @@ public class UserPreferencesService : IUserPreferencesService
                 userPreferences.NumberOfExampleSentencesPerWord,
                 userPreferences.DailyWordPracticeLimit,
                 userPreferences.DailySessionsReminderTimes,
-                userPreferences.NotificationChannel));
+                userPreferences.NotificationChannel,
+                userPreferences.PracticeDifficulty));
     }
 
     public async Task<Result<bool>> UpdateUserPreferencesAsync(UpdateUserPreferencesRequest request)

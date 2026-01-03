@@ -4,7 +4,6 @@ using Learning.Store.Sessions;
 using Learning.Store.Sessions.Actions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
-using MudBlazor;
 using Shared.Store.User;
 
 namespace Learning.Features.Settings.Components;

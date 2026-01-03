@@ -51,41 +51,71 @@ public class DecksRepository : IDecksRepository
         return await (await _learningDbContext.Decks.FindAsync(filter)).SingleOrDefaultAsync();
     }
 
-    public async Task<DeckWord?> CreateDeckWordAsync(Guid deckId, DeckWord deckWord)
+    public async Task<bool> CreateDeckEntriesAsync(Guid deckId, WordUnit wordUnit)
     {
         var filter = Builders<Deck>.Filter.Eq(x => x.Id, deckId);
         var deck = await (await _learningDbContext.Decks.FindAsync(filter)).SingleOrDefaultAsync();
         if (deck is null)
         {
-            return null;
+            return false;
         }
 
-        deck.DeckWords.Add(deckWord);
+        foreach (var sense in wordUnit.Senses)
+        {
+            var deckEntry = new DeckEntry()
+            {
+                Id = Guid.NewGuid(),
+                WordUnitId = wordUnit.Id,
+                WordSenseId = sense.Id,
+                LastTimePracticed = null,
+                ProgressScore = 0
+            };
+
+            deck.DeckEntries.Add(deckEntry);
+        }
 
         await _learningDbContext.Decks.ReplaceOneAsync(filter, deck);
 
-        return deckWord;
+        return true;
     }
+
     public async Task<int> GetWordsCountForDeckAsync(Guid deckId)
     {
         var filter = Builders<Deck>.Filter.Eq(x => x.Id, deckId);
         var pipelineDefinition = new EmptyPipelineDefinition<Deck>()
             .Match(filter)
-            .Project(x => x.DeckWords.Count);
+            .Project(x => x.DeckEntries.Count);
 
          return await (await _learningDbContext.Decks.AggregateAsync(pipelineDefinition)).SingleOrDefaultAsync();
     }
+
     public async Task DeleteDeckAsync(Guid deckId)
     {
         var filter = Builders<Deck>.Filter.Eq(x => x.Id, deckId);
 
         await _learningDbContext.Decks.DeleteOneAsync(filter);
     }
+
     public async Task<bool> DeckWithNameForUserExistsAsync(string userEmail, string deckTopic)
     {
         var filter = Builders<Deck>.Filter.Eq(x => x.UserEmail, userEmail) & Builders<Deck>.Filter.Eq(x => x.Topic, deckTopic);
 
         var deck = await (await _learningDbContext.Decks.FindAsync(filter)).FirstOrDefaultAsync();
         return deck != null;
+    }
+
+    public async Task<bool> DeleteDeckEntryAsync(Deck deck, Guid wordId)
+    {
+        var deckEntry = deck.DeckEntries.SingleOrDefault(x => x.Id == wordId);
+        if (deckEntry is null)
+        {
+            return false;
+        }
+
+        deck.DeckEntries.Remove(deckEntry);
+
+        await _learningDbContext.Decks.ReplaceOneAsync(x => x.Id == deck.Id, deck);
+
+        return true;
     }
 }

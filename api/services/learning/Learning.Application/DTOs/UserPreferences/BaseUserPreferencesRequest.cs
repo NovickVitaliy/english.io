@@ -11,4 +11,5 @@ public interface IBaseUserPreferencesRequest : IBaseRequest
     int? DailyWordPracticeLimit { get; init; }
     TimeSpan[]? DailySessionsReminderTimes { get; init; }
     NotificationChannel NotificationChannel { get; init; }
+    PracticeDifficulty PracticeDifficulty { get; init; }
 }

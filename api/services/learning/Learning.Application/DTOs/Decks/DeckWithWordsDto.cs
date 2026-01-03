@@ -6,4 +6,4 @@ public record DeckWithWordsDto(
     string Topic,
     bool IsStrict,
     int WordCount,
-    DeckWordDto[] DeckWords) : DeckDto(Id, UserEmail, Topic, IsStrict, WordCount);
+    DeckEntryDto[] DeckWords) : DeckDto(Id, UserEmail, Topic, IsStrict, WordCount);

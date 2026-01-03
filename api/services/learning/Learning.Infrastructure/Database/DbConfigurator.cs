@@ -1,4 +1,3 @@
-using Learning.Domain;
 using Learning.Domain.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

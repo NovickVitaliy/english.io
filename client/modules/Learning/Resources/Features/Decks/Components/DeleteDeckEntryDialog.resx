@@ -1,0 +1,11 @@
+<root>
+  <data name="Title">
+    Delete word from deck
+  </data>
+  <data name="Content">
+    Are you sure you want to delete this word from the deck?
+  </data>
+  <data name="Cancel">
+    Cancel
+  </data>
+</root>

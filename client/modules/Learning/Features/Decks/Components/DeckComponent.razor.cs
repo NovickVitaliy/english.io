@@ -3,7 +3,7 @@ using Fluxor.Blazor.Web.Components;
 using Learning.Features.Decks.Models;
 using Learning.LearningShared.Services;
 using Learning.Store.Deck;
-using Learning.Store.Deck.Actions;
+using Learning.Store.Deck.Actions.Fetch;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
@@ -23,10 +23,7 @@ public partial class DeckComponent : FluxorComponent
 
     protected override void OnInitialized()
     {
-        UserState.StateChanged += (_, _) =>
-        {
-            GetDeckFromApi();
-        };
+        UserState.StateChanged += (_, _) => { GetDeckFromApi(); };
         base.OnInitialized();
     }
 
@@ -42,11 +39,38 @@ public partial class DeckComponent : FluxorComponent
         Dispatcher.Dispatch(new FetchDeckAction(DeckId));
     }
 
-    private async Task ShowWordDialog(DeckWordDto word)
+    private async Task ShowWordDialog(DeckEntryDto entry)
     {
-        var parameters = new DialogParameters<WordDialog> { { x => x.DeckWord, word } };
+        var parameters = new DialogParameters<WordDialog>
+        {
+            {
+                x => x.DeckEntry, entry
+            }
+        };
 
-        await DialogService.ShowAsync<WordDialog>(Localizer["Create_Word_Dialog"], parameters);
+        await DialogService.ShowAsync<WordDialog>(Localizer["Create_Word_Dialog"], parameters, new DialogOptions()
+        {
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true
+        });
+    }
+
+    private async Task ConfirmWordDelete(Guid deckEntryId)
+    {
+        var parameters = new DialogParameters<DeleteDeckEntryDialog>
+        {
+            {
+                x => x.DeckId, DeckId
+            },
+            {
+                x => x.DeckEntryId, deckEntryId
+            }
+        };
+
+        await DialogService.ShowAsync<DeleteDeckEntryDialog>(Localizer["Delete_Deck_Entry"], parameters, new DialogOptions()
+        {
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true
+        });
     }
 }
-

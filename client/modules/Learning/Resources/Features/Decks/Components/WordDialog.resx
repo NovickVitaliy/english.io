@@ -11,4 +11,19 @@
   <data name="Explanation">
     Explanation
   </data>
+  <data name="Usage_Label">
+    Usage Label
+  </data>
+  <data name="Part_Of_Speech">
+    Part Of Speech
+  </data>
+  <data name="Word_Title">
+    Word Info
+  </data>
+  <data name="Word">
+    Word
+  </data>
+  <data name="Sense">
+    Sense
+  </data>
 </root>

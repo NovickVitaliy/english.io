@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
-using MudBlazor;
 
 namespace Learning.Features.Settings.Components.SecurityComponent;
 

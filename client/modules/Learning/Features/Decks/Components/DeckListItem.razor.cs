@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Learning.Features.Decks.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;

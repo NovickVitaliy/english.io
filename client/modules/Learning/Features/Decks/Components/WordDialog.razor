@@ -2,36 +2,58 @@
 @using Shared
 <MudDialog>
     <TitleContent>
-        <MudText Typo="Typo.h6">
-            @(CapitalizeWord(DeckWord.EnglishVersion))
-        </MudText>
+        <MudText Typo="Typo.h6">@Localizer["Word_Title"]</MudText>
     </TitleContent>
     <DialogContent>
-        <div class="d-flex gap-3 mb-1 justify-content-start align-items-center">
-            <MudButton Size="Size.Small" OnClick="@(() => PlayWord(@DeckWord.EnglishVersion, ClientConstants.Languages.English))" Variant="Variant.Filled" Color="Color.Primary">
-                <MudIcon Icon="@Icons.Material.Filled.PlayArrow"></MudIcon>
+        <div class="d-flex justify-content-start align-items-center">
+            @Localizer["Word"] - <b>@(CapitalizeWord(DeckEntry.Word))</b>
+            <MudButton Size="Size.Small"
+                       OnClick="@(() => PlayWord(DeckEntry.Word, ClientConstants.Languages.English))"
+                       Variant="Variant.Text" Color="Color.Primary">
+                <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.VolumeUp"></MudIcon>
             </MudButton>
-            <MudText> <b>@Localizer["English_Version"]: </b>@DeckWord.EnglishVersion</MudText>
         </div>
-        <div class="d-flex gap-3 mb-1 justify-content-start align-items-center">
-            <MudButton Size="Size.Small" OnClick="@(() => PlayWord(@DeckWord.UkrainianVersion, ClientConstants.Languages.Ukrainian))" Variant="Variant.Filled" Color="Color.Primary">
-                <MudIcon Icon="@Icons.Material.Filled.PlayArrow"></MudIcon>
-            </MudButton>
-            <MudText> <b>@Localizer["Ukrainian_Version"]: </b>@DeckWord.UkrainianVersion</MudText>
+        <div class="d-flex justify-content-start align-items-center">
+            @Localizer["Part_Of_Speech"] - <b>@(CapitalizeWord(DeckEntry.PartOfSpeech))</b>
         </div>
-        <MudText Class="mb-3"><b>@Localizer["Explanation"]:</b> @DeckWord.Explanation</MudText>
-        <MudText><b>@Localizer["Example_Sentences"]</b></MudText>
-        <ol>
-            @foreach (var exampleSentence in DeckWord.ExampleSentences)
+        <MudTabs>
+            @for (var index = 0; index < DeckEntry.WordSenses.Length; index++)
             {
-                <li class="p-1 mt-3 rounded-3">
-                    @exampleSentence
-                    <MudButton Size="Size.Small" OnClick="@(() => PlayWord(exampleSentence, ClientConstants.Languages.English))" Variant="Variant.Text" Color="Color.Primary">
-                        <MudIcon  Icon="@Icons.Material.Filled.PlayArrow"></MudIcon>
-                    </MudButton>
-                </li>
+                var sense = DeckEntry.WordSenses[index];
+                <MudTabPanel Text="@($"{Localizer["Sense"]} № {index + 1}")">
+                    <MudText Class="mb-3">@Localizer["Usage_Label"]: @sense.UsageLabel</MudText>
+                    <div class="d-flex gap-3 mb-1 justify-content-start align-items-center">
+                        <MudText>
+                            <b>@Localizer["Ukrainian_Version"]: </b>@sense.UkrainianTranslation
+                        </MudText>
+                        <MudButton Size="Size.Small"
+                                   OnClick="@(() => PlayWord(sense.UkrainianTranslation, ClientConstants.Languages.Ukrainian))"
+                                   Variant="Variant.Text" Color="Color.Primary">
+                            <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.VolumeUp"></MudIcon>
+                        </MudButton>
+                    </div>
+                    <MudText Class="mb-3">
+                        <b>@Localizer["Explanation"]:</b> @sense.Definition
+                    </MudText>
+                    <MudText>
+                        <b>@Localizer["Example_Sentences"]</b>
+                    </MudText>
+                    <ol>
+                        @foreach (var exampleSentence in sense.ExampleSentences)
+                        {
+                            <li class="p-1 mt-3 rounded-3">
+                                @exampleSentence
+                                <MudButton Size="Size.Small"
+                                           OnClick="@(() => PlayWord(exampleSentence, ClientConstants.Languages.English))"
+                                           Variant="Variant.Text" Color="Color.Primary">
+                                    <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.VolumeUp"></MudIcon>
+                                </MudButton>
+                            </li>
+                        }
+                    </ol>
+                </MudTabPanel>
             }
-        </ol>
+        </MudTabs>
     </DialogContent>
     <DialogActions>
         <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>

@@ -11,10 +11,8 @@ using Refit;
 using Shared;
 using Shared.Extensions;
 using Shared.Models;
-using Shared.Store;
 using Shared.Store.User;
 using Shared.Store.User.Actions;
-using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Learning.Features.PreferenceConfiguring.Components;
 

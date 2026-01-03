@@ -4,14 +4,18 @@ using Learning.Application.Contracts.Providers;
 using Learning.Application.DTOs.Decks;
 using Learning.Domain.Models;
 using Learning.Infrastructure.CsvMappers;
+using Learning.Infrastructure.Database;
 
 namespace Learning.Infrastructure.Providers.DeckExporter;
 
-public class CsvDeckExporterFileProvider : IDeckExporterFileProvider
+public class CsvDeckExporterFileProvider : BaseDeckExporterProvider, IDeckExporterFileProvider
 {
-    private readonly ExportDeckFileType _handlesFileType = ExportDeckFileType.Csv;
+    private const ExportDeckFileType HandlesFileType = ExportDeckFileType.Csv;
 
-    public bool Handles(ExportDeckFileType exportDeckFileType) => _handlesFileType == exportDeckFileType;
+    public CsvDeckExporterFileProvider(LearningDbContext learningDbContext) : base(learningDbContext)
+    { }
+
+    public bool Handles(ExportDeckFileType exportDeckFileType) => HandlesFileType == exportDeckFileType;
 
     public async Task<Stream> ExportDeckAsync(Deck deck)
     {
@@ -20,8 +24,9 @@ public class CsvDeckExporterFileProvider : IDeckExporterFileProvider
         {
             await using var streamWriter = new StreamWriter(stream, leaveOpen: true);
             await using var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture);
-            csvWriter.Context.RegisterClassMap<DeckWordMap>();
-            await csvWriter.WriteRecordsAsync(deck.DeckWords);
+            csvWriter.Context.RegisterClassMap<WordSenseCsvMap>();
+            var wordEntries = await LoadWordsFromDatabase(deck);
+            await csvWriter.WriteRecordsAsync(FlattenToWordSenses(wordEntries));
             await streamWriter.FlushAsync();
             stream.Position = 0;
             return stream;

@@ -12,7 +12,6 @@ using Shared.Extensions;
 using Shared.Models;
 using Shared.Store.User;
 using Shared.Store.User.Actions;
-using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Learning.Features.Settings.Components.SecurityComponent;
 

@@ -1,5 +1,4 @@
 using System.Reflection;
-using Authentication.API;
 using Authentication.API.Data;
 using Authentication.API.Data.Seed;
 using Authentication.API.Models;
@@ -9,9 +8,6 @@ using Authentication.API.Services.TokenGenerator;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Polly;
-using Polly.Extensions.Http;
 using Shared.Authentication;
 using Shared.MessageBus;
 using Shared.Services;

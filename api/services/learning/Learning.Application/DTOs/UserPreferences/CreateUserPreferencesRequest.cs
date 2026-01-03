@@ -11,7 +11,8 @@ public record CreateUserPreferencesRequest(
     int? DailyWordPracticeLimit,
     TimeSpan[]? DailySessionsReminderTimes,
     NotificationChannel NotificationChannel,
-    string? TimezoneId)
+    string? TimezoneId,
+    PracticeDifficulty PracticeDifficulty)
     : IBaseUserPreferencesRequest
 {
     public RequestValidationResult IsValid()

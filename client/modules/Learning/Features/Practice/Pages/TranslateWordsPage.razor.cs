@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Fluxor;
 using Fluxor.Blazor.Web.Components;
 using Learning.Features.Practice.Models;
@@ -13,7 +12,6 @@ using Refit;
 using Shared;
 using Shared.Extensions;
 using Shared.Store.User;
-using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Learning.Features.Practice.Pages;
 

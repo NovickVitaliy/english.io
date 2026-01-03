@@ -8,4 +8,5 @@ public record UserPreferencesDto(
     int NumberOfExampleSentencesPerWord,
     int DailyWordPracticeLimit,
     List<TimeSpan> DailySessionsReminderTimes,
-    NotificationChannel NotificationChannel);
+    NotificationChannel NotificationChannel,
+    PracticeDifficulty PracticeDifficulty);

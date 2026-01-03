@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Telegram.Bot.Types;
 
 namespace English.IO.Bot.Database;
 

@@ -1,9 +1,8 @@
 using Fluxor;
 using Fluxor.Blazor.Web.Components;
-using Learning.Features.Decks.Models;
 using Learning.LearningShared.Services;
 using Learning.Store.Decks;
-using Learning.Store.Decks.Actions;
+using Learning.Store.Decks.Actions.Fetch;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using Shared.Store.User;

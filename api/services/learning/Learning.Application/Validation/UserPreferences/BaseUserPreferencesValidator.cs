@@ -44,4 +44,10 @@ public abstract class BaseUserPreferencesValidator<T> : AbstractValidator<T> whe
         RuleFor(x => x.NotificationChannel)
             .IsInEnum();
     }
+
+    protected void ValidatePracticeDifficulty()
+    {
+        RuleFor(x => x.PracticeDifficulty)
+            .IsInEnum();
+    }
 }

@@ -13,4 +13,6 @@ public class UserPreferences
     public List<TimeSpan> DailySessionsReminderTimes { get; set; } = [];
 
     public NotificationChannel NotificationChannel { get; set; } = NotificationChannel.Email;
+
+    public PracticeDifficulty PracticeDifficulty { get; set; } = PracticeDifficulty.VeryEasy;
 }

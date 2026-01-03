@@ -9,9 +9,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
 using Refit;
-using Shared.Extensions;
 using Shared.Store.User;
-using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Learning.Features.Practice.Pages;
 

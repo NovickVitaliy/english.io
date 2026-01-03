@@ -5,4 +5,5 @@ public record UserCreatedPreferences(
     int ExampleSentences,
     int CountOfWordsForPractice,
     string NotificationChannel,
-    bool IsTelegramConnected) : BaseEvent;
+    bool IsTelegramConnected,
+    string PracticeDifficulty) : BaseEvent;

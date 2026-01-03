@@ -1,6 +1,5 @@
 using DbUp;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 
 namespace Learning.Infrastructure.Persistence;
 

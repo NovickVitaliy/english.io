@@ -5,7 +5,6 @@ using Learning.Features.Settings.Service;
 using Learning.LearningShared.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Refit;
 using Shared;
 using Shared.Extensions;
 

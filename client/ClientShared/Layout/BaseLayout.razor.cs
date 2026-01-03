@@ -1,10 +1,8 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Text.Json;
 using Blazored.LocalStorage;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using Shared.Extensions;
 using Shared.Store.Theme;
 using Shared.Store.User;
 

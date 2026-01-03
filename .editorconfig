@@ -221,6 +221,12 @@ dotnet_diagnostic.CA1724.severity = none
 dotnet_diagnostic.CA1040.severity = none
 dotnet_diagnostic.S1135.severity = none
 dotnet_diagnostic.S3993.severity = none
+
+# Mics
+dotnet_diagnostic.S1133.severity = none
+dotnet_diagnostic.S1066.severity = none
+
+
 [*.{cpp,h,in}]
 curly_bracket_next_line = true
 indent_brace_style = Allman

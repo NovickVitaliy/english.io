@@ -11,4 +11,19 @@
   <data name="Explanation">
     Пояснення
   </data>
+  <data name="Usage_Label">
+    Використання
+  </data>
+  <data name="Part_Of_Speech">
+    Частина мови
+  </data>
+  <data name="Word_Title">
+    Інформація про слово
+  </data>
+  <data name="Word">
+    Слово
+  </data>
+  <data name="Sense">
+    Значення
+  </data>
 </root>

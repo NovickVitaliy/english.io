@@ -20,17 +20,17 @@
                 @foreach (var word in DeckState.Value.DeckWithWordsDto!.DeckWords)
                 {
                     <MudPaper Class="p-3 w-50 mb-3 d-flex">
-                        <div>
-                            <MudCheckBox Disabled="@(_wordsForPractice.Count == _countOfWordsForPractice && !_wordsForPractice.Contains(word.EnglishVersion))" T="bool" ValueChanged="@((value) => CheckWordForPractice(value, word.EnglishVersion))"></MudCheckBox>
-                        </div>
-                        <div>
-                            <MudText Typo="Typo.body1" Class="fw-bold mb-1">
-                                @word.EnglishVersion
-                            </MudText>
-                            <MudText Typo="Typo.body2">
-                                @word.UkrainianVersion
-                            </MudText>
-                        </div>
+                        @* <div> *@
+                        @*     <MudCheckBox Disabled="@(_wordsForPractice.Count == _countOfWordsForPractice && !_wordsForPractice.Contains(word.EnglishVersion))" T="bool" ValueChanged="@((value) => CheckWordForPractice(value, word.EnglishVersion))"></MudCheckBox> *@
+                        @* </div> *@
+                        @* <div> *@
+                        @*     <MudText Typo="Typo.body1" Class="fw-bold mb-1"> *@
+                        @*         @word.EnglishVersion *@
+                        @*     </MudText> *@
+                        @*     <MudText Typo="Typo.body2"> *@
+                        @*         @word.UkrainianVersion *@
+                        @*     </MudText> *@
+                        @* </div> *@
                     </MudPaper>
                 }
             </MudContainer>

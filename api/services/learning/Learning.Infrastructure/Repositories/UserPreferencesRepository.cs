@@ -1,5 +1,4 @@
 using Learning.Application.Contracts.Repositories;
-using Learning.Domain;
 using Learning.Domain.Models;
 using Learning.Infrastructure.Database;
 using MongoDB.Driver;

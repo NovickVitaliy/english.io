@@ -3,6 +3,7 @@ using Blazored.LocalStorage;
 using Fluxor;
 using Fluxor.Blazor.Web.ReduxDevTools;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Store;
 
 namespace Shared.Extensions;
 
@@ -15,6 +16,7 @@ public static class FluxorExtensions
         {
             options.ScanAssemblies(typeof(FluxorExtensions).Assembly, assemblies);
             options.UseReduxDevTools();
+            options.AddMiddleware<ApiLoadingMiddleware>();
         });
 
         return services;

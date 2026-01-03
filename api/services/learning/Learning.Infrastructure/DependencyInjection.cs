@@ -1,4 +1,5 @@
 using System.Reflection;
+using Google.GenAI;
 using Learning.Application.Contracts.Api;
 using Learning.Application.Contracts.Providers;
 using Learning.Application.Contracts.Repositories;
@@ -49,12 +50,6 @@ public static class DependencyInjection
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
-        services.AddHttpClient(IAiLearningService.HttpClientKey, (sp, client) =>
-        {
-            var geminiOptions = sp.GetRequiredService<IOptions<GeminiOptions>>().Value ?? throw new InvalidOperationException();
-
-            client.BaseAddress = new Uri(geminiOptions.GenerateContentUrl);
-        });
 
         services.AddSingleton<IMongoClient>(sp =>
         {
@@ -72,7 +67,15 @@ public static class DependencyInjection
         services.AddScoped<IDecksRepository, DecksRepository>();
         services.AddScoped<IDecksService, DecksService>();
 
-        services.AddScoped<IAiLearningService, GeminiAiLearningService>();
+        services.AddScoped<IAiLearningService, GeminiAiLearningService>(sp =>
+        {
+            var geminiOptions = sp.GetRequiredService<IOptions<GeminiOptions>>();
+            var aiLearningPromptsOptions = sp.GetRequiredService<IOptions<AiLearningPromptsOptions>>();
+
+            var client = new Client(apiKey: geminiOptions.Value.ApiKey);
+
+            return new GeminiAiLearningService(client, geminiOptions, aiLearningPromptsOptions);
+        });
         services.AddScoped<IDeckExporterService, DeckExporterService>();
         services.AddScoped<IDeckExporterFileProvider, CsvDeckExporterFileProvider>();
         services.AddScoped<IDeckExporterFileProvider, ExcelDeckExporterFileProvider>();
@@ -80,6 +83,8 @@ public static class DependencyInjection
 
         services.AddScoped<IPracticeRepository, PracticeRepository>();
         services.AddScoped<IPracticeService, PracticeService>();
+
+        services.AddScoped<IWordUnitService, WordUnitService>();
 
         services.AddHttpContextAccessor();
         services.AddSharedServices();

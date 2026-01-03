@@ -1,4 +1,3 @@
-using System.ComponentModel.Design;
 using English.IO.Bot.Extensions;
 using Microsoft.Extensions.Hosting;
 

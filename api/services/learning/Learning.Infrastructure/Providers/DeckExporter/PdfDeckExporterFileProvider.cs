@@ -1,17 +1,21 @@
 using Learning.Application.Contracts.Providers;
 using Learning.Application.DTOs.Decks;
 using Learning.Domain.Models;
+using Learning.Infrastructure.Database;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
 namespace Learning.Infrastructure.Providers.DeckExporter;
 
-public class PdfDeckExporterFileProvider : IDeckExporterFileProvider
+public class PdfDeckExporterFileProvider : BaseDeckExporterProvider, IDeckExporterFileProvider
 {
-    private readonly ExportDeckFileType _exportDeckFileType = ExportDeckFileType.Pdf;
+    private const ExportDeckFileType ExportDeckFileType = Application.DTOs.Decks.ExportDeckFileType.Pdf;
 
-    public bool Handles(ExportDeckFileType exportDeckFileType) => exportDeckFileType == _exportDeckFileType;
+    public PdfDeckExporterFileProvider(LearningDbContext learningDbContext) : base(learningDbContext)
+    { }
+
+    public bool Handles(ExportDeckFileType exportDeckFileType) => exportDeckFileType == ExportDeckFileType;
 
     public async Task<Stream> ExportDeckAsync(Deck deck)
     {
@@ -30,13 +34,16 @@ public class PdfDeckExporterFileProvider : IDeckExporterFileProvider
 
                         page.Header().Text($"Deck: {deck.Topic}").FontSize(20).Bold();
 
-                        page.Content().PaddingVertical(1, Unit.Centimetre).Column(column =>
+                        page.Content().PaddingVertical(1, Unit.Centimetre).Column(async column =>
                         {
-                            foreach (var word in deck.DeckWords)
+                            foreach (var word in FlattenToWordSenses(await LoadWordsFromDatabase(deck)))
                             {
-                                column.Item().Text($"English Version: {word.EnglishVersion}");
-                                column.Item().Text($"Ukrainian Version: {word.UkrainianVersion}");
-                                column.Item().Text($"Example sentences:\n {string.Join("\n", word.ExampleSentences)}").Italic().FontSize(10);
+                                column.Item().Text($"Word : {word.Word}");
+                                column.Item().Text($"Part Of Speech: {word.PartOfSpeech}");
+                                column.Item().Text($"Definition: {word.Definition}");
+                                column.Item().Text($"Ukrainian Translation: {word.UkrainianTranslation}");
+                                column.Item().Text($"Usage Label: {word.UsageLabel}");
+                                column.Item().Text($"Example sentences:\n {word.ExampleSentences}").Italic().FontSize(10);
                                 column.Item().PaddingBottom(5);
                             }
                         });

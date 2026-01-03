@@ -5,15 +5,31 @@
 @using Learning.Features.DashboardLayout.Components
 @using MudBlazor
 @using Shared
-@using Shared.Store.User
+@using Shared.Store.Loading
 @using Shared.Store.User.Actions
 @using DashboardHeader = Learning.Features.DashboardLayout.Components.DashboardHeader
 @inject ILocalStorageService LocalStorageService
 @inject IDispatcher Dispatcher
 @inject NavigationManager NavigationManager
+@inject IState<LoadingState> LoadingState
 @inherits Shared.Layout.BaseLayout
 
 @code {
+    protected override void OnInitialized()
+    {
+        LoadingState.StateChanged += OnLoadingStateChanged;
+    }
+
+    private void OnLoadingStateChanged(object? sender, EventArgs e)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public new void Dispose()
+    {
+        LoadingState.StateChanged -= OnLoadingStateChanged;
+    }
+
     private void HandleThemeChange(bool value)
     {
         IsDarkMode = value;
@@ -53,6 +69,10 @@
 <MudPopoverProvider/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
+
+<MudOverlay Visible="@LoadingState.Value.IsLoading">
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+</MudOverlay>
 
 <MudLayout Style="height: 100vh; overflow: hidden;">
     <MudMainContent Class="pa-0 d-flex flex-column"

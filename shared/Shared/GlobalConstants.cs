@@ -9,6 +9,7 @@ public static class GlobalConstants
         public const string CountOfWordsForPractice = "CountOfWordsForPractice";
         public const string NotificationChannel = "NotificationChannel";
         public const string IsTelegramConnected = "IsTelegramConnected";
+        public const string PracticeDifficulty = "PracticeDifficulty";
     }
 
     public static class Languages

@@ -12,7 +12,7 @@ public partial class WordDialog : ComponentBase
 {
     private ElementReference _audioElement;
     [CascadingParameter] private MudDialogInstance MudDialog { get; init; } = null!;
-    [Parameter] public DeckWordDto DeckWord { get; init; } = null!;
+    [Parameter] public DeckEntryDto DeckEntry { get; init; } = null!;
     [Inject] private IStringLocalizer<WordDialog> Localizer { get; init; } = null!;
     [Inject] private ITextToSpeechService TextToSpeechService { get; init; } = null!;
     [Inject] private IJSRuntime JsRuntime { get; init; } = null!;
@@ -38,9 +38,10 @@ public partial class WordDialog : ComponentBase
             throw;
         }
     }
+
     private static string CapitalizeWord(string word)
     {
-        return string.Join(' ', word.Split(' ').Select(w => $"{w[0].ToString().ToUpper(CultureInfo.InvariantCulture) + w[1..]}"));
+        return word.ToUpper(CultureInfo.InvariantCulture);
     }
 }
 

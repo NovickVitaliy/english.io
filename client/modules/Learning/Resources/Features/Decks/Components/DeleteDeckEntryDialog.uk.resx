@@ -1,0 +1,11 @@
+<root>
+  <data name="Title">
+    Видалення слова з колоди
+  </data>
+  <data name="Content">
+    Ви впевнені, що хочете видалити це слово з колоди?
+  </data>
+  <data name="Cancel">
+    Скасувати
+  </data>
+</root>

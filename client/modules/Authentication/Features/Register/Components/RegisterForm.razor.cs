@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Authentication.Features.Register.Models;
 using Authentication.Shared.Services;
 using Blazored.LocalStorage;
@@ -8,7 +7,6 @@ using MudBlazor;
 using Refit;
 using Shared;
 using Shared.Extensions;
-using Shared.Store.User;
 using Shared.Store.User.Actions;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 

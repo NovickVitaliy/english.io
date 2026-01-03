@@ -6,7 +6,6 @@ using MudBlazor;
 using Refit;
 using Shared.Extensions;
 using Shared.Options;
-using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace Authentication.Features.ForgotPassword.Components;
 

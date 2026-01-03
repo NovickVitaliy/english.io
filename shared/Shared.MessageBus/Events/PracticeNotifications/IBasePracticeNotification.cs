@@ -1,5 +1,3 @@
-using MassTransit;
-
 namespace Shared.MessageBus.Events.PracticeNotifications;
 
 public interface IBasePracticeNotification

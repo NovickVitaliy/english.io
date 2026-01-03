@@ -8,6 +8,7 @@ public interface IDecksService
     Task<Result<Guid>> CreateDeckAsync(CreateDeckRequest request);
     Task<Result<GetDecksForUserResponse>> GetDecksForUser(GetDecksForUserRequest request);
     Task<Result<DeckWithWordsDto>> GetDeckAsync(Guid deckId);
-    Task<Result<DeckWordDto>> CreateDeckWordAsync(CreateDeckWordRequest request);
+    Task<Result<DeckEntryDto>> CreateDeckWordAsync(CreateDeckWordRequest request);
     Task<Result<bool>> DeleteDeckAsync(Guid deckId);
+    Task<Result<bool>> DeleteDeckEntryAsync(Guid deckId, Guid wordId);
 }

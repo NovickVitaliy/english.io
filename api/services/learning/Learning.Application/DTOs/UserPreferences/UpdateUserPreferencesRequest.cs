@@ -10,7 +10,8 @@ public record UpdateUserPreferencesRequest(
     int? NumberOfExampleSentencesPerWord,
     int? DailyWordPracticeLimit,
     TimeSpan[]? DailySessionsReminderTimes,
-    NotificationChannel NotificationChannel)
+    NotificationChannel NotificationChannel,
+    PracticeDifficulty PracticeDifficulty)
     : IBaseUserPreferencesRequest
 {
     public RequestValidationResult IsValid()

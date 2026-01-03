@@ -5,4 +5,10 @@
   <data name="Deck_Is_Loading">
     Колода завантажується
   </data>
+  <data name="Delete_Word_From_Deck">
+    Видалити
+  </data>
+  <data name="Delete_Deck_Entry">
+    Видалення слово з колоди
+  </data>
 </root>

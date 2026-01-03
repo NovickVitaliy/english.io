@@ -1,286 +1,118 @@
 using System.Text.Json;
+using Google.GenAI;
+using Google.GenAI.Types;
 using Learning.Application.Contracts.Api;
 using Learning.Application.DTOs.Decks;
-using Learning.Application.DTOs.Practice;
 using Learning.Application.DTOs.Practice.FillInTheGaps;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Check;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Create;
 using Learning.Application.DTOs.Practice.TranslateWords;
+using Learning.Domain.Models;
 using Learning.Infrastructure.Options;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Learning.Infrastructure.Api;
 
 public class GeminiAiLearningService : IAiLearningService
 {
-    private readonly AiLearningPromptsOptions _options;
-    private readonly HttpClient _httpClient;
+    private readonly Client _client;
     private readonly GeminiOptions _geminiOptions;
+    private readonly AiLearningPromptsOptions _aiLearningPromptsOptions;
+    private readonly GenerateContentConfig _defaultGenerateContentConfig;
 
     public GeminiAiLearningService(
-        IOptions<AiLearningPromptsOptions> options,
-        IHttpClientFactory httpClientFactory,
-        IOptions<GeminiOptions> geminiOptions)
+        Client client,
+        IOptions<GeminiOptions> geminiOptions,
+        IOptions<AiLearningPromptsOptions> aiLearningPromptsOptions)
     {
-        _httpClient = httpClientFactory.CreateClient(IAiLearningService.HttpClientKey);
-        _options = options.Value;
+        _client = client;
         _geminiOptions = geminiOptions.Value;
+        _aiLearningPromptsOptions = aiLearningPromptsOptions.Value;
+        _defaultGenerateContentConfig = new GenerateContentConfig
+        {
+            ResponseMimeType = "application/json"
+        };
     }
 
-    public async Task<DeckWordDto> GetTranslatedWordWithExamplesAsync(string word, int exampleSentences)
+    public async Task<WordUnit?> GetTranslatedWordWithExamplesAsync(string word, int exampleSentences)
     {
-        var body = BuildRequestForTranslatingTheWordWithExampleSentences(word, exampleSentences);
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Post,
-            RequestUri = new Uri($"v1beta/models/gemini-2.0-flash:generateContent?key={_geminiOptions.ApiKey}", UriKind.Relative),
-            Content = new StringContent(JsonSerializer.Serialize(body))
-        };
+        var prompt = _aiLearningPromptsOptions.PromptForWordTranslatingWithExampleSentences
+            .Replace("{WORD}", word, StringComparison.InvariantCulture)
+            .Replace("{EXAMPLES_COUNT}", exampleSentences.ToString(), StringComparison.InvariantCulture);
 
-        var response = await _httpClient.SendAsync(request);
-        var json = await response.Content.ReadAsStringAsync();
-        using JsonDocument doc = JsonDocument.Parse(json);
-        var textProperty = doc.RootElement
-            .GetProperty("candidates")[0]
-            .GetProperty("content")
-            .GetProperty("parts")[0]
-            .GetProperty("text")
-            .ToString();
-
-
-        var deckWordDto = JsonSerializer.Deserialize<DeckWordDto>(textProperty!, new JsonSerializerOptions(){PropertyNameCaseInsensitive = true});
-        return JsonSerializer.Deserialize<DeckWordDto>(textProperty!, new JsonSerializerOptions(){ PropertyNameCaseInsensitive = true})!;
+        return await GenerateInternal<WordUnit>(prompt);
     }
 
     public async Task<bool> DoesWordComplyToTheArticle(string word, string topic)
     {
-        var body = BuildRequestForCheckingIfWordCompliesToTheTopic(word, topic);
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Post,
-            RequestUri = new Uri($"v1beta/models/gemini-2.0-flash-001:generateContent?key={_geminiOptions.ApiKey}", UriKind.Relative),
-            Content = new StringContent(JsonSerializer.Serialize(body))
-        };
+        var prompt = _aiLearningPromptsOptions.PromptForCheckingIfWordCompliesToTheTopic
+            .Replace("{word}", word, StringComparison.InvariantCulture)
+            .Replace("{topic}", topic, StringComparison.InvariantCulture);
 
-        var response = await _httpClient.SendAsync(request);
-        var json = await response.Content.ReadAsStringAsync();
-        using JsonDocument doc = JsonDocument.Parse(json);
-        var textProperty = doc.RootElement
-            .GetProperty("candidates")[0]
-            .GetProperty("content")
-            .GetProperty("parts")[0]
-            .GetProperty("text")
-            .GetString();
-
-        var deckWordDto = JsonSerializer.Deserialize<DoesWordComplyToTheTopicResponse>(textProperty!, new JsonSerializerOptions(){PropertyNameCaseInsensitive = true});
-        return JsonSerializer.Deserialize<DoesWordComplyToTheTopicResponse>(textProperty!, new JsonSerializerOptions(){ PropertyNameCaseInsensitive = true})!.DoesComply;
-
+        return (await GenerateInternal<DoesWordComplyToTheTopicResponse>(prompt))!.DoesComply;
     }
 
-    public async Task<TranslatedWordResult[]> VerifyWordsTranslations(TranslateWordsRequest request)
+    public async Task<TranslatedWordResult[]?> VerifyWordsTranslations(TranslateWordsRequest request)
     {
-        var body = BuildRequestForVerifyingWordsTranslations(request);
-        var httpRequest = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Post,
-            RequestUri = new Uri($"v1beta/models/gemini-2.0-flash-001:generateContent?key={_geminiOptions.ApiKey}", UriKind.Relative),
-            Content = new StringContent(JsonSerializer.Serialize(body))
-        };
-
-        var response = await _httpClient.SendAsync(httpRequest);
-        var json = await response.Content.ReadAsStringAsync();
-        using var doc = JsonDocument.Parse(json);
-        var textProperty = doc.RootElement
-            .GetProperty("candidates")[0]
-            .GetProperty("content")
-            .GetProperty("parts")[0]
-            .GetProperty("text")
-            .GetString();
-
-        return JsonSerializer.Deserialize<TranslatedWordResult[]>(textProperty!, new JsonSerializerOptions()
-        {
-            PropertyNameCaseInsensitive = true
-        })!;
-
-    }
-
-    public async Task<SentenceWithGap[]> GenerateSentencesWithGaps(string[] words)
-    {
-        var request = BuildRequestForGeneratingSentencesWithGaps(words);
-        var httpRequest = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Post,
-            Content = new StringContent(JsonSerializer.Serialize(request)),
-            RequestUri = new Uri($"v1beta/models/gemini-2.0-flash-001:generateContent?key={_geminiOptions.ApiKey}", UriKind.Relative)
-        };
-
-        var httpResponse = await _httpClient.SendAsync(httpRequest);
-        var json = await httpResponse.Content.ReadAsStringAsync();
-        using var doc = JsonDocument.Parse(json);
-        var text = doc.RootElement
-            .GetProperty("candidates")[0]
-            .GetProperty("content")
-            .GetProperty("parts")[0]
-            .GetProperty("text")
-            .ToString();
-
-        return JsonSerializer.Deserialize<SentenceWithGap[]>(text, new JsonSerializerOptions(){PropertyNameCaseInsensitive = true})!;
-    }
-    public async Task<string> GenerateExampleTextAsync(string[] words)
-    {
-        var request = BuildRequestForGeneratingExampleText(words);
-        var httpRequest = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Post,
-            Content = new StringContent(JsonSerializer.Serialize(request)),
-            RequestUri = new Uri($"v1beta/models/gemini-2.0-flash-001:generateContent?key={_geminiOptions.ApiKey}", UriKind.Relative)
-        };
-
-        var response = await _httpClient.SendAsync(httpRequest);
-        var json = await response.Content.ReadAsStringAsync();
-        var jsonDoc = JsonDocument.Parse(json);
-        var jsonText = jsonDoc.RootElement
-            .GetProperty("candidates")[0]
-            .GetProperty("content")
-            .GetProperty("parts")[0]
-            .GetProperty("text")
-            .ToString();
-
-        var exampleText = JsonDocument.Parse(jsonText).RootElement.GetProperty("text").ToString();
-        return exampleText;
-    }
-
-    public async Task<CreateReadingComprehensionExerciseResponse> GenerateReadingComprehensionExerciseAsync(CreateReadingComprehensionExerciseRequest request)
-    {
-        var aiRequest = BuildRequestForGeneratingReadingComprehension(request.Words);
-        var httpRequest = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Post,
-            Content = new StringContent(JsonSerializer.Serialize(aiRequest)),
-            RequestUri = new Uri($"v1beta/models/gemini-2.0-flash-001:generateContent?key={_geminiOptions.ApiKey}", UriKind.Relative)
-        };
-
-        var response = await _httpClient.SendAsync(httpRequest);
-        var json = await response.Content.ReadAsStringAsync();
-        var jsonDoc = JsonDocument.Parse(json);
-        var jsonText = jsonDoc.RootElement
-            .GetProperty("candidates")[0]
-            .GetProperty("content")
-            .GetProperty("parts")[0]
-            .GetProperty("text")
-            .ToString();
-
-        return JsonSerializer.Deserialize<CreateReadingComprehensionExerciseResponse>(jsonText, new JsonSerializerOptions(){PropertyNameCaseInsensitive = true})!;
-    }
-
-    public async Task<CheckReadingComprehensionExerciseResponse> CheckReadingComprehensionExerciseAsync(CheckReadingComprehensionExerciseRequest request)
-    {
-        var aiRequest = BuildRequestForCheckingTheReadingComprehensionExercise(request);
-        var httpRequest = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Post,
-            Content = new StringContent(JsonSerializer.Serialize(aiRequest)),
-            RequestUri = new Uri($"v1beta/models/gemini-2.0-flash-001:generateContent?key={_geminiOptions.ApiKey}", UriKind.Relative)
-        };
-
-        var response = await _httpClient.SendAsync(httpRequest);
-        var json = await response.Content.ReadAsStringAsync();
-        var jsonDoc = JsonDocument.Parse(json);
-        var jsonText = jsonDoc.RootElement
-            .GetProperty("candidates")[0]
-            .GetProperty("content")
-            .GetProperty("parts")[0]
-            .GetProperty("text")
-            .ToString();
-
-        return JsonSerializer.Deserialize<CheckReadingComprehensionExerciseResponse>(jsonText, new JsonSerializerOptions(){PropertyNameCaseInsensitive = true})!;
-    }
-
-    private object BuildRequestForCheckingTheReadingComprehensionExercise(CheckReadingComprehensionExerciseRequest request)
-    {
-        var prompt = _options.PromptForCheckingIfReadingComprehensionExercise
-            .Replace("{text}", request.Text, StringComparison.InvariantCulture)
-            .Replace("{questions}", string.Join(',', request.Questions), StringComparison.InvariantCulture)
-            .Replace("{answers}", string.Join(',', request.Answers), StringComparison.InvariantCulture);
-
-        return BuildRequestWithPrompt(prompt);
-    }
-
-    private object BuildRequestForGeneratingReadingComprehension(string[] words)
-    {
-        var prompt = _options.PromptForGeneratingReadingComprehensionExercise
-            .Replace("{words}", string.Join(',', words), StringComparison.InvariantCulture);
-        return BuildRequestWithPrompt(prompt);
-    }
-
-    private object BuildRequestForGeneratingExampleText(string[] words)
-    {
-        var prompt = _options.PromptForGeneratingExampleText
-            .Replace("{words}", string.Join(',', words), StringComparison.InvariantCultureIgnoreCase);
-
-        return BuildRequestWithPrompt(prompt);
-    }
-
-    private object BuildRequestForGeneratingSentencesWithGaps(string[] words)
-    {
-        var prompt = _options.PromptForGeneratingSentencesWithGaps
-            .Replace("{words}", string.Join(',', words), StringComparison.InvariantCulture);
-
-        return BuildRequestWithPrompt(prompt);
-    }
-
-    private object BuildRequestForVerifyingWordsTranslations(TranslateWordsRequest request)
-    {
-        var prompt = _options.PromptForCheckingIfTranslationsAreCorrect
+        var prompt = _aiLearningPromptsOptions.PromptForCheckingIfTranslationsAreCorrect
             .Replace("{words}", string.Join("; ", request.TranslatedWords.Select(x => x.OriginalWord)), StringComparison.InvariantCulture)
             .Replace("{originalLanguage}", request.OriginalLanguage, StringComparison.InvariantCulture)
             .Replace("{translatedWords}", string.Join("; ", request.TranslatedWords.Select(x => x.Translated)), StringComparison.InvariantCulture)
             .Replace("{translatedLanguage}", request.TranslatedLanguage, StringComparison.InvariantCulture);
 
-        return BuildRequestWithPrompt(prompt);
+        return (await GenerateInternal<TranslatedWordResult[]>(prompt));
     }
 
-    private object BuildRequestForCheckingIfWordCompliesToTheTopic(string word, string topic)
+    public async Task<SentenceWithGap[]?> GenerateSentencesWithGaps(string[] words)
     {
-        var prompt = _options.PromptForCheckingIfWordCompliesToTheTopic
-            .Replace("{word}", word, StringComparison.InvariantCulture)
-            .Replace("{topic}", topic, StringComparison.InvariantCulture);
+        var prompt = _aiLearningPromptsOptions.PromptForGeneratingSentencesWithGaps
+            .Replace("{words}", string.Join(',', words), StringComparison.InvariantCulture);
 
-        return BuildRequestWithPrompt(prompt);
+        return await GenerateInternal<SentenceWithGap[]>(prompt);
     }
 
-    private static object BuildRequestWithPrompt(string prompt)
+    public async Task<string> GenerateExampleTextAsync(string[] words)
     {
-        return new
+        var prompt = _aiLearningPromptsOptions.PromptForGeneratingExampleText
+            .Replace("{words}", string.Join(',', words), StringComparison.InvariantCultureIgnoreCase);
+
+        return (await GenerateInternal<ExampleTextResponse>(prompt))!.Text;
+    }
+
+    public async Task<CreateReadingComprehensionExerciseResponse?> GenerateReadingComprehensionExerciseAsync(CreateReadingComprehensionExerciseRequest request)
+    {
+        var prompt = _aiLearningPromptsOptions.PromptForGeneratingReadingComprehensionExercise
+            .Replace("{words}", string.Join(',', request.Words), StringComparison.InvariantCulture);
+
+        return await GenerateInternal<CreateReadingComprehensionExerciseResponse>(prompt);
+    }
+
+    public async Task<CheckReadingComprehensionExerciseResponse?> CheckReadingComprehensionExerciseAsync(CheckReadingComprehensionExerciseRequest request)
+    {
+        var prompt = _aiLearningPromptsOptions.PromptForCheckingIfReadingComprehensionExercise
+            .Replace("{text}", request.Text, StringComparison.InvariantCulture)
+            .Replace("{questions}", string.Join(',', request.Questions), StringComparison.InvariantCulture)
+            .Replace("{answers}", string.Join(',', request.Answers), StringComparison.InvariantCulture);
+
+        return await GenerateInternal<CheckReadingComprehensionExerciseResponse>(prompt);
+    }
+
+    private async Task<T?> GenerateInternal<T>(string prompt)
+    {
+        var response = await _client.Models.GenerateContentAsync(_geminiOptions.Model, prompt, _defaultGenerateContentConfig);
+        if (response.Candidates is {Count: > 0})
         {
-            contents = new object[]
+            if (response.Candidates[0].Content is {Parts.Count: > 0})
             {
-                new
+                var json = response.Candidates[0].Content?.Parts?[0].Text;
+                return JsonSerializer.Deserialize<T>(json!, new JsonSerializerOptions
                 {
-                    parts = new object[]
-                    {
-                        new
-                        {
-                            text = prompt
-                        }
-                    }
-                }
-            },
-            generationConfig = new
-            {
-                response_mime_type = "application/json"
+                    PropertyNameCaseInsensitive = true
+                });
             }
-        };
-    }
+        }
 
-    private object BuildRequestForTranslatingTheWordWithExampleSentences(string word, int exampleSentences)
-    {
-        var prompt = _options.PromptForWordTranslatingWithExampleSentences
-            .Replace("{numSentences}", exampleSentences.ToString(), StringComparison.InvariantCulture)
-            .Replace("{word}", word, StringComparison.InvariantCulture);
-
-        return BuildRequestWithPrompt(prompt);
+        return default;
     }
 }

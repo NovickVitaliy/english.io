@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using MassTransit.Futures.Contracts;
 
 namespace Learning.Infrastructure.Options;
 

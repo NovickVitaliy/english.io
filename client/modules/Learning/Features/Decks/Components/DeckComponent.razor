@@ -11,14 +11,23 @@
         <MudDivider Class="mt-3 mb-3"></MudDivider>
         @foreach (var word in DeckState.Value.DeckWithWordsDto!.DeckWords)
         {
-            <MudButton OnClick="@(() => ShowWordDialog(word))" Style="padding: 0" Class="mb-3 w-100 justify-content-start">
+            <MudButton OnClick="@(() => ShowWordDialog(word))" Style="padding: 0"
+                       Class="mb-3 w-100 justify-content-start">
                 <MudPaper Class="p-3 w-100">
-                    <MudText Typo="Typo.body1" Class="fw-bold mb-1">
-                        @word.EnglishVersion
-                    </MudText>
-                    <MudText Typo="Typo.body2">
-                        @word.UkrainianVersion
-                    </MudText>
+                    <div>
+                        <MudText Typo="Typo.body1" Class="fw-bold mb-1">
+                            @word.Word - @word.WordSenses[0].Definition
+                        </MudText>
+                        <MudText Typo="Typo.body2">
+                            @word.WordSenses[0].ExampleSentences[0]
+                        </MudText>
+                    </div>
+                    <div
+                        Class="position-absolute end-0 top-0 h-100 d-flex justify-content-center p-1 align-items-center">
+                        <MudMenu TransformOrigin="Origin.TopLeft" AnchorOrigin="Origin.CenterRight" Icon="@Icons.Material.Filled.MoreVert">
+                            <MudMenuItem OnClick="@(() => ConfirmWordDelete(word.Id))">@Localizer["Delete_Word_From_Deck"]</MudMenuItem>
+                        </MudMenu>
+                    </div>
                 </MudPaper>
             </MudButton>
         }

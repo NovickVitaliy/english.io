@@ -9,9 +9,6 @@ using Learning.Application.DTOs.Practice.ReadingComprehension.Create;
 using Learning.Application.DTOs.Practice.Sessions;
 using Learning.Application.DTOs.Practice.TranslateWords;
 using Learning.Domain.Models;
-using Learning.Infrastructure.Options;
-using MassTransit.Initializers;
-using Microsoft.Extensions.Options;
 using Shared.ErrorHandling;
 using Shared.Services.Contracts;
 using static Learning.Domain.LocalizationKeys;
@@ -41,6 +38,11 @@ public class PracticeService : IPracticeService
 
         var response = await _aiLearningService.VerifyWordsTranslations(request);
 
+        if (response is null)
+        {
+            return Result<TranslateWordsResponse>.BadRequest("Something went wrong");
+        }
+
         return Result<TranslateWordsResponse>.Ok(new TranslateWordsResponse(response));
     }
 
@@ -53,6 +55,11 @@ public class PracticeService : IPracticeService
         }
 
         var sentencesWithGaps = await _aiLearningService.GenerateSentencesWithGaps(words);
+
+        if (sentencesWithGaps is null)
+        {
+            return Result<SentenceWithGap[]>.BadRequest("Something went wrong");
+        }
 
         return Result<SentenceWithGap[]>.Ok(sentencesWithGaps);
     }
@@ -104,6 +111,10 @@ public class PracticeService : IPracticeService
         }
 
         var readingComprehension = await _aiLearningService.GenerateReadingComprehensionExerciseAsync(request);
+        if (readingComprehension is null)
+        {
+            return Result<CreateReadingComprehensionExerciseResponse>.BadRequest("Something went wrong");
+        }
 
         return Result<CreateReadingComprehensionExerciseResponse>.Ok(readingComprehension);
     }
@@ -117,6 +128,10 @@ public class PracticeService : IPracticeService
         }
 
         var response = await _aiLearningService.CheckReadingComprehensionExerciseAsync(request);
+        if (response is null)
+        {
+            return Result<CheckReadingComprehensionExerciseResponse>.BadRequest("Something went wrong");
+        }
 
         return Result<CheckReadingComprehensionExerciseResponse>.Ok(response);
     }

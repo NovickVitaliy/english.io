@@ -4,7 +4,6 @@ using Learning.Application.Contracts.Services;
 using Learning.Application.DTOs.Decks;
 using Learning.Domain.Models;
 using Microsoft.AspNetCore.Http;
-using Shared;
 using Shared.ErrorHandling;
 using static Learning.Domain.LocalizationKeys;
 
@@ -15,12 +14,14 @@ public class DecksService : IDecksService
     private readonly IDecksRepository _decksRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IAiLearningService _aiLearningService;
+    private readonly IWordUnitService _wordUnitService;
 
-    public DecksService(IDecksRepository decksRepository, IHttpContextAccessor httpContextAccessor, IAiLearningService aiLearningService)
+    public DecksService(IDecksRepository decksRepository, IHttpContextAccessor httpContextAccessor, IAiLearningService aiLearningService, IWordUnitService wordUnitService)
     {
         _decksRepository = decksRepository;
         _httpContextAccessor = httpContextAccessor;
         _aiLearningService = aiLearningService;
+        _wordUnitService = wordUnitService;
     }
 
     public async Task<Result<Guid>> CreateDeckAsync(CreateDeckRequest request)
@@ -39,10 +40,7 @@ public class DecksService : IDecksService
 
         var deck = new Deck
         {
-            Topic = request.DeckTopic,
-            DeckWords = [],
-            IsStrict = request.IsStrict,
-            UserEmail = userEmail
+            Topic = request.DeckTopic, DeckEntries = [], IsStrict = request.IsStrict, UserEmail = userEmail
         };
 
         var id = await _decksRepository.CreateDeckAsync(deck);
@@ -59,11 +57,11 @@ public class DecksService : IDecksService
         var (decks, count) = await _decksRepository.GetDecksForUserAsync(request);
 
         var response = new GetDecksForUserResponse(decks.Select(async x => new DeckDto(
-                x.Id,
-                x.UserEmail,
-                x.Topic,
-                x.IsStrict,
-                await _decksRepository.GetWordsCountForDeckAsync(x.Id)))
+                    x.Id,
+                    x.UserEmail,
+                    x.Topic,
+                    x.IsStrict,
+                    await _decksRepository.GetWordsCountForDeckAsync(x.Id)))
                 .Select(x => x.Result)
                 .ToArray(),
             count);
@@ -84,55 +82,60 @@ public class DecksService : IDecksService
             return Result<DeckWithWordsDto>.NotFound(deckId);
         }
 
+        var wordUnits = await _wordUnitService.GetWordUnitsFromUsersDeck(deck);
+
         var dto = new DeckWithWordsDto(
             deck.Id,
             deck.UserEmail,
             deck.Topic,
             deck.IsStrict,
-            deck.DeckWords.Count,
-            deck.DeckWords.Select(x =>  new DeckWordDto(x.UkrainianVersion, x.EnglishVersion, x.Explanation, x.ExampleSentences)).ToArray());
+            deck.DeckEntries.Count,
+            [.. wordUnits.Select(w =>
+                new DeckEntryDto(
+                    w.Word,
+                    w.PartOfSpeech,
+                    [.. w.Senses.Select(s => new WordSenseDto(s.Definition, s.UkrainianTranslation, s.UsageLabel, s.Examples))]))]);
 
         return Result<DeckWithWordsDto>.Ok(dto);
     }
 
-    public async Task<Result<DeckWordDto>> CreateDeckWordAsync(CreateDeckWordRequest request)
+    public async Task<Result<DeckEntryDto>> CreateDeckWordAsync(CreateDeckWordRequest request)
     {
         var validationResult = request.IsValid();
         if (!validationResult.IsValid)
         {
-            return Result<DeckWordDto>.BadRequest(validationResult.ErrorMessage);
+            return Result<DeckEntryDto>.BadRequest(validationResult.ErrorMessage);
         }
         var deck = await _decksRepository.GetDeckAsync(request.DeckId);
         if (deck is null)
         {
-            return Result<DeckWordDto>.NotFound(request.DeckId);
+            return Result<DeckEntryDto>.NotFound(request.DeckId);
         }
 
-        if (deck.DeckWords.Any(x => x.EnglishVersion.Equals(request.Word, StringComparison.OrdinalIgnoreCase)))
+        var wordUnitId = await _wordUnitService.GetWordUnitIdByWord(request.Word);
+        if (deck.DeckEntries.Any(x => x.WordUnitId == wordUnitId))
         {
-            return Result<DeckWordDto>.BadRequest(WordAlreadyExists);
+            return Result<DeckEntryDto>.BadRequest(WordAlreadyExists);
         }
 
         if (deck!.IsStrict && !await _aiLearningService.DoesWordComplyToTheArticle(request.Word, deck.Topic))
         {
-            return Result<DeckWordDto>.BadRequest(WordDoesNotComplyToTheTopic);
+            return Result<DeckEntryDto>.BadRequest(WordDoesNotComplyToTheTopic);
         }
 
-        int exampleSentences = int.Parse(_httpContextAccessor.HttpContext.User.Claims.Single(x => x.Type == GlobalConstants.ApplicationClaimTypes.ExampleSentencesPerWord).Value);
-        var deckWordDto = await _aiLearningService.GetTranslatedWordWithExamplesAsync(request.Word, exampleSentences);
+        var wordUnit = await _wordUnitService.GetOrCreateWordUnit(request.Word);
 
-        var deckWord = new DeckWord()
+        var success = await _decksRepository.CreateDeckEntriesAsync(request.DeckId, wordUnit);
+
+        if (!success)
         {
-            Id = Guid.NewGuid(),
-            EnglishVersion = deckWordDto.EnglishVersion,
-            Explanation = deckWordDto.Explanation,
-            UkrainianVersion = deckWordDto.UkrainianVersion,
-            ExampleSentences = deckWordDto.ExampleSentences
-        };
+            return Result<DeckEntryDto>.BadRequest("Error occured");
+        }
 
-        await _decksRepository.CreateDeckWordAsync(request.DeckId, deckWord);
-
-        return Result<DeckWordDto>.Ok(deckWordDto);
+        return Result<DeckEntryDto>.Ok(new DeckEntryDto(
+                wordUnit.Word,
+                wordUnit.PartOfSpeech,
+                [.. wordUnit.Senses.Select(s => new WordSenseDto(s.Definition, s.UkrainianTranslation, s.UsageLabel, s.Examples))]));
     }
     public async Task<Result<bool>> DeleteDeckAsync(Guid deckId)
     {
@@ -144,5 +147,19 @@ public class DecksService : IDecksService
         await _decksRepository.DeleteDeckAsync(deckId);
 
         return Result<bool>.NoContent();
+    }
+
+    public async Task<Result<bool>> DeleteDeckEntryAsync(Guid deckId, Guid wordId)
+    {
+        var deck = await _decksRepository.GetDeckAsync(deckId);
+        if (deck is null)
+        {
+            return Result<bool>.NotFound(deckId);
+        }
+
+        var deleted = await _decksRepository.DeleteDeckEntryAsync(deck, wordId);
+        return deleted
+            ? Result<bool>.NoContent()
+            : Result<bool>.NotFound(wordId);
     }
 }

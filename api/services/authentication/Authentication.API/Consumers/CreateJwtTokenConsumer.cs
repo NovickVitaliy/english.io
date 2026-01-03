@@ -2,7 +2,6 @@ using Authentication.API.Models;
 using Authentication.API.Services.TokenGenerator;
 using MassTransit;
 using Microsoft.AspNetCore.Identity;
-using Shared.ErrorHandling;
 using Shared.MessageBus.Requests.CreateJwtToken;
 
 namespace Authentication.API.Consumers;
