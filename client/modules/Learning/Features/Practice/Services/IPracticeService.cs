@@ -1,7 +1,9 @@
 using Learning.Features.Practice.Models;
 using Learning.Features.Practice.Models.ExampleText;
 using Learning.Features.Practice.Models.FillInTheGaps;
+using Learning.Features.Practice.Models.GetWordsForPractice;
 using Learning.Features.Practice.Models.ReadingComprehension;
+using Learning.Features.Practice.Models.TranslateWords;
 using Learning.Features.Settings.Models.Sessions;
 using Refit;
 
@@ -31,4 +33,7 @@ public interface IPracticeService
 
     [Get("/practice/sessions")]
     Task<GetSessionsResultsForUserResponse> FetchSessionForUserAsync([Query] GetSessionResultsForUserRequest getSessionResultsForUserRequest, [Authorize] string token);
+
+    [Get("/practice/{deckId}/words")]
+    Task<GetWordsForPracticeResponse> GetWordsForPracticeAsync([Query] Guid deckId, [Authorize] string token);
 }

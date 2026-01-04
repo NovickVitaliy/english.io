@@ -49,8 +49,8 @@ public partial class DeckPage : ComponentBase
         return DialogService.ShowAsync<ExportDeckModal>(@Localizer["Export_Dialog_Name"], parameters, options);
     }
 
-    private void StartPracticeSetup()
+    private void StartPractice()
     {
-        NavigationManager.NavigateTo($"/practice/{DeckId}/choose-words");
+        NavigationManager.NavigateTo($"/practice/{DeckId}/translate-words?originalLanguage=english&translateLanguage=ukrainian");
     }
 }

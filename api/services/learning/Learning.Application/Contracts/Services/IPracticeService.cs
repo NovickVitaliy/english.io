@@ -1,6 +1,7 @@
 using Learning.Application.DTOs.Practice;
 using Learning.Application.DTOs.Practice.ExampleText;
 using Learning.Application.DTOs.Practice.FillInTheGaps;
+using Learning.Application.DTOs.Practice.GetWordsForPractice;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Check;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Create;
 using Learning.Application.DTOs.Practice.Sessions;
@@ -18,4 +19,5 @@ public interface IPracticeService
     Task<Result<CreateReadingComprehensionExerciseResponse>> CreateReadingComprehensionExerciseAsync(CreateReadingComprehensionExerciseRequest request);
     Task<Result<CheckReadingComprehensionExerciseResponse>> CheckReadingComprehensionExerciseAsync(CheckReadingComprehensionExerciseRequest request);
     Task<Result<GetPracticeSessionsForUserResponse>> GetSessionsForUserAsync(GetSessionsForUserRequest request);
+    Task<Result<GetWordsForPracticeResponse>> GetWordsForPracticeAsync(Guid deckId);
 }

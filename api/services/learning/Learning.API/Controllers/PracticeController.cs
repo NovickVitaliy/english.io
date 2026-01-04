@@ -21,6 +21,12 @@ public class PracticeController : ControllerBase
         _practiceService = practiceService;
     }
 
+    [HttpGet("{deckId:guid}/words")]
+    public async Task<IActionResult> GetWordsForPracticeAsync(Guid deckId)
+    {
+        return (await _practiceService.GetWordsForPracticeAsync(deckId)).ToApiResponse();
+    }
+
     [HttpPost("translate-words")]
     public async Task<IActionResult> TranslateWordsTask(TranslateWordsRequest request)
     {

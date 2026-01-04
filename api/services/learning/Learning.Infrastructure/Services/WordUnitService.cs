@@ -1,5 +1,6 @@
 using Learning.Application.Contracts.Api;
 using Learning.Application.Contracts.Repositories;
+using Learning.Application.DTOs.Practice.GetWordsForPractice;
 using Learning.Domain.Models;
 using Learning.Infrastructure.Database;
 using Microsoft.AspNetCore.Http;
@@ -33,6 +34,7 @@ public class WordUnitService : IWordUnitService
             if (wordUnit is not null)
             {
                 wordUnit.Id = Guid.NewGuid();
+                wordUnit.AddedOn = DateTimeOffset.UtcNow;
                 foreach (var sense in wordUnit.Senses)
                 {
                     sense.Id = Guid.NewGuid();
@@ -54,5 +56,18 @@ public class WordUnitService : IWordUnitService
         var filter = Builders<WordUnit>.Filter.In(x => x.Id, deck.DeckEntries.Select(x => x.WordUnitId));
 
         return await (await _learningDbContext.WordUnits.FindAsync(filter)).ToListAsync();
+    }
+
+    public async Task<WordForPractice[]> GetPracticeWords(List<DeckEntry> practiceWordFilters)
+    {
+        var senseIds = practiceWordFilters.Select(x => x.WordSenseId).ToList();
+        var senseFilter = Builders<WordUnit>
+            .Filter
+            .ElemMatch(x => x.Senses, Builders<WordSense>.Filter.In(ws => ws.Id, senseIds));
+        var wordUnits = await (await _learningDbContext.WordUnits.FindAsync(senseFilter)).ToListAsync();
+
+        return wordUnits
+            .SelectMany(x => x.Senses.Where(s => senseIds.Contains(s.Id))
+                .Select(ws => new WordForPractice(x.PartOfSpeech, x.Id, x.Word, ws.Id, ws.Definition))).ToArray();
     }
 }

@@ -24,7 +24,7 @@ public static class DependecyInjection
 
     public static IServiceCollection AddSharedServices(this IServiceCollection services)
     {
-        // make sure to add http context accessor in the project where ICurrentUserAccessor is going to be used
+        services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserAccessor, CurrentUserAccessor>();
         services.AddNotificationsServiceHttpClient();
 

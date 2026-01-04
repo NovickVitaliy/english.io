@@ -1,4 +1,4 @@
-@page "/practice/translate-words"
+@page "/practice/{deckId:guid}/translate-words"
 @using MudBlazor
 @using Shared.Layout
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
@@ -15,31 +15,31 @@
         }
     </div>
     <MudForm Model="_request">
-        @if (PracticeState.Value is not null && _shuffledWords is not null)
-        {
-            @for (var i = 0; i < PracticeState.Value.WordsBeingPracticed.Length; i++)
-            {
-                var word = _shuffledWords[i];
-                var index = i;
-                _request.TranslatedWords[index].OriginalWord = word;
-                <MudPaper Class="d-flex gap-3 p-2 mb-3 justify-content-between">
-                    @if (_response is not null)
-                    {
-                        var isCorrect = _response.Results[index].IsCorrect;
-                        <MudText>@(isCorrect ? "✅" : "❌")</MudText>
-                    }
-                    <MudText Align="Align.Center" Class="w-25" Typo="Typo.h6">
-                        @word
-                    </MudText>
-                    <MudTextField T="string" @bind-Value="_request.TranslatedWords[index].Translated"></MudTextField>
-                </MudPaper>
-            }
-
-            <MudButton Disabled="@(_response is not null)" Class="mb-3" Color="Color.Primary" Variant="Variant.Filled"
-                       OnClick="VerifyTranslatedWords">
-                @Localizer["Verify_Words"]
-            </MudButton>
-        }
+        @* @if (PracticeState.Value is not null) *@
+        @* { *@
+        @*     @for (var i = 0; i < PracticeState.Value.WordsBeingPracticed.Length; i++) *@
+        @*     { *@
+        @*         var word = _shuffledWords[i]; *@
+        @*         var index = i; *@
+        @*         _request.TranslatedWords[index].OriginalWord = word; *@
+        @*         <MudPaper Class="d-flex gap-3 p-2 mb-3 justify-content-between"> *@
+        @*             @if (_response is not null) *@
+        @*             { *@
+        @*                 var isCorrect = _response.Results[index].IsCorrect; *@
+        @*                 <MudText>@(isCorrect ? "✅" : "❌")</MudText> *@
+        @*             } *@
+        @*             <MudText Align="Align.Center" Class="w-25" Typo="Typo.h6"> *@
+        @*                 @word *@
+        @*             </MudText> *@
+        @*             <MudTextField T="string" @bind-Value="_request.TranslatedWords[index].Translated"></MudTextField> *@
+        @*         </MudPaper> *@
+        @*     } *@
+        @* *@
+        @*     <MudButton Disabled="@(_response is not null)" Class="mb-3" Color="Color.Primary" Variant="Variant.Filled" *@
+        @*                OnClick="VerifyTranslatedWords"> *@
+        @*         @Localizer["Verify_Words"] *@
+        @*     </MudButton> *@
+        @* } *@
     </MudForm>
 </MudContainer>
 <MudOverlay Visible="_overlayVisible" DarkBackground="true">
