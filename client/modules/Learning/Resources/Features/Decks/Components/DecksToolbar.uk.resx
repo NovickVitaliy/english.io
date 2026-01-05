@@ -11,4 +11,10 @@
   <data name="Dialog_Name">
     Створити колоду
   </data>
+  <data name="Import_Successfull">
+    Колода була імпортована успішно
+  </data>
+  <data name="Import_Unsuccessfull">
+    Колода не була імпортована успішно
+  </data>
 </root>

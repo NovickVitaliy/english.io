@@ -12,11 +12,13 @@ public class DecksController : ControllerBase
 {
     private readonly IDecksService _decksService;
     private readonly IDeckExporterService _deckExporterService;
+    private readonly IDeckImporterService _deckImporterService;
 
-    public DecksController(IDecksService decksService, IDeckExporterService deckExporterService)
+    public DecksController(IDecksService decksService, IDeckExporterService deckExporterService, IDeckImporterService deckImporterService)
     {
         _decksService = decksService;
         _deckExporterService = deckExporterService;
+        _deckImporterService = deckImporterService;
     }
 
     [HttpPost]
@@ -66,5 +68,11 @@ public class DecksController : ControllerBase
     public async Task<IActionResult> DeleteDeckEntryAsync(Guid deckId, Guid wordId)
     {
         return (await _decksService.DeleteDeckEntryAsync(deckId, wordId)).ToApiResponse();
+    }
+
+    [HttpPost("import")]
+    public async Task<IActionResult> ImportDeckAsync([FromForm] IFormFile file)
+    {
+        return (await _deckImporterService.ImportDeckAsync(file)).ToApiResponse();
     }
 }

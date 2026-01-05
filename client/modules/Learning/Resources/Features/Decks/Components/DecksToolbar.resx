@@ -11,4 +11,10 @@
   <data name="Dialog_Name">
     Create Deck
   </data>
+  <data name="Import_Successfull">
+    Deck was imported successfull
+  </data>
+  <data name="Import_Unsuccessfull">
+    Deck was not imported successfully
+  </data>
 </root>

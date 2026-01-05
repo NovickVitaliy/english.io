@@ -3,9 +3,9 @@ namespace Learning.Domain.Models;
 public class Deck
 {
     public Guid Id { get; init; }
-    public string UserEmail { get; init; } = null!;
+    public string UserEmail { get; set; } = null!;
     public string Topic { get; set; } = null!;
     public bool IsStrict { get; set; }
     public List<DeckEntry> DeckEntries { get; set; } = [];
-    public long DeckWordsCount { get; init; }
+    public long DeckWordsCount { get; set; }
 }

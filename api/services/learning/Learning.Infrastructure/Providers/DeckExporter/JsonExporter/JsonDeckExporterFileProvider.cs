@@ -5,7 +5,7 @@ using Learning.Application.DTOs.Decks;
 using Learning.Domain.Models;
 using Learning.Infrastructure.Database;
 
-namespace Learning.Infrastructure.Providers.DeckExporter;
+namespace Learning.Infrastructure.Providers.DeckExporter.JsonExporter;
 
 public class JsonDeckExporterFileProvider : BaseDeckExporterProvider, IDeckExporterFileProvider
 {
@@ -23,8 +23,9 @@ public class JsonDeckExporterFileProvider : BaseDeckExporterProvider, IDeckExpor
     public async Task<Stream> ExportDeckAsync(Deck deck)
     {
         var stream = new MemoryStream();
-        var wordEntries = LoadWordsFromDatabase(deck);
-        await JsonSerializer.SerializeAsync(stream, wordEntries, Options);
+        var wordEntries = await LoadWordsFromDatabase(deck);
+        var deckForExport = new DeckForJsonImportExport(deck.Topic, deck.IsStrict, wordEntries);
+        await JsonSerializer.SerializeAsync(stream, deckForExport, Options);
         stream.Position = 0;
 
         return stream;

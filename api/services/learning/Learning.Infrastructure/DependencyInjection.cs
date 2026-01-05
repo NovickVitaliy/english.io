@@ -10,6 +10,8 @@ using Learning.Infrastructure.Jobs;
 using Learning.Infrastructure.Options;
 using Learning.Infrastructure.Persistence;
 using Learning.Infrastructure.Providers.DeckExporter;
+using Learning.Infrastructure.Providers.DeckExporter.JsonExporter;
+using Learning.Infrastructure.Providers.DeckImporter;
 using Learning.Infrastructure.Repositories;
 using Learning.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
@@ -81,6 +83,9 @@ public static class DependencyInjection
         services.AddScoped<IDeckExporterFileProvider, ExcelDeckExporterFileProvider>();
         services.AddScoped<IDeckExporterFileProvider, PdfDeckExporterFileProvider>();
         services.AddScoped<IDeckExporterFileProvider, JsonDeckExporterFileProvider>();
+
+        services.AddScoped<IDeckImporterFileProvider, JsonDeckImporterFileProvider>();
+        services.AddScoped<IDeckImporterService, DeckImporterService>();
 
         services.AddScoped<IPracticeRepository, PracticeRepository>();
         services.AddScoped<IPracticeService, PracticeService>();

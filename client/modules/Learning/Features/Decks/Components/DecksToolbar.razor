@@ -1,7 +1,15 @@
+@using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.Extensions.Localization
 @using MudBlazor
 @inject IStringLocalizer<DecksToolbar> Localizer
 <MudContainer Class="d-flex mt-5 gap-3 mb-5">
+    <MudFileUpload Class="d-inline-flex" Accept=".json" T="IBrowserFile" FilesChanged="HandleFilesChanged">
+        <ActivatorContent>
+            <MudButton Color="Color.Primary" Variant="Variant.Filled">
+                <MudIcon Icon="@Icons.Material.Filled.FileUpload"></MudIcon>
+            </MudButton>
+        </ActivatorContent>
+    </MudFileUpload>
     <MudButton OnClick="ShowCreateDeckDialog" Color="Color.Primary" Variant="Variant.Filled"><MudIcon Icon="@Icons.Material.Filled.LibraryAdd"></MudIcon></MudButton>
     <MudTextField @bind-Value="_searchQuery" Label="@Localizer["Search_Query"]" Class="w-25"></MudTextField>
     <MudButton Color="Color.Primary" Variant="Variant.Filled"><MudIcon Icon="@Icons.Material.Filled.Search"></MudIcon></MudButton>

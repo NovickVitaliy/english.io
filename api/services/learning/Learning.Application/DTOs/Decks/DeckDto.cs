@@ -5,4 +5,4 @@ public record DeckDto(
         string UserEmail,
         string Topic,
         bool IsStrict,
-        int WordCount);
+        long WordCount);

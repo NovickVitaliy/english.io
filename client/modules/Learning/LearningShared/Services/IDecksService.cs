@@ -27,4 +27,8 @@ public interface IDecksService
 
     [Delete("/decks/{deckId}/words/{wordId}")]
     Task DeleteDeckEntryAsync(Guid deckId, Guid wordId, [Authorize] string token);
+
+    [Multipart]
+    [Post("/decks/import")]
+    Task<DeckDto> ImportDeckAsync([AliasAs("file")] StreamPart streamPart, [Authorize] string token);
 }

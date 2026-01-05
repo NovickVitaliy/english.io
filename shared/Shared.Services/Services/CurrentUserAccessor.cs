@@ -45,7 +45,7 @@ public class CurrentUserAccessor : ICurrentUserAccessor
 
     public string? GetPracticeDifficulty() => GetClaimValue(GlobalConstants.ApplicationClaimTypes.PracticeDifficulty);
 
-    public string? GetEmail() => GetClaimValue(ClaimTypes.Email);
+    public string? GetEmail() => GetClaimValue("email");
 
     public string? GetName() => GetClaimValue(ClaimTypes.Name);
 
