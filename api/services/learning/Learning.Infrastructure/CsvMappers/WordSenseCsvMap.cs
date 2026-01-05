@@ -12,5 +12,6 @@ public sealed class WordSenseCsvMap : ClassMap<WordForExport>
         Map(x => x.UkrainianTranslation).Name("UkrainianTranslation");
         Map(x => x.UsageLabel).Name("UsageLabel");
         Map(x => x.ExampleSentences).Name("ExampleSentences");
+        Map(x => x.Synonyms).Name("Synonyms");
     }
 }

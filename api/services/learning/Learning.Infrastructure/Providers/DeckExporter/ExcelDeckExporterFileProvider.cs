@@ -30,6 +30,7 @@ public class ExcelDeckExporterFileProvider : BaseDeckExporterProvider, IDeckExpo
             worksheet.Cells[1, 4].Value = "Ukrainian Translation";
             worksheet.Cells[1, 5].Value = "Usage Label";
             worksheet.Cells[1, 6].Value = "Example Sentences";
+            worksheet.Cells[1, 7].Value = "Synonyms";
 
             int row = 2;
             foreach (var word in FlattenToWordSenses(await LoadWordsFromDatabase(deck)))
@@ -40,6 +41,7 @@ public class ExcelDeckExporterFileProvider : BaseDeckExporterProvider, IDeckExpo
                 worksheet.Cells[row, 4].Value = word.UkrainianTranslation;
                 worksheet.Cells[row, 5].Value = word.UsageLabel;
                 worksheet.Cells[row, 6].Value = word.ExampleSentences;
+                worksheet.Cells[row, 7].Value = word.Synonyms;
                 row++;
             }
 

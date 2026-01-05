@@ -32,6 +32,7 @@ public abstract class BaseDeckExporterProvider
             s.Definition,
             s.UkrainianTranslation,
             s.UsageLabel,
-            string.Join('|', s.Examples))))];
+            string.Join('|', s.Examples),
+            string.Join('|', s.Synonyms))))];
     }
 }

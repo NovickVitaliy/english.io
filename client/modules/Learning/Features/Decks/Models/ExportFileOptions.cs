@@ -4,5 +4,6 @@ public enum ExportFileOptions
 {
     Csv,
     Excel,
-    Pdf
+    Pdf,
+    Json
 }

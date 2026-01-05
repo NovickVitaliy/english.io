@@ -6,4 +6,5 @@ public record WordForExport(
     string Definition,
     string UkrainianTranslation,
     string UsageLabel,
-    string ExampleSentences);
+    string ExampleSentences,
+    string Synonyms);

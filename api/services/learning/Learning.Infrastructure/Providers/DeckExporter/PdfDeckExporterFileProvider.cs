@@ -44,6 +44,7 @@ public class PdfDeckExporterFileProvider : BaseDeckExporterProvider, IDeckExport
                                 column.Item().Text($"Ukrainian Translation: {word.UkrainianTranslation}");
                                 column.Item().Text($"Usage Label: {word.UsageLabel}");
                                 column.Item().Text($"Example sentences:\n {word.ExampleSentences}").Italic().FontSize(10);
+                                column.Item().Text($"Synonyms:\n {word.Synonyms}").Italic().FontSize(10);
                                 column.Item().PaddingBottom(5);
                             }
                         });

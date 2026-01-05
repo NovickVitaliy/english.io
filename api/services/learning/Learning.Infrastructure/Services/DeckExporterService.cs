@@ -39,7 +39,6 @@ public class DeckExporterService : IDeckExporterService
             return Result<ExportDeckResponse>.NotFound(request.DeckId);
         }
 
-
         var fileExporterProvider = _deckExporterFileProviders.FirstOrDefault(x => x.Handles(request.Type));
         if (fileExporterProvider is null)
         {
