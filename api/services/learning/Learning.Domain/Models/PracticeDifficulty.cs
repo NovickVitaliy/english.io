@@ -11,3 +11,10 @@ public enum PracticeDifficulty
     Hard,
     VeryHard
 }
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
+public enum PracticeTask
+{
+    TranslateFromEnglishToUkrainian,
+    TranslateFromUkrainianToEnglish,
+}

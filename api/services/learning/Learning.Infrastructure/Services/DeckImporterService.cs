@@ -1,5 +1,4 @@
 using Learning.Application.Contracts.Providers;
-using Learning.Application.Contracts.Repositories;
 using Learning.Application.Contracts.Services;
 using Learning.Application.DTOs.Decks;
 using Learning.Infrastructure.Database;

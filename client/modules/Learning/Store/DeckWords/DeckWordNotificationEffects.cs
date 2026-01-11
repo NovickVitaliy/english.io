@@ -1,6 +1,6 @@
 using Fluxor;
 using Learning.Features.Decks.Components;
-using Learning.Store.DeckWords.Actions;
+using Learning.Store.DeckWords.Actions.Create;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
 using Shared.Store;

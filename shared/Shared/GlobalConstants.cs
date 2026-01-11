@@ -14,8 +14,11 @@ public static class GlobalConstants
 
     public static class Languages
     {
-        public const string English = "en-US";
-        public const string Ukrainian = "uk-UA";
+        public const string EnglishCode = "en-US";
+        public const string UkrainianCode = "uk-UA";
+
+        public const string English = "english";
+        public const string Ukrainian = "ukrainian";
 
         public static readonly string[] SupportedLanguages = ["ukrainian", "english"];
     }

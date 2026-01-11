@@ -1,6 +1,7 @@
 using Learning.Application.DTOs.Practice;
 using Learning.Application.DTOs.Practice.ExampleText;
 using Learning.Application.DTOs.Practice.FillInTheGaps;
+using Learning.Application.DTOs.Practice.GetTranslationTask;
 using Learning.Application.DTOs.Practice.GetWordsForPractice;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Check;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Create;
@@ -12,7 +13,7 @@ namespace Learning.Application.Contracts.Services;
 
 public interface IPracticeService
 {
-    Task<Result<TranslateWordsResponse>> TranslateWords(TranslateWordsRequest request);
+    Task<Result<TranslateWordsResponse>> CheckTranslateWordsTaskAsync(TranslateWordsRequest request);
     Task<Result<SentenceWithGap[]>> GetSentencesWithGapsAsync(string[] words);
     Task<Result<GetExampleTextResponse>> GetExampleTextAsync(string[] words);
     Task<Result<SaveSessionResultDto>> SaveSessionResultAsync(SaveSessionResultRequest request);
@@ -20,4 +21,5 @@ public interface IPracticeService
     Task<Result<CheckReadingComprehensionExerciseResponse>> CheckReadingComprehensionExerciseAsync(CheckReadingComprehensionExerciseRequest request);
     Task<Result<GetPracticeSessionsForUserResponse>> GetSessionsForUserAsync(GetSessionsForUserRequest request);
     Task<Result<GetWordsForPracticeResponse>> GetWordsForPracticeAsync(Guid deckId);
+    Task<Result<IReadOnlyCollection<WordForTranslationPractice>>> GetWordForTranslationTaskAsync(Guid deckId, GetTranlationTaskRequest request);
 }

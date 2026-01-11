@@ -3,7 +3,7 @@ using Learning.Features.Decks.Models;
 using Learning.Store.Deck.Actions.Delete;
 using Learning.Store.Deck.Actions.Fetch;
 using Learning.Store.Decks;
-using Learning.Store.DeckWords.Actions;
+using Learning.Store.DeckWords.Actions.Create;
 using Learning.Store.DeckWords.Actions.Delete;
 
 namespace Learning.Store.Deck;

@@ -4,13 +4,15 @@ using Learning.Application.Contracts.Services;
 using Learning.Application.DTOs.Practice;
 using Learning.Application.DTOs.Practice.ExampleText;
 using Learning.Application.DTOs.Practice.FillInTheGaps;
+using Learning.Application.DTOs.Practice.GetTranslationTask;
 using Learning.Application.DTOs.Practice.GetWordsForPractice;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Check;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Create;
 using Learning.Application.DTOs.Practice.Sessions;
 using Learning.Application.DTOs.Practice.TranslateWords;
 using Learning.Domain.Models;
-using Learning.Infrastructure.Database;
+using Learning.Infrastructure.DTOs;
+using Shared;
 using Shared.ErrorHandling;
 using Shared.Services.Contracts;
 using static Learning.Domain.LocalizationKeys;
@@ -39,7 +41,7 @@ public class PracticeService : IPracticeService
         _wordUnitService = wordUnitService;
     }
 
-    public async Task<Result<TranslateWordsResponse>> TranslateWords(TranslateWordsRequest request)
+    public async Task<Result<TranslateWordsResponse>> CheckTranslateWordsTaskAsync(TranslateWordsRequest request)
     {
         var validationResult = request.IsValid();
         if (!validationResult.IsValid)
@@ -53,6 +55,32 @@ public class PracticeService : IPracticeService
         {
             return Result<TranslateWordsResponse>.BadRequest("Something went wrong");
         }
+
+        var joined = response.Join(request.TranslatedWords,
+            a => a.SenseId,
+            b => b.SenseId,
+            (a, b) => new
+            {
+                a, b
+            });
+
+        var tasks = joined.Select(async obj =>
+        {
+            var wordSenseFullInfo = await _wordUnitService.GetWordSenseFullInfo(obj.b.SenseId);
+
+            return obj.a with
+            {
+                CorrectTranslation = request.OriginalLanguage == GlobalConstants.Languages.English ? wordSenseFullInfo!.UkrainianTranslation : wordSenseFullInfo!.EnglishWord,
+                SenseId = wordSenseFullInfo.SenseId
+            };
+        });
+
+        response = await Task.WhenAll(tasks);
+
+        await UpdateWordsProgress(
+            request.DeckId,
+            response.Select(x => new WordSenseTaskResult(x.SenseId, x.IsCorrect)).ToArray(),
+            request.OriginalLanguage == GlobalConstants.Languages.English ? PracticeTask.TranslateFromEnglishToUkrainian : PracticeTask.TranslateFromUkrainianToEnglish);
 
         return Result<TranslateWordsResponse>.Ok(new TranslateWordsResponse(response));
     }
@@ -74,6 +102,7 @@ public class PracticeService : IPracticeService
 
         return Result<SentenceWithGap[]>.Ok(sentencesWithGaps);
     }
+
     public async Task<Result<GetExampleTextResponse>> GetExampleTextAsync(string[] words)
     {
         var isValid = words.Length > 0 && !words.All(string.IsNullOrWhiteSpace);
@@ -146,6 +175,7 @@ public class PracticeService : IPracticeService
 
         return Result<CheckReadingComprehensionExerciseResponse>.Ok(response);
     }
+
     public async Task<Result<GetPracticeSessionsForUserResponse>> GetSessionsForUserAsync(GetSessionsForUserRequest request)
     {
         if (string.IsNullOrWhiteSpace(request.UserEmail))
@@ -156,8 +186,9 @@ public class PracticeService : IPracticeService
         var (results, count) = await _practiceRepository.GetSessionsResultsForUserAsync(request);
 
         return Result<GetPracticeSessionsForUserResponse>.Ok(new GetPracticeSessionsForUserResponse(
-                results.Select(x => new SessionDto(x.Words, x.FirstTaskPercentageSuccess, x.SecondTaskPercentageSuccess, x.ThirdTaskPercentageSuccess, x.FourthTaskPercentageSuccess, x.PracticeDate)).ToArray(),
-                count));
+            results.Select(x => new SessionDto(x.Words, x.FirstTaskPercentageSuccess, x.SecondTaskPercentageSuccess, x.ThirdTaskPercentageSuccess, x.FourthTaskPercentageSuccess,
+                x.PracticeDate)).ToArray(),
+            count));
     }
 
     public async Task<Result<GetWordsForPracticeResponse>> GetWordsForPracticeAsync(Guid deckId)
@@ -176,6 +207,41 @@ public class PracticeService : IPracticeService
         var wordsForPractice = await _wordUnitService.GetPracticeWords(practiceBatch);
 
         return Result<GetWordsForPracticeResponse>.Ok(new GetWordsForPracticeResponse(wordsForPractice));
+    }
+
+    public async Task<Result<IReadOnlyCollection<WordForTranslationPractice>>> GetWordForTranslationTaskAsync(Guid deckId, GetTranlationTaskRequest request)
+    {
+        if (!GlobalConstants.Languages.SupportedLanguages.Contains(request.OriginalLanguage))
+        {
+            return Result<IReadOnlyCollection<WordForTranslationPractice>>.BadRequest(OriginalLanguageDoesNotExist);
+        }
+
+        if (!GlobalConstants.Languages.SupportedLanguages.Contains(request.TranslateLanguage))
+        {
+            return Result<IReadOnlyCollection<WordForTranslationPractice>>.BadRequest(TranslateLanguageDoesNotExist);
+        }
+
+        var deck = await _decksRepository.GetDeckAsync(deckId);
+        if (deck is null)
+        {
+            return Result<IReadOnlyCollection<WordForTranslationPractice>>.NotFound(deckId);
+        }
+
+        List<WordForTranslationPractice> words = [];
+
+        foreach (var wordForPractice in request.WordsForPractice)
+        {
+            var wordSenseFullInfo = await _wordUnitService.GetWordSenseFullInfo(wordForPractice.SenseId);
+
+            if (wordSenseFullInfo is not null)
+            {
+                words.Add(request.OriginalLanguage == GlobalConstants.Languages.English
+                    ? new WordForTranslationPractice(wordSenseFullInfo.EnglishWord, wordSenseFullInfo.EnglishDefinition, wordSenseFullInfo.SenseId)
+                    : new WordForTranslationPractice(wordSenseFullInfo.UkrainianTranslation, "", wordSenseFullInfo.SenseId));
+            }
+        }
+
+        return Result<IReadOnlyCollection<WordForTranslationPractice>>.Ok(words);
     }
 
     private static List<DeckEntry> SelectPracticeBatch(List<DeckEntry> deckEntries, int? countOfWordsForPractice, string? practiceDifficulty)
@@ -224,5 +290,54 @@ public class PracticeService : IPracticeService
         }
 
         return session;
+    }
+
+    private async Task UpdateWordsProgress(Guid deckId, WordSenseTaskResult[] wordSenseTaskResults, PracticeTask practiceTask)
+    {
+        var success = Enum.TryParse<PracticeDifficulty>(_currentUserAccessor.GetPracticeDifficulty(), out var practiceDifficulty);
+        if (!success)
+        {
+            practiceDifficulty = PracticeDifficulty.Medium;
+        }
+
+        var taskWeight = Constants.GetTaskWeight(practiceTask);
+        var difficultyMultiplier = Constants.GetDifficultyMultiplier(practiceDifficulty);
+        var forgettingFactor = Constants.GetForgettingFactor(practiceDifficulty);
+        var now = DateTimeOffset.UtcNow;
+        var deck = await _decksRepository.GetDeckAsync(deckId);
+
+        if (deck is null) return;
+
+        foreach (var result in wordSenseTaskResults)
+        {
+            var deckEntry = deck!.DeckEntries.SingleOrDefault(x => x.WordSenseId == result.SenseId);
+
+            if (deckEntry is not null)
+            {
+                var taskEffect = Constants.BaseLearningRate * taskWeight * difficultyMultiplier;
+
+                if (result.IsCorrect)
+                {
+                    deckEntry.ProgressScore += (1 - deckEntry.ProgressScore) * taskEffect;
+                }
+                else
+                {
+                    deckEntry.ProgressScore -= deckEntry.ProgressScore * taskEffect;
+                }
+
+                float daysSinceLastPractice = 0f;
+                if (deckEntry.LastTimePracticed is not null)
+                {
+                    daysSinceLastPractice = (now - deckEntry.LastTimePracticed).Value.Days;
+                }
+
+                deckEntry.ProgressScore *= (float)Math.Pow(forgettingFactor, daysSinceLastPractice);
+
+                deckEntry.ProgressScore = (float)Math.Round(Math.Clamp(deckEntry.ProgressScore, 0f, 1f), 2);
+                deckEntry.LastTimePracticed = now;
+            }
+        }
+
+        await _decksRepository.UpdateDeckAsync(deckId, deck);
     }
 }

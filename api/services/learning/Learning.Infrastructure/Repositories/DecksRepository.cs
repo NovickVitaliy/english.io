@@ -118,4 +118,13 @@ public class DecksRepository : IDecksRepository
 
         return true;
     }
+
+    public async Task<bool> UpdateDeckAsync(Guid deckId, Deck deck)
+    {
+        var filter = Builders<Deck>.Filter.Eq(x => x.Id, deckId);
+
+        await _learningDbContext.Decks.ReplaceOneAsync(filter, deck);
+
+        return true;
+    }
 }

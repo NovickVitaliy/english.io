@@ -1,6 +1,6 @@
 <root>
   <data name="Title">
-    Translate words from thia language: '{0}' to this '{1}'
+    Translate words from this language: '{0}' to this '{1}'
   </data>
   <data name="Verify_Words">
     Verify translated words
@@ -10,5 +10,8 @@
   </data>
   <data name="Already_Verified">
     You have already verified words
+  </data>
+  <data name="Correct_Translation">
+    Correct translation:
   </data>
 </root>

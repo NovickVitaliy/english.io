@@ -1,48 +1,61 @@
 @page "/practice/{deckId:guid}/translate-words"
+@using Learning.Layouts
 @using MudBlazor
-@using Shared.Layout
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
-@layout EmptyLayout
+@layout DashboardLayout
 
-<MudContainer MaxWidth="MaxWidth.Small">
+<MudContainer MaxWidth="MaxWidth.Large">
     <MudText Class="mb-3" Align="Align.Center"
-             Typo="Typo.h5">@Localizer["Title", OriginalLanguage, TranslateLanguage]</MudText>
+             Typo="Typo.h3">@Localizer["Title", OriginalLanguage, TranslateLanguage]</MudText>
     <div class="d-flex justify-content-start mb-5">
-        @if (_response is not null)
+        @if (TranslateWordsTaskResultState.Value.Results.Length > 0 && !TranslateWordsTaskResultState.Value.IsLoading)
         {
             <MudButton Class="w-100" OnClick="NextExercise" Color="Color.Primary"
                        Variant="Variant.Filled">@Localizer["Next_Exercise"]</MudButton>
         }
     </div>
-    <MudForm Model="_request">
-        @* @if (PracticeState.Value is not null) *@
-        @* { *@
-        @*     @for (var i = 0; i < PracticeState.Value.WordsBeingPracticed.Length; i++) *@
-        @*     { *@
-        @*         var word = _shuffledWords[i]; *@
-        @*         var index = i; *@
-        @*         _request.TranslatedWords[index].OriginalWord = word; *@
-        @*         <MudPaper Class="d-flex gap-3 p-2 mb-3 justify-content-between"> *@
-        @*             @if (_response is not null) *@
-        @*             { *@
-        @*                 var isCorrect = _response.Results[index].IsCorrect; *@
-        @*                 <MudText>@(isCorrect ? "✅" : "❌")</MudText> *@
-        @*             } *@
-        @*             <MudText Align="Align.Center" Class="w-25" Typo="Typo.h6"> *@
-        @*                 @word *@
-        @*             </MudText> *@
-        @*             <MudTextField T="string" @bind-Value="_request.TranslatedWords[index].Translated"></MudTextField> *@
-        @*         </MudPaper> *@
-        @*     } *@
-        @* *@
-        @*     <MudButton Disabled="@(_response is not null)" Class="mb-3" Color="Color.Primary" Variant="Variant.Filled" *@
-        @*                OnClick="VerifyTranslatedWords"> *@
-        @*         @Localizer["Verify_Words"] *@
-        @*     </MudButton> *@
-        @* } *@
+    <MudForm Model="_taskRequest">
+        @if (TranslateWordsState.Value is { Words.Length: > 0})
+        {
+            @for (var i = 0; i < TranslateWordsState.Value.Words.Length; i++)
+            {
+                var word = TranslateWordsState.Value.Words[i];
+                var label = word.Word + (string.IsNullOrWhiteSpace(word.Definition) ? "" : $" ({word.Definition})");
+                var index = i;
+                _taskRequest.TranslatedWords[index].OriginalWord = word.Word;
+                _taskRequest.TranslatedWords[index].Definition = word.Definition;
+                _taskRequest.TranslatedWords[index].SenseId = word.SenseId;
+                <MudPaper Class="d-flex flex-column gap-3 p-2 mb-3 justify-content-between">
+                    @if (TranslateWordsTaskResultState.Value.Results.Length > 0 && !TranslateWordsTaskResultState.Value.IsLoading)
+                    {
+                        var wordTranslationResult = TranslateWordsTaskResultState.Value.ForWord(word.SenseId);
+                        if (wordTranslationResult is not null)
+                        {
+                            <div class="d-flex">
+                                <MudText Class="me-3">@(wordTranslationResult.IsCorrect ? "✅" : "❌")</MudText>
+                                @if (!wordTranslationResult.IsCorrect)
+                                {
+                                    <MudText>@Localizer["Correct_Translation"] @(wordTranslationResult.CorrectTranslation)</MudText>
+                                }
+                            </div>
+                        }
+                    }
+                    <MudText Align="Align.Center" Class="w-100 text-center me-3" Typo="Typo.h6">
+                        @label
+                    </MudText>
+                    <MudTextField T="string" @bind-Value="_taskRequest.TranslatedWords[index].Translated"></MudTextField>
+                </MudPaper>
+            }
+
+            <MudButton Disabled="@(TranslateWordsTaskResultState.Value.Results.Length > 0 && !TranslateWordsTaskResultState.Value.IsLoading)" Class="mb-3" Color="Color.Primary" Variant="Variant.Filled"
+                       OnClick="VerifyTranslatedWords">
+                @Localizer["Verify_Words"]
+            </MudButton>
+        }
     </MudForm>
 </MudContainer>
-<MudOverlay Visible="_overlayVisible" DarkBackground="true">
+
+<MudOverlay Visible="TranslateWordsTaskResultState.Value.IsLoading" DarkBackground="true">
     <MudProgressCircular Color="Color.Secondary" Indeterminate="true"/>
 </MudOverlay>
 

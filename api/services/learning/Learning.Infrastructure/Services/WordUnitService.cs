@@ -1,5 +1,6 @@
 using Learning.Application.Contracts.Api;
-using Learning.Application.Contracts.Repositories;
+using Learning.Application.Contracts.Services;
+using Learning.Application.DTOs.Practice.GetTranslationTask;
 using Learning.Application.DTOs.Practice.GetWordsForPractice;
 using Learning.Domain.Models;
 using Learning.Infrastructure.Database;
@@ -69,5 +70,26 @@ public class WordUnitService : IWordUnitService
         return wordUnits
             .SelectMany(x => x.Senses.Where(s => senseIds.Contains(s.Id))
                 .Select(ws => new WordForPractice(x.PartOfSpeech, x.Id, x.Word, ws.Id, ws.Definition))).ToArray();
+    }
+
+    public async Task<WordSenseFullInfo?> GetWordSenseFullInfo(Guid senseId)
+    {
+        var filter = Builders<WordUnit>
+            .Filter
+            .ElemMatch(x => x.Senses, Builders<WordSense>.Filter.Eq(ws => ws.Id, senseId));
+
+        var wordUnit = await (await _learningDbContext.WordUnits.FindAsync(filter)).SingleOrDefaultAsync();
+        if (wordUnit is null)
+        {
+            return null;
+        }
+
+        var sense = wordUnit.Senses.Single(x => x.Id == senseId);
+
+        return new WordSenseFullInfo(
+                senseId,
+                wordUnit.Word,
+                sense.Definition,
+                sense.UkrainianTranslation);
     }
 }

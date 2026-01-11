@@ -120,7 +120,7 @@ public class AuthService : IAuthService
             ["token"] = token, ["email"] = request.Email
         });
 
-        var language = _httpContextAccessor.HttpContext?.Request.Headers[HeaderNames.AcceptLanguage].FirstOrDefault() ?? GlobalConstants.Languages.English;
+        var language = _httpContextAccessor.HttpContext?.Request.Headers[HeaderNames.AcceptLanguage].FirstOrDefault() ?? GlobalConstants.Languages.EnglishCode;
         var subject = _forgotPasswordOptions.MessageHeadersByLanguage[language];
         var body = GenerateMessageBody(request.Email, path, language);
 
@@ -205,7 +205,7 @@ public class AuthService : IAuthService
 
         var verifyEmailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         var path = QueryHelpers.AddQueryString(request.VerifyEmailUrl.ToString(), "token", verifyEmailToken);
-        var language = _httpContextAccessor.HttpContext.Request.Headers[HeaderNames.AcceptLanguage].FirstOrDefault() ?? GlobalConstants.Languages.English;
+        var language = _httpContextAccessor.HttpContext.Request.Headers[HeaderNames.AcceptLanguage].FirstOrDefault() ?? GlobalConstants.Languages.EnglishCode;
         var subject = _emailVerificationOptions.MessageHeadersByLanguage[language];
         var body = GenerateVerificationEmailMessageBody(email, path, language);
         var sendEmailMessageRequest = new SendEmailMessageRequest(email, email, subject, "Html", body);

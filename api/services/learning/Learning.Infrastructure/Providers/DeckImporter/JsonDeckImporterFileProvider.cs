@@ -1,8 +1,6 @@
 using System.Net.Mime;
 using System.Text.Json;
 using Learning.Application.Contracts.Providers;
-using Learning.Application.Contracts.Repositories;
-using Learning.Application.DTOs.Decks;
 using Learning.Domain.Models;
 using Learning.Infrastructure.Database;
 using Learning.Infrastructure.Providers.DeckExporter.JsonExporter;

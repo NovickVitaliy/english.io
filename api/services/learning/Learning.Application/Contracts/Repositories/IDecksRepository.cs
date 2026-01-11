@@ -13,4 +13,5 @@ public interface IDecksRepository
     Task DeleteDeckAsync(Guid deckId);
     Task<bool> DeckWithNameForUserExistsAsync(string userEmail, string deckTopic);
     Task<bool> DeleteDeckEntryAsync(Deck deck, Guid wordId);
+    Task<bool> UpdateDeckAsync(Guid deckId, Deck deck);
 }

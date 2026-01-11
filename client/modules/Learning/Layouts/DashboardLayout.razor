@@ -15,6 +15,10 @@
 @inherits Shared.Layout.BaseLayout
 
 @code {
+
+    private bool HideFooter =>
+        NavigationManager.Uri.Contains("/practice", StringComparison.OrdinalIgnoreCase);
+
     protected override void OnInitialized()
     {
         LoadingState.StateChanged += OnLoadingStateChanged;
@@ -79,13 +83,19 @@
                     style=@($"height: 100vh; background-color: {(IsDarkMode ? Theme.PaletteDark.BackgroundGray : Theme.PaletteLight.BackgroundGray)}")>
         <CascadingValue Value="Theme">
             <CascadingValue Value="IsDarkMode">
-                <DashboardHeader OnThemeChange="HandleThemeChange" IsDarkMode="IsDarkMode"></DashboardHeader>
+                @if (!HideFooter)
+                {
+                    <DashboardHeader OnThemeChange="HandleThemeChange" IsDarkMode="IsDarkMode"></DashboardHeader>
+                }
 
                 <div class="flex-grow-1 overflow-auto">
                     @Body
                 </div>
 
-                <DashboardFooter></DashboardFooter>
+                @if (!HideFooter)
+                {
+                    <DashboardFooter></DashboardFooter>
+                }
             </CascadingValue>
         </CascadingValue>
     </MudMainContent>

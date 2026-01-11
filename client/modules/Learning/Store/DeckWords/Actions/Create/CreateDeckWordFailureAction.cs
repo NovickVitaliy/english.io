@@ -1,3 +1,3 @@
-namespace Learning.Store.DeckWords.Actions;
+namespace Learning.Store.DeckWords.Actions.Create;
 
 public record CreateDeckWordFailureAction(string ErrorMessage);

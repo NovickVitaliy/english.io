@@ -16,6 +16,11 @@ namespace Learning.Infrastructure.Api;
 
 public class GeminiAiLearningService : IAiLearningService
 {
+    private static readonly JsonSerializerOptions Options = new JsonSerializerOptions()
+    {
+        WriteIndented = false
+    };
+
     private readonly Client _client;
     private readonly GeminiOptions _geminiOptions;
     private readonly AiLearningPromptsOptions _aiLearningPromptsOptions;
@@ -56,10 +61,9 @@ public class GeminiAiLearningService : IAiLearningService
     public async Task<TranslatedWordResult[]?> VerifyWordsTranslations(TranslateWordsRequest request)
     {
         var prompt = _aiLearningPromptsOptions.PromptForCheckingIfTranslationsAreCorrect
-            .Replace("{words}", string.Join("; ", request.TranslatedWords.Select(x => x.OriginalWord)), StringComparison.InvariantCulture)
-            .Replace("{originalLanguage}", request.OriginalLanguage, StringComparison.InvariantCulture)
-            .Replace("{translatedWords}", string.Join("; ", request.TranslatedWords.Select(x => x.Translated)), StringComparison.InvariantCulture)
-            .Replace("{translatedLanguage}", request.TranslatedLanguage, StringComparison.InvariantCulture);
+            .Replace("{OriginalLanguage}", request.OriginalLanguage, StringComparison.InvariantCulture)
+            .Replace("{TranslatedLanguage}", request.TranslateLanguage, StringComparison.InvariantCulture)
+            .Replace("{TranslatedWordsJson}", JsonSerializer.Serialize(request.TranslatedWords, Options), StringComparison.InvariantCulture);
 
         return (await GenerateInternal<TranslatedWordResult[]>(prompt));
     }

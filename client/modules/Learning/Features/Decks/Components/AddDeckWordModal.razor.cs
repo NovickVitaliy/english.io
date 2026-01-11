@@ -1,12 +1,8 @@
 using Fluxor;
 using Learning.Features.Decks.Models;
-using Learning.LearningShared.Services;
-using Learning.Store.Deck;
 using Learning.Store.DeckWords.Actions.Create;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using Shared.Store.Loading;
-using Shared.Store.User;
 
 namespace Learning.Features.Decks.Components;
 

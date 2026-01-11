@@ -3,7 +3,8 @@ using Learning.Features.Practice.Models.ExampleText;
 using Learning.Features.Practice.Models.FillInTheGaps;
 using Learning.Features.Practice.Models.GetWordsForPractice;
 using Learning.Features.Practice.Models.ReadingComprehension;
-using Learning.Features.Practice.Models.TranslateWords;
+using Learning.Features.Practice.Models.TranslateWordsTask.Check;
+using Learning.Features.Practice.Models.TranslateWordsTask.Get;
 using Learning.Features.Settings.Models.Sessions;
 using Refit;
 
@@ -13,8 +14,8 @@ public interface IPracticeService
 {
     const string ApiUrlKey = "Learning";
 
-    [Post("/practice/translate-words")]
-    Task<TranslateWordsResponse> TranslateWords(TranslateWordsRequest request, [Authorize] string token);
+    [Post("/practice/check-translation-task")]
+    Task<CheckTranslateWordsTaskResponse> CheckTranslateWordsTaskAsync(CheckTranslateWordsTaskRequest taskRequest, [Authorize] string token);
 
     [Get("/practice/sentences-with-gaps")]
     Task<SentenceWithGap[]> GenerateSentencesWithGaps([Query(CollectionFormat.Multi)] string[] words, [Authorize] string token);
@@ -36,4 +37,7 @@ public interface IPracticeService
 
     [Get("/practice/{deckId}/words")]
     Task<GetWordsForPracticeResponse> GetWordsForPracticeAsync([Query] Guid deckId, [Authorize] string token);
+
+    [Post("/practice/{deckId}/get-translation-task")]
+    Task<WordForTranslationPractice[]> GetTranslationTaskAsync([Query] Guid deckId, GetTranlationTaskRequest request, [Authorize] string token);
 }

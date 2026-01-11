@@ -23,4 +23,6 @@ public static class LocalizationKeys
     public const string IncorrectTranslateRequest = "Incorrect_Translate_Request";
     public const string WordsMustBePresent = "Words_Must_Be_Present";
     public const string TimezoneInfoMustBePresent = "Timezone_Info_Must_Be_Present";
+    public const string OriginalLanguageDoesNotExist = "Original_Language_Does_Not_Exist";
+    public const string TranslateLanguageDoesNotExist = "Translate_Language_Does_Not_Exist";
 }
