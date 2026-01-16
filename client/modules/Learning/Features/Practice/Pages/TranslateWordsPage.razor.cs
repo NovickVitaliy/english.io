@@ -85,7 +85,7 @@ public partial class TranslateWordsPage : FluxorComponent
         if (OriginalLanguage == "ukrainian")
         {
             Dispatcher.Dispatch(new ResetTranslateWordsTaskAction());
-            NavigationManager.NavigateTo("/practice/fill-in-the-gaps");
+            NavigationManager.NavigateTo($"/practice/{DeckId}/fill-in-the-gaps");
             return;
         }
 

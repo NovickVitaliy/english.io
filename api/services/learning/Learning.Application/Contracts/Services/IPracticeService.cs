@@ -13,8 +13,8 @@ namespace Learning.Application.Contracts.Services;
 
 public interface IPracticeService
 {
-    Task<Result<TranslateWordsResponse>> CheckTranslateWordsTaskAsync(TranslateWordsRequest request);
-    Task<Result<SentenceWithGap[]>> GetSentencesWithGapsAsync(string[] words);
+    Task<Result<TranslateWordsResponse>> CheckTranslateWordsTaskAsync(CheckTranslateWordsTaskRequest taskRequest);
+    Task<Result<SentenceWithGap[]>> GetSentencesWithGapsAsync(Guid deckId, WordForPractice[] wordsForPractice);
     Task<Result<GetExampleTextResponse>> GetExampleTextAsync(string[] words);
     Task<Result<SaveSessionResultDto>> SaveSessionResultAsync(SaveSessionResultRequest request);
     Task<Result<CreateReadingComprehensionExerciseResponse>> CreateReadingComprehensionExerciseAsync(CreateReadingComprehensionExerciseRequest request);
@@ -22,4 +22,5 @@ public interface IPracticeService
     Task<Result<GetPracticeSessionsForUserResponse>> GetSessionsForUserAsync(GetSessionsForUserRequest request);
     Task<Result<GetWordsForPracticeResponse>> GetWordsForPracticeAsync(Guid deckId);
     Task<Result<IReadOnlyCollection<WordForTranslationPractice>>> GetWordForTranslationTaskAsync(Guid deckId, GetTranlationTaskRequest request);
+    Task<Result<SentenceWithFilledGapResult[]>> CheckSentencesWithGapsTask(CheckSentencesWithGapsTaskRequest request);
 }

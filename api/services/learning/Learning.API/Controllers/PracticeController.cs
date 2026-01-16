@@ -1,6 +1,8 @@
 using Learning.Application.Contracts.Services;
 using Learning.Application.DTOs.Practice;
+using Learning.Application.DTOs.Practice.FillInTheGaps;
 using Learning.Application.DTOs.Practice.GetTranslationTask;
+using Learning.Application.DTOs.Practice.GetWordsForPractice;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Check;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Create;
 using Learning.Application.DTOs.Practice.Sessions;
@@ -35,15 +37,21 @@ public class PracticeController : ControllerBase
     }
 
     [HttpPost("check-translation-task")]
-    public async Task<IActionResult> CheckTranslateWordsTaskAsync(TranslateWordsRequest request)
+    public async Task<IActionResult> CheckTranslateWordsTaskAsync(CheckTranslateWordsTaskRequest taskRequest)
     {
-        return (await _practiceService.CheckTranslateWordsTaskAsync(request)).ToApiResponse();
+        return (await _practiceService.CheckTranslateWordsTaskAsync(taskRequest)).ToApiResponse();
     }
 
-    [HttpGet("sentences-with-gaps")]
-    public async Task<IActionResult> GetSentencesWithGaps([FromQuery] string[] words)
+    [HttpPost("{deckId:guid}/get-sentences-with-gaps-task")]
+    public async Task<IActionResult> GetSentencesWithGaps(Guid deckId, WordForPractice[] wordsForPractice)
     {
-        return (await _practiceService.GetSentencesWithGapsAsync(words)).ToApiResponse();
+        return (await _practiceService.GetSentencesWithGapsAsync(deckId, wordsForPractice)).ToApiResponse();
+    }
+
+    [HttpPost("check-sentences-with-gaps-task")]
+    public async Task<IActionResult> CheckSentencesWithGapsTask(CheckSentencesWithGapsTaskRequest request)
+    {
+        return (await _practiceService.CheckSentencesWithGapsTask(request)).ToApiResponse();
     }
 
     [HttpGet("example-text")]

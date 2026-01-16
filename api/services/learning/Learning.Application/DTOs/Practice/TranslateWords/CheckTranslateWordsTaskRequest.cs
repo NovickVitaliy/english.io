@@ -3,7 +3,7 @@ using static Learning.Domain.LocalizationKeys;
 
 namespace Learning.Application.DTOs.Practice.TranslateWords;
 
-public record TranslateWordsRequest(TranslatedWord[] TranslatedWords, string OriginalLanguage, string TranslateLanguage, Guid DeckId) : IBaseRequest
+public record CheckTranslateWordsTaskRequest(TranslatedWord[] TranslatedWords, string OriginalLanguage, string TranslateLanguage, Guid DeckId) : IBaseRequest
 {
     public RequestValidationResult IsValid()
     {

@@ -26,4 +26,7 @@ public class AiLearningPromptsOptions
 
     [Required]
     public string PromptForCheckingIfReadingComprehensionExercise { get; init; } = null!;
+
+    [Required]
+    public string PromptForCheckingSentencesWithGapsTask { get; init; } = null!;
 }

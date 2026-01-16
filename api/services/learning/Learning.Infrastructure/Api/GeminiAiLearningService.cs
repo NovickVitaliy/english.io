@@ -4,12 +4,14 @@ using Google.GenAI.Types;
 using Learning.Application.Contracts.Api;
 using Learning.Application.DTOs.Decks;
 using Learning.Application.DTOs.Practice.FillInTheGaps;
+using Learning.Application.DTOs.Practice.GetWordsForPractice;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Check;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Create;
 using Learning.Application.DTOs.Practice.TranslateWords;
 using Learning.Domain.Models;
 using Learning.Infrastructure.Options;
 using Microsoft.Extensions.Options;
+using Polly.Registry;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Learning.Infrastructure.Api;
@@ -25,13 +27,16 @@ public class GeminiAiLearningService : IAiLearningService
     private readonly GeminiOptions _geminiOptions;
     private readonly AiLearningPromptsOptions _aiLearningPromptsOptions;
     private readonly GenerateContentConfig _defaultGenerateContentConfig;
+    private readonly ResiliencePipelineProvider<string> _resiliencePipelineProvider;
 
     public GeminiAiLearningService(
         Client client,
         IOptions<GeminiOptions> geminiOptions,
-        IOptions<AiLearningPromptsOptions> aiLearningPromptsOptions)
+        IOptions<AiLearningPromptsOptions> aiLearningPromptsOptions,
+        ResiliencePipelineProvider<string> resiliencePipelineProvider)
     {
         _client = client;
+        _resiliencePipelineProvider = resiliencePipelineProvider;
         _geminiOptions = geminiOptions.Value;
         _aiLearningPromptsOptions = aiLearningPromptsOptions.Value;
         _defaultGenerateContentConfig = new GenerateContentConfig
@@ -58,20 +63,20 @@ public class GeminiAiLearningService : IAiLearningService
         return (await GenerateInternal<DoesWordComplyToTheTopicResponse>(prompt))!.DoesComply;
     }
 
-    public async Task<TranslatedWordResult[]?> VerifyWordsTranslations(TranslateWordsRequest request)
+    public async Task<TranslatedWordResult[]?> VerifyWordsTranslations(CheckTranslateWordsTaskRequest taskRequest)
     {
         var prompt = _aiLearningPromptsOptions.PromptForCheckingIfTranslationsAreCorrect
-            .Replace("{OriginalLanguage}", request.OriginalLanguage, StringComparison.InvariantCulture)
-            .Replace("{TranslatedLanguage}", request.TranslateLanguage, StringComparison.InvariantCulture)
-            .Replace("{TranslatedWordsJson}", JsonSerializer.Serialize(request.TranslatedWords, Options), StringComparison.InvariantCulture);
+            .Replace("{OriginalLanguage}", taskRequest.OriginalLanguage, StringComparison.InvariantCulture)
+            .Replace("{TranslatedLanguage}", taskRequest.TranslateLanguage, StringComparison.InvariantCulture)
+            .Replace("{TranslatedWordsJson}", JsonSerializer.Serialize(taskRequest.TranslatedWords, Options), StringComparison.InvariantCulture);
 
         return (await GenerateInternal<TranslatedWordResult[]>(prompt));
     }
 
-    public async Task<SentenceWithGap[]?> GenerateSentencesWithGaps(string[] words)
+    public async Task<SentenceWithGap[]?> GenerateSentencesWithGaps(WordForPractice[] wordsForPractice)
     {
         var prompt = _aiLearningPromptsOptions.PromptForGeneratingSentencesWithGaps
-            .Replace("{words}", string.Join(',', words), StringComparison.InvariantCulture);
+            .Replace("{WordForPracticeJson}", JsonSerializer.Serialize(wordsForPractice, Options), StringComparison.InvariantCulture);
 
         return await GenerateInternal<SentenceWithGap[]>(prompt);
     }
@@ -102,21 +107,47 @@ public class GeminiAiLearningService : IAiLearningService
         return await GenerateInternal<CheckReadingComprehensionExerciseResponse>(prompt);
     }
 
-    private async Task<T?> GenerateInternal<T>(string prompt)
+    public async Task<SentenceWithFilledGapResult[]?> CheckSentencesWithGapsTaskAsync(SentenceWithFilledGap[] requestSentencesWithFilledGaps)
     {
-        var response = await _client.Models.GenerateContentAsync(_geminiOptions.Model, prompt, _defaultGenerateContentConfig);
-        if (response.Candidates is {Count: > 0})
+        var prompt = _aiLearningPromptsOptions.PromptForCheckingSentencesWithGapsTask
+            .Replace("{SentenceWithFilledGapJson}", JsonSerializer.Serialize(requestSentencesWithFilledGaps, Options), StringComparison.InvariantCulture);
+
+        return await GenerateInternal<SentenceWithFilledGapResult[]>(prompt);
+    }
+
+    private async Task<T?> GenerateInternal<T>(string prompt, CancellationToken cancellationToken = default)
+    {
+        var pipeline = _resiliencePipelineProvider.GetPipeline("gemini-api-pipeline");
+
+        return await pipeline.ExecuteAsync(async token =>
         {
-            if (response.Candidates[0].Content is {Parts.Count: > 0})
+            var response = await _client.Models.GenerateContentAsync(
+                _geminiOptions.Model,
+                prompt,
+                _defaultGenerateContentConfig);
+
+            var json = response.Candidates?
+                .FirstOrDefault()?
+                .Content?
+                .Parts?
+                .FirstOrDefault()?
+                .Text;
+
+            if (string.IsNullOrWhiteSpace(json))
+                throw new InvalidOperationException("Gemini returned empty content");
+
+            try
             {
-                var json = response.Candidates[0].Content?.Parts?[0].Text;
-                return JsonSerializer.Deserialize<T>(json!, new JsonSerializerOptions
+                return JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
-                });
+                }) ?? throw new JsonException("Deserialized null result");
             }
-        }
+            catch (JsonException ex)
+            {
+                throw new InvalidOperationException("Invalid JSON returned by Gemini", ex);
+            }
 
-        return default;
+        }, cancellationToken);
     }
 }

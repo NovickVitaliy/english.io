@@ -1,3 +1,3 @@
 namespace Learning.Features.Practice.Models.FillInTheGaps;
 
-public record SentenceWithGap(string Sentence, string CorrectWord);
+public record SentenceWithGap(string Sentence, string CorrectWord, Guid SenseId);

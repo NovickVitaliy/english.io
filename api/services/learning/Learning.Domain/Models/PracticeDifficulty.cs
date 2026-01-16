@@ -17,4 +17,5 @@ public enum PracticeTask
 {
     TranslateFromEnglishToUkrainian,
     TranslateFromUkrainianToEnglish,
+    FillInTheGaps,
 }

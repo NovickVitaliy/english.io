@@ -4,9 +4,9 @@ using Learning.Features.Practice.Models.TranslateWordsTask.Get;
 namespace Learning.Store.Practice.TranslateWordsTask.Get;
 
 [FeatureState]
-public record TranslateWordsTaskState(WordForTranslationPractice[] Words)
+public record TranslateWordsTaskState(WordForTranslationPractice[] Words, bool IsLoading)
 {
-    private TranslateWordsTaskState() : this([])
+    private TranslateWordsTaskState() : this([], false)
     {
 
     }

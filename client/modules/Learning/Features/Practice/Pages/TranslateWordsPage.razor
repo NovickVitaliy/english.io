@@ -7,6 +7,7 @@
 <MudContainer MaxWidth="MaxWidth.Large">
     <MudText Class="mb-3" Align="Align.Center"
              Typo="Typo.h3">@Localizer["Title", OriginalLanguage, TranslateLanguage]</MudText>
+    <MudButton OnClick="NextExercise">Skip</MudButton>
     <div class="d-flex justify-content-start mb-5">
         @if (TranslateWordsTaskResultState.Value.Results.Length > 0 && !TranslateWordsTaskResultState.Value.IsLoading)
         {
@@ -26,6 +27,10 @@
                 _taskRequest.TranslatedWords[index].Definition = word.Definition;
                 _taskRequest.TranslatedWords[index].SenseId = word.SenseId;
                 <MudPaper Class="d-flex flex-column gap-3 p-2 mb-3 justify-content-between">
+                    <MudText Align="Align.Center" Class="w-100 text-center me-3" Typo="Typo.h6">
+                        @label
+                    </MudText>
+                    <MudTextField T="string" @bind-Value="_taskRequest.TranslatedWords[index].Translated"></MudTextField>
                     @if (TranslateWordsTaskResultState.Value.Results.Length > 0 && !TranslateWordsTaskResultState.Value.IsLoading)
                     {
                         var wordTranslationResult = TranslateWordsTaskResultState.Value.ForWord(word.SenseId);
@@ -40,10 +45,6 @@
                             </div>
                         }
                     }
-                    <MudText Align="Align.Center" Class="w-100 text-center me-3" Typo="Typo.h6">
-                        @label
-                    </MudText>
-                    <MudTextField T="string" @bind-Value="_taskRequest.TranslatedWords[index].Translated"></MudTextField>
                 </MudPaper>
             }
 

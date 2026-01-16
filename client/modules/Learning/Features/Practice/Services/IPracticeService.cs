@@ -17,8 +17,11 @@ public interface IPracticeService
     [Post("/practice/check-translation-task")]
     Task<CheckTranslateWordsTaskResponse> CheckTranslateWordsTaskAsync(CheckTranslateWordsTaskRequest taskRequest, [Authorize] string token);
 
-    [Get("/practice/sentences-with-gaps")]
-    Task<SentenceWithGap[]> GenerateSentencesWithGaps([Query(CollectionFormat.Multi)] string[] words, [Authorize] string token);
+    [Post("/practice/{deckId}/get-sentences-with-gaps-task")]
+    Task<SentenceWithGap[]> GetFillInTheGapsTaskAsync(Guid deckId, WordForPractice[] wordsForPractice, [Authorize] string token);
+
+    [Post("/practice/check-sentences-with-gaps-task")]
+    Task<SentenceWithFilledGapResult[]> CheckFillInTheGapsTaskAsync(CheckFillInTheGapsTaskRequest request, [Authorize] string token);
 
     [Get("/practice/example-text")]
     Task<GenerateExampleTextResponse> GenerateExampleTextAsync([Query(CollectionFormat.Multi)] string[] words, [Authorize] string token);

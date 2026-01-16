@@ -1,4 +1,5 @@
 using Learning.Application.DTOs.Practice.FillInTheGaps;
+using Learning.Application.DTOs.Practice.GetWordsForPractice;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Check;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Create;
 using Learning.Application.DTOs.Practice.TranslateWords;
@@ -11,9 +12,10 @@ public interface IAiLearningService
     const string HttpClientKey = "AiLearningService";
     Task<WordUnit?> GetTranslatedWordWithExamplesAsync(string word, int exampleSentences);
     Task<bool> DoesWordComplyToTheArticle(string word, string topic);
-    Task<TranslatedWordResult[]?> VerifyWordsTranslations(TranslateWordsRequest request);
-    Task<SentenceWithGap[]?> GenerateSentencesWithGaps(string[] words);
+    Task<TranslatedWordResult[]?> VerifyWordsTranslations(CheckTranslateWordsTaskRequest taskRequest);
+    Task<SentenceWithGap[]?> GenerateSentencesWithGaps(WordForPractice[] wordsForPractice);
     Task<string> GenerateExampleTextAsync(string[] words);
     Task<CreateReadingComprehensionExerciseResponse?> GenerateReadingComprehensionExerciseAsync(CreateReadingComprehensionExerciseRequest request);
     Task<CheckReadingComprehensionExerciseResponse?> CheckReadingComprehensionExerciseAsync(CheckReadingComprehensionExerciseRequest request);
+    Task<SentenceWithFilledGapResult[]?> CheckSentencesWithGapsTaskAsync(SentenceWithFilledGap[] requestSentencesWithFilledGaps);
 }

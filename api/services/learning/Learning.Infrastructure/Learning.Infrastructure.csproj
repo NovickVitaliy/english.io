@@ -23,6 +23,8 @@
       <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
       <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" />
       <PackageReference Include="MongoDB.Driver" />
+      <PackageReference Include="Polly.Core" />
+      <PackageReference Include="Polly.Extensions" />
       <PackageReference Include="Quartz.AspNetCore" />
       <PackageReference Include="Quartz.Serialization.Json" />
       <PackageReference Include="QuestPDF" />

@@ -19,6 +19,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using OfficeOpenXml;
+using Polly;
+using Polly.Registry;
+using Polly.Retry;
 using Quartz;
 using Quartz.AspNetCore;
 using QuestPDF.Infrastructure;
@@ -73,11 +76,13 @@ public static class DependencyInjection
         {
             var geminiOptions = sp.GetRequiredService<IOptions<GeminiOptions>>();
             var aiLearningPromptsOptions = sp.GetRequiredService<IOptions<AiLearningPromptsOptions>>();
+            var resiliencyPipelineProvider = sp.GetRequiredService<ResiliencePipelineProvider<string>>();
 
             var client = new Client(apiKey: geminiOptions.Value.ApiKey);
 
-            return new GeminiAiLearningService(client, geminiOptions, aiLearningPromptsOptions);
+            return new GeminiAiLearningService(client, geminiOptions, aiLearningPromptsOptions, resiliencyPipelineProvider);
         });
+
         services.AddScoped<IDeckExporterService, DeckExporterService>();
         services.AddScoped<IDeckExporterFileProvider, CsvDeckExporterFileProvider>();
         services.AddScoped<IDeckExporterFileProvider, ExcelDeckExporterFileProvider>();
@@ -97,10 +102,7 @@ public static class DependencyInjection
 
         services.AddSignalR();
 
-        services.AddStackExchangeRedisCache(options =>
-        {
-            options.Configuration = configuration.GetConnectionString("RedisCache");
-        });
+        services.AddStackExchangeRedisCache(options => { options.Configuration = configuration.GetConnectionString("RedisCache"); });
 
         services.AddQuartz(options =>
         {
@@ -119,10 +121,7 @@ public static class DependencyInjection
             });
         });
 
-        services.AddQuartzServer(options =>
-        {
-            options.WaitForJobsToComplete = true;
-        });
+        services.AddQuartzServer(options => { options.WaitForJobsToComplete = true; });
 
         Setup.InitializeDatabase(configuration);
 
@@ -130,6 +129,18 @@ public static class DependencyInjection
             .BindConfiguration(NotificationsApiOptions.ConfigurationKey)
             .ValidateDataAnnotations()
             .ValidateOnStart();
+
+        services.AddResiliencePipeline("gemini-api-pipeline", builder =>
+        {
+            builder.AddRetry(new RetryStrategyOptions()
+            {
+                BackoffType = DelayBackoffType.Exponential,
+                Delay = TimeSpan.FromSeconds(2),
+                MaxRetryAttempts = 5,
+                ShouldHandle = new PredicateBuilder()
+                    .Handle<Exception>()
+            });
+        });
 
         return services;
     }

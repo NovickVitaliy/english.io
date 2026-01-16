@@ -41,22 +41,22 @@ public class PracticeService : IPracticeService
         _wordUnitService = wordUnitService;
     }
 
-    public async Task<Result<TranslateWordsResponse>> CheckTranslateWordsTaskAsync(TranslateWordsRequest request)
+    public async Task<Result<TranslateWordsResponse>> CheckTranslateWordsTaskAsync(CheckTranslateWordsTaskRequest taskRequest)
     {
-        var validationResult = request.IsValid();
+        var validationResult = taskRequest.IsValid();
         if (!validationResult.IsValid)
         {
             return Result<TranslateWordsResponse>.BadRequest(validationResult.ErrorMessage);
         }
 
-        var response = await _aiLearningService.VerifyWordsTranslations(request);
+        var response = await _aiLearningService.VerifyWordsTranslations(taskRequest);
 
         if (response is null)
         {
             return Result<TranslateWordsResponse>.BadRequest("Something went wrong");
         }
 
-        var joined = response.Join(request.TranslatedWords,
+        var joined = response.Join(taskRequest.TranslatedWords,
             a => a.SenseId,
             b => b.SenseId,
             (a, b) => new
@@ -70,7 +70,7 @@ public class PracticeService : IPracticeService
 
             return obj.a with
             {
-                CorrectTranslation = request.OriginalLanguage == GlobalConstants.Languages.English ? wordSenseFullInfo!.UkrainianTranslation : wordSenseFullInfo!.EnglishWord,
+                CorrectTranslation = taskRequest.OriginalLanguage == GlobalConstants.Languages.English ? wordSenseFullInfo!.UkrainianTranslation : wordSenseFullInfo!.EnglishWord,
                 SenseId = wordSenseFullInfo.SenseId
             };
         });
@@ -78,22 +78,22 @@ public class PracticeService : IPracticeService
         response = await Task.WhenAll(tasks);
 
         await UpdateWordsProgress(
-            request.DeckId,
+            taskRequest.DeckId,
             response.Select(x => new WordSenseTaskResult(x.SenseId, x.IsCorrect)).ToArray(),
-            request.OriginalLanguage == GlobalConstants.Languages.English ? PracticeTask.TranslateFromEnglishToUkrainian : PracticeTask.TranslateFromUkrainianToEnglish);
+            taskRequest.OriginalLanguage == GlobalConstants.Languages.English ? PracticeTask.TranslateFromEnglishToUkrainian : PracticeTask.TranslateFromUkrainianToEnglish);
 
         return Result<TranslateWordsResponse>.Ok(new TranslateWordsResponse(response));
     }
 
-    public async Task<Result<SentenceWithGap[]>> GetSentencesWithGapsAsync(string[] words)
+    public async Task<Result<SentenceWithGap[]>> GetSentencesWithGapsAsync(Guid deckId, WordForPractice[] wordsForPractice)
     {
-        var valid = words.Length > 0 && !words.All(string.IsNullOrWhiteSpace);
+        var valid = wordsForPractice.Length > 0 && !wordsForPractice.All(w => string.IsNullOrWhiteSpace(w.Word));
         if (!valid)
         {
             return Result<SentenceWithGap[]>.BadRequest(WordsMustBePresent);
         }
 
-        var sentencesWithGaps = await _aiLearningService.GenerateSentencesWithGaps(words);
+        var sentencesWithGaps = await _aiLearningService.GenerateSentencesWithGaps(wordsForPractice);
 
         if (sentencesWithGaps is null)
         {
@@ -242,6 +242,27 @@ public class PracticeService : IPracticeService
         }
 
         return Result<IReadOnlyCollection<WordForTranslationPractice>>.Ok(words);
+    }
+
+    public async Task<Result<SentenceWithFilledGapResult[]>> CheckSentencesWithGapsTask(CheckSentencesWithGapsTaskRequest request)
+    {
+        var validationResult = request.IsValid();
+        if (!validationResult.IsValid)
+        {
+            return Result<SentenceWithFilledGapResult[]>.BadRequest(validationResult.ErrorMessage);
+        }
+
+        var response = await _aiLearningService.CheckSentencesWithGapsTaskAsync(request.SentencesWithFilledGaps);
+        if (response is null)
+        {
+            return Result<SentenceWithFilledGapResult[]>.BadRequest("Could not get response from the API");
+        }
+        await UpdateWordsProgress(
+            request.DeckId,
+            response.Select(x => new WordSenseTaskResult(x.SenseId, x.IsCorrect)).ToArray(),
+            PracticeTask.FillInTheGaps);
+
+        return Result<SentenceWithFilledGapResult[]>.Ok(response);
     }
 
     private static List<DeckEntry> SelectPracticeBatch(List<DeckEntry> deckEntries, int? countOfWordsForPractice, string? practiceDifficulty)

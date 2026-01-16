@@ -37,6 +37,7 @@ public static class Constants
         return practiceTask switch {
             PracticeTask.TranslateFromEnglishToUkrainian => 1f,
             PracticeTask.TranslateFromUkrainianToEnglish => 1f,
+            PracticeTask.FillInTheGaps => 0.8f,
             _ => throw new ArgumentOutOfRangeException(nameof(practiceTask), practiceTask, null)
         };
     }
