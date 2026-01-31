@@ -1,4 +1,5 @@
 using Learning.Features.Practice.Models;
+using Learning.Features.Practice.Models.ContrastTask;
 using Learning.Features.Practice.Models.ExampleText;
 using Learning.Features.Practice.Models.FillInTheGaps;
 using Learning.Features.Practice.Models.GetWordsForPractice;
@@ -43,4 +44,10 @@ public interface IPracticeService
 
     [Post("/practice/{deckId}/get-translation-task")]
     Task<WordForTranslationPractice[]> GetTranslationTaskAsync([Query] Guid deckId, GetTranlationTaskRequest request, [Authorize] string token);
+
+    [Post("/practice/{deckId}/get-contrast-task")]
+    Task<ContrastTaskUnit[]> GetContrastTaskAsync([Query] Guid deckId, WordForPractice[] wordsForPractice, [Authorize] string token);
+
+    [Post("/practice/check-contrast-task")]
+    Task SaveContrastTaskResultAsync(SaveContrastTaskResultRequest request, [Authorize] string token);
 }

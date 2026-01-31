@@ -1,7 +1,9 @@
+using System.Text.Json;
 using Learning.Application.Contracts.Api;
 using Learning.Application.Contracts.Repositories;
 using Learning.Application.Contracts.Services;
 using Learning.Application.DTOs.Practice;
+using Learning.Application.DTOs.Practice.ContrastTask;
 using Learning.Application.DTOs.Practice.ExampleText;
 using Learning.Application.DTOs.Practice.FillInTheGaps;
 using Learning.Application.DTOs.Practice.GetTranslationTask;
@@ -12,6 +14,7 @@ using Learning.Application.DTOs.Practice.Sessions;
 using Learning.Application.DTOs.Practice.TranslateWords;
 using Learning.Domain.Models;
 using Learning.Infrastructure.DTOs;
+using Microsoft.Extensions.Logging;
 using Shared;
 using Shared.ErrorHandling;
 using Shared.Services.Contracts;
@@ -26,19 +29,22 @@ public class PracticeService : IPracticeService
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IDecksRepository _decksRepository;
     private readonly IWordUnitService _wordUnitService;
+    private readonly ILogger<PracticeService> _logger;
 
     public PracticeService(
         IAiLearningService aiLearningService,
         IPracticeRepository practiceRepository,
         ICurrentUserAccessor currentUserAccessor,
         IDecksRepository decksRepository,
-        IWordUnitService wordUnitService)
+        IWordUnitService wordUnitService,
+        ILogger<PracticeService> logger)
     {
         _aiLearningService = aiLearningService;
         _practiceRepository = practiceRepository;
         _currentUserAccessor = currentUserAccessor;
         _decksRepository = decksRepository;
         _wordUnitService = wordUnitService;
+        _logger = logger;
     }
 
     public async Task<Result<TranslateWordsResponse>> CheckTranslateWordsTaskAsync(CheckTranslateWordsTaskRequest taskRequest)
@@ -263,6 +269,51 @@ public class PracticeService : IPracticeService
             PracticeTask.FillInTheGaps);
 
         return Result<SentenceWithFilledGapResult[]>.Ok(response);
+    }
+
+    public async Task<Result<ContrastTaskUnit[]>> GetContrastTaskAsync(Guid deckId, WordForPractice[] wordsForPractice)
+    {
+        var valid = wordsForPractice.Length > 0 && !wordsForPractice.All(w => string.IsNullOrWhiteSpace(w.Word));
+        if (!valid)
+        {
+            return Result<ContrastTaskUnit[]>.BadRequest(WordsMustBePresent);
+        }
+
+        var contrastTask = await _aiLearningService.GenerateContrastTaskForWordsAsync(wordsForPractice);
+        if (contrastTask is null)
+        {
+            return Result<ContrastTaskUnit[]>.BadRequest("Error while generating response");
+        }
+
+        _logger.LogInformation("API Response from GEMINI API: {JsonResponse}", JsonSerializer.Serialize(contrastTask));
+
+        for (int i = 0; i < contrastTask.Length; i++)
+        {
+            ContrastTaskUnit? contrastTaskUnit = contrastTask[i];
+            contrastTaskUnit = contrastTaskUnit with
+            {
+                PossibleChoices = await _wordUnitService.GetSynonymsForSenseAsync(contrastTaskUnit.SenseId)
+            };
+            contrastTask[i] = contrastTaskUnit;
+        }
+
+        return Result<ContrastTaskUnit[]>.Ok(contrastTask);
+    }
+
+    public async Task<Result<bool>> SaveContrastTaskResultAsync(SaveContrastTaskResultRequest request)
+    {
+        var deck = await _decksRepository.GetDeckAsync(request.DeckId);
+        if (deck is null)
+        {
+            return Result<bool>.NotFound(request.DeckId);
+        }
+
+        await UpdateWordsProgress(
+            request.DeckId,
+            [.. request.AnswersMap.Select(a => new WordSenseTaskResult(a.Key, a.Value.IsCorrect))],
+            PracticeTask.ContrastTask);
+
+        return Result<bool>.NoContent();
     }
 
     private static List<DeckEntry> SelectPracticeBatch(List<DeckEntry> deckEntries, int? countOfWordsForPractice, string? practiceDifficulty)

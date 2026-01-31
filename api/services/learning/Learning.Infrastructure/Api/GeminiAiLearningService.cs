@@ -3,6 +3,7 @@ using Google.GenAI;
 using Google.GenAI.Types;
 using Learning.Application.Contracts.Api;
 using Learning.Application.DTOs.Decks;
+using Learning.Application.DTOs.Practice.ContrastTask;
 using Learning.Application.DTOs.Practice.FillInTheGaps;
 using Learning.Application.DTOs.Practice.GetWordsForPractice;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Check;
@@ -113,6 +114,14 @@ public class GeminiAiLearningService : IAiLearningService
             .Replace("{SentenceWithFilledGapJson}", JsonSerializer.Serialize(requestSentencesWithFilledGaps, Options), StringComparison.InvariantCulture);
 
         return await GenerateInternal<SentenceWithFilledGapResult[]>(prompt);
+    }
+
+    public async Task<ContrastTaskUnit[]?> GenerateContrastTaskForWordsAsync(WordForPractice[] wordsForPractice)
+    {
+        var prompt = _aiLearningPromptsOptions.PromptForGeneratingSentencesWithGaps
+            .Replace("{WordForPracticeJson}", JsonSerializer.Serialize(wordsForPractice, Options), StringComparison.InvariantCulture);
+
+        return await GenerateInternal<ContrastTaskUnit[]>(prompt);
     }
 
     private async Task<T?> GenerateInternal<T>(string prompt, CancellationToken cancellationToken = default)

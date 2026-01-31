@@ -1,0 +1,20 @@
+<root>
+  <data name="Title">
+    Contrast Task
+  </data>
+  <data name="Verify_Task">
+    Verify Task
+  </data>
+  <data name="Correct_Answer">
+    Correct answer:
+  </data>
+  <data name="I_Dont_Know_This_Word">
+    I don't know this word
+  </data>
+  <data name="Unknown_Word_Added">
+    Unknown word was added to the list. You will be able to add it to your decks after the practice session
+  </data>
+  <data name="Unknown_Word_Already_Exists">
+    You have already added this unknown word
+  </data>
+</root>

@@ -38,6 +38,7 @@ public static class Constants
             PracticeTask.TranslateFromEnglishToUkrainian => 1f,
             PracticeTask.TranslateFromUkrainianToEnglish => 1f,
             PracticeTask.FillInTheGaps => 0.8f,
+            PracticeTask.ContrastTask => 1.2f,
             _ => throw new ArgumentOutOfRangeException(nameof(practiceTask), practiceTask, null)
         };
     }

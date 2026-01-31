@@ -21,7 +21,6 @@
     <ItemGroup>
       <Folder Include="Features\Home\Models\" />
       <Folder Include="Features\Home\Services\" />
-      <Folder Include="Features\Practice\Models\GetTranslationTask\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -108,6 +107,9 @@
       </EmbeddedResource>
       <EmbeddedResource Update="Resources\Features\Decks\Components\DeleteDeckEntryDialog.uk.resx">
         <DependentUpon>DeleteDeckEntryDialog.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Practice\Pages\ContrastTask.uk.resx">
+        <DependentUpon>ContrastTask.resx</DependentUpon>
       </EmbeddedResource>
     </ItemGroup>
 

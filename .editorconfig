@@ -226,6 +226,7 @@ dotnet_diagnostic.S3993.severity = none
 dotnet_diagnostic.S1133.severity = none
 dotnet_diagnostic.S1066.severity = none
 dotnet_diagnostic.S5693.severity = none
+dotnet_diagnostic.S1854.severity = none
 
 
 [*.{cpp,h,in}]

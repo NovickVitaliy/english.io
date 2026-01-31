@@ -11,4 +11,5 @@ public interface IWordUnitService
     Task<IReadOnlyCollection<WordUnit>> GetWordUnitsFromUsersDeck(Deck deck);
     Task<WordForPractice[]> GetPracticeWords(List<DeckEntry> practiceWordFilters);
     Task<WordSenseFullInfo?> GetWordSenseFullInfo(Guid senseId);
+    Task<string[]> GetSynonymsForSenseAsync(Guid senseId);
 }

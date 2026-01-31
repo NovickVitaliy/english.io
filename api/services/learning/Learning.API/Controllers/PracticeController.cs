@@ -1,5 +1,6 @@
 using Learning.Application.Contracts.Services;
 using Learning.Application.DTOs.Practice;
+using Learning.Application.DTOs.Practice.ContrastTask;
 using Learning.Application.DTOs.Practice.FillInTheGaps;
 using Learning.Application.DTOs.Practice.GetTranslationTask;
 using Learning.Application.DTOs.Practice.GetWordsForPractice;
@@ -52,6 +53,18 @@ public class PracticeController : ControllerBase
     public async Task<IActionResult> CheckSentencesWithGapsTask(CheckSentencesWithGapsTaskRequest request)
     {
         return (await _practiceService.CheckSentencesWithGapsTask(request)).ToApiResponse();
+    }
+
+    [HttpPost("{deckId:guid}/get-contrast-task")]
+    public async Task<IActionResult> GetContrastTaskAsync(Guid deckId, WordForPractice[] wordsForpractice)
+    {
+        return (await _practiceService.GetContrastTaskAsync(deckId, wordsForpractice)).ToApiResponse();
+    }
+
+    [HttpPost("save-contrast-task")]
+    public async Task<IActionResult> SaveContrastTaskResultAsync(SaveContrastTaskResultRequest request)
+    {
+        return (await _practiceService.SaveContrastTaskResultAsync(request)).ToApiResponse();
     }
 
     [HttpGet("example-text")]

@@ -5,6 +5,8 @@
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
 <MudContainer MaxWidth="MaxWidth.Medium">
+    <MudText Class="mb-3" Align="Align.Center"
+             Typo="Typo.h3">@Localizer["Title"]</MudText>
     <MudButton OnClick="NextExercise">
         Skip
     </MudButton>
@@ -15,7 +17,6 @@
         }
         @if (FillInTheGapsState.Value.SentencesWithGap.Length > 0 && !FillInTheGapsState.Value.IsLoading)
         {
-            <MudText Align="Align.Center" Typo="Typo.h6">@Localizer["Title"]</MudText>
             @if (HasVerified)
             {
                 <div class="d-flex justify-content-end">

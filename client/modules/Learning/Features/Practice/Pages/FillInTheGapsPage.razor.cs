@@ -26,7 +26,7 @@ public partial class FillInTheGapsPage : FluxorComponent
 
     protected override Task OnParametersSetAsync()
     {
-        Dispatcher.Dispatch(new GetFillInTheGapsTaskAction(DeckId, PracticeState.Value.WordsForPractice));
+        // Dispatcher.Dispatch(new GetFillInTheGapsTaskAction(DeckId, PracticeState.Value.WordsForPractice));
         _request = new CheckFillInTheGapsTaskRequest(DeckId, PracticeState.Value.WordsForPractice.Length);
         base.OnInitialized();
         return Task.CompletedTask;
@@ -39,7 +39,7 @@ public partial class FillInTheGapsPage : FluxorComponent
 
     private void NextExercise()
     {
-        NavigationManager.NavigateTo("/practice/reading-comprehension");
+        NavigationManager.NavigateTo($"/practice/{DeckId}/contrast-task");
     }
 
     private bool HasVerified => !FillInTheGapsTaskResultState.Value.IsLoading && FillInTheGapsTaskResultState.Value.SentencesWithFilledGapsResults.Length > 0;

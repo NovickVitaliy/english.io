@@ -5,6 +5,7 @@ using Learning.Application.DTOs.Practice.GetWordsForPractice;
 using Learning.Domain.Models;
 using Learning.Infrastructure.Database;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using Shared;
 
@@ -15,12 +16,14 @@ public class WordUnitService : IWordUnitService
     private readonly IAiLearningService _aiLearningService;
     private readonly LearningDbContext _learningDbContext;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly ILogger<WordUnitService> _logger;
 
-    public WordUnitService(IAiLearningService aiLearningService, LearningDbContext learningDbContext, IHttpContextAccessor httpContextAccessor)
+    public WordUnitService(IAiLearningService aiLearningService, LearningDbContext learningDbContext, IHttpContextAccessor httpContextAccessor, ILogger<WordUnitService> logger)
     {
         _aiLearningService = aiLearningService;
         _learningDbContext = learningDbContext;
         _httpContextAccessor = httpContextAccessor;
+        _logger = logger;
     }
 
     public async Task<WordUnit> GetOrCreateWordUnit(string word)
@@ -91,5 +94,28 @@ public class WordUnitService : IWordUnitService
                 wordUnit.Word,
                 sense.Definition,
                 sense.UkrainianTranslation);
+    }
+
+    public async Task<string[]> GetSynonymsForSenseAsync(Guid senseId)
+    {
+        try
+        {
+            var filter = Builders<WordUnit>
+                .Filter
+                .ElemMatch(x => x.Senses, Builders<WordSense>.Filter.Eq(s => s.Id, senseId));
+
+            var wordUnit = (await _learningDbContext.WordUnits
+                .Find(filter)
+                .SingleOrDefaultAsync());
+
+            var sense = wordUnit.Senses.SingleOrDefault(x => x.Id == senseId);
+
+            return sense is not null ? sense.Synonyms : [];
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error occured when getting synonyms for sense {SenseId}", senseId);
+            return [];
+        }
     }
 }

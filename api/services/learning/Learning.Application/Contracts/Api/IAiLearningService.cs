@@ -1,3 +1,4 @@
+using Learning.Application.DTOs.Practice.ContrastTask;
 using Learning.Application.DTOs.Practice.FillInTheGaps;
 using Learning.Application.DTOs.Practice.GetWordsForPractice;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Check;
@@ -18,4 +19,5 @@ public interface IAiLearningService
     Task<CreateReadingComprehensionExerciseResponse?> GenerateReadingComprehensionExerciseAsync(CreateReadingComprehensionExerciseRequest request);
     Task<CheckReadingComprehensionExerciseResponse?> CheckReadingComprehensionExerciseAsync(CheckReadingComprehensionExerciseRequest request);
     Task<SentenceWithFilledGapResult[]?> CheckSentencesWithGapsTaskAsync(SentenceWithFilledGap[] requestSentencesWithFilledGaps);
+    Task<ContrastTaskUnit[]?> GenerateContrastTaskForWordsAsync(WordForPractice[] wordsForPractice);
 }

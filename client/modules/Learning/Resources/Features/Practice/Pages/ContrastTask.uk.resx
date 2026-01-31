@@ -1,0 +1,20 @@
+<root>
+  <data name="Title">
+    Завдання на контраст
+  </data>
+  <data name="Verify_Task">
+    Перевірити завдання
+  </data>
+  <data name="Correct_Answer">
+    Правильна відповідь:
+  </data>
+  <data name="I_Dont_Know_This_Word">
+    Я не знаю цього слова
+  </data>
+  <data name="Unknown_Word_Added">
+    Невідоме слово додано до списку. Ви зможете додати його до своїх колод після практики.
+  </data>
+  <data name="Unknown_Word_Already_Exists">
+    Ви вже добавили це невідоме слово
+  </data>
+</root>
