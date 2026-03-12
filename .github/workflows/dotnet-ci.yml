@@ -2,26 +2,41 @@ name: .NET CI
 
 on:
   pull_request:
-    branches: [ main, dev ]
+    branches: [ main, develop ]
 
 jobs:
-  build-and-test:
+  build-test-analyze:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: 8.0.x
 
-      - name: Restore dependencies
+      - name: Install SonarCloud scanner
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - name: Restore
         run: dotnet restore
 
-      - name: Build project
-        run: dotnet build --no-restore --configuration Release
+      - name: Begin SonarCloud scan
+        run: |
+          dotnet sonarscanner begin \
+            /k:"NovickVitaliy_english.io" \
+            /o:"novickvitaliy" \
+            /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
-      - name: Run tests
-        run: dotnet test --no-build --configuration Release --verbosity normal
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Test
+        run: dotnet test --no-build
+
+      - name: End SonarCloud scan
+        run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
