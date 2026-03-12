@@ -1,0 +1,3 @@
+namespace Learning.Store.Practice.ReadingComprehensionTask.Get.Actions;
+
+public record GetReadingComprehensionTaskFailureAction(string ErrorMessage);

@@ -5,7 +5,6 @@ using Learning.Application.DTOs.Practice.FillInTheGaps;
 using Learning.Application.DTOs.Practice.GetTranslationTask;
 using Learning.Application.DTOs.Practice.GetWordsForPractice;
 using Learning.Application.DTOs.Practice.ReadingComprehension.Check;
-using Learning.Application.DTOs.Practice.ReadingComprehension.Create;
 using Learning.Application.DTOs.Practice.Sessions;
 using Learning.Application.DTOs.Practice.TranslateWords;
 using Microsoft.AspNetCore.Authorization;
@@ -79,10 +78,10 @@ public class PracticeController : ControllerBase
         return (await _practiceService.SaveSessionResultAsync(request)).ToApiResponse();
     }
 
-    [HttpGet("reading-comprehension")]
-    public async Task<IActionResult> GetReadingComprehensionExercise([FromQuery] CreateReadingComprehensionExerciseRequest request)
+    [HttpGet("get-reading-comprehension")]
+    public async Task<IActionResult> GetReadingComprehensionExercise(WordForPractice[] wordsForPractice)
     {
-        return (await _practiceService.CreateReadingComprehensionExerciseAsync(request)).ToApiResponse();
+        return (await _practiceService.CreateReadingComprehensionExerciseAsync(wordsForPractice)).ToApiResponse();
     }
 
     [HttpPost("reading-comprehension-check")]

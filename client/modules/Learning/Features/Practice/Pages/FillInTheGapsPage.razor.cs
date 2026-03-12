@@ -1,15 +1,12 @@
 using Fluxor;
 using Fluxor.Blazor.Web.Components;
 using Learning.Features.Practice.Models.FillInTheGaps;
-using Learning.Features.Practice.Services;
 using Learning.Store.Practice;
 using Learning.Store.Practice.FillInTheGapsTask.Check;
 using Learning.Store.Practice.FillInTheGapsTask.Check.Actions;
 using Learning.Store.Practice.FillInTheGapsTask.Get;
-using Learning.Store.Practice.FillInTheGapsTask.Get.Actions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
-using Shared.Store.User;
 
 namespace Learning.Features.Practice.Pages;
 

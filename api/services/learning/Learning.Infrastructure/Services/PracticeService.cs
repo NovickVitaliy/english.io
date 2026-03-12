@@ -148,15 +148,14 @@ public class PracticeService : IPracticeService
         return Result<SaveSessionResultDto>.Created($"/api/session-results/{id}", dto);
     }
 
-    public async Task<Result<CreateReadingComprehensionExerciseResponse>> CreateReadingComprehensionExerciseAsync(CreateReadingComprehensionExerciseRequest request)
+    public async Task<Result<CreateReadingComprehensionExerciseResponse>> CreateReadingComprehensionExerciseAsync(WordForPractice[] wordsForPractice)
     {
-        var validationResult = request.IsValid();
-        if (!validationResult.IsValid)
+        if (wordsForPractice.Length == 0)
         {
-            return Result<CreateReadingComprehensionExerciseResponse>.BadRequest(validationResult.ErrorMessage);
+            return Result<CreateReadingComprehensionExerciseResponse>.BadRequest("Invalid reqeust");
         }
 
-        var readingComprehension = await _aiLearningService.GenerateReadingComprehensionExerciseAsync(request);
+        var readingComprehension = await _aiLearningService.GenerateReadingComprehensionExerciseAsync(wordsForPractice);
         if (readingComprehension is null)
         {
             return Result<CreateReadingComprehensionExerciseResponse>.BadRequest("Something went wrong");
@@ -285,16 +284,20 @@ public class PracticeService : IPracticeService
             return Result<ContrastTaskUnit[]>.BadRequest("Error while generating response");
         }
 
+        foreach (var contrastTaskUnit in contrastTask)
+        {
+            var wordForPractice = wordsForPractice.SingleOrDefault(x => x.Word == contrastTaskUnit.CorrectWord);
+            if (wordForPractice is not null && wordForPractice.SenseId != contrastTaskUnit.SenseId)
+            {
+                contrastTaskUnit.SenseId = wordForPractice.SenseId;
+            }
+        }
+
         _logger.LogInformation("API Response from GEMINI API: {JsonResponse}", JsonSerializer.Serialize(contrastTask));
 
-        for (int i = 0; i < contrastTask.Length; i++)
+        foreach (var contrastTaskUnit in contrastTask)
         {
-            ContrastTaskUnit? contrastTaskUnit = contrastTask[i];
-            contrastTaskUnit = contrastTaskUnit with
-            {
-                PossibleChoices = await _wordUnitService.GetSynonymsForSenseAsync(contrastTaskUnit.SenseId)
-            };
-            contrastTask[i] = contrastTaskUnit;
+            contrastTaskUnit.PossibleChoices = await _wordUnitService.GetSynonymsForSenseAsync(contrastTaskUnit.SenseId);
         }
 
         return Result<ContrastTaskUnit[]>.Ok(contrastTask);

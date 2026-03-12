@@ -30,8 +30,8 @@ public interface IPracticeService
     [Post("/practice/save-session-result")]
     Task<SaveSessionResultDto> SaveSessionResult(SaveSessionResultRequest request, [Authorize] string token);
 
-    [Get("/practice/reading-comprehension")]
-    Task<ReadingComprehensionExercise> GetReadingComprehensionExercise([Query(CollectionFormat.Multi)]string[] words, [Authorize] string token);
+    [Post("/practice/{deckId}/get-reading-comprehension")]
+    Task<ReadingComprehensionExercise> GetReadingComprehensionExercise(Guid deckId, WordForPractice[] wordForPractices, [Authorize] string token);
 
     [Post("/practice/reading-comprehension-check")]
     Task<CheckReadingComprehensionExerciseResult> CheckReadingComprehensionExercise(CheckReadingComprehensionExerciseRequest request, [Authorize] string token);

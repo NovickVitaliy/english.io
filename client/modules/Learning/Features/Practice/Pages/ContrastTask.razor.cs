@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Fluxor;
 using Fluxor.Blazor.Web.Components;
 using Learning.Features.Practice.Models.ContrastTask;
@@ -22,6 +21,7 @@ public partial class ContrastTask : FluxorComponent
     [Inject] private IDispatcher Dispatcher { get; init; } = null!;
     [Inject] private IStringLocalizer<ContrastTask> Localizer { get; init; } = null!;
     [Inject] private ISnackbar Snackbar { get; init; } = null!;
+    [Inject] private NavigationManager NavigationManager { get; init; } = null!;
     private bool HasVerified { get; set; } = false;
     private SaveContrastTaskResultRequest _request = null!;
     private MudStepper? _stepper = null!;
@@ -47,7 +47,7 @@ public partial class ContrastTask : FluxorComponent
 
     private void NextExercise()
     {
-        Console.WriteLine(JsonSerializer.Serialize(_request));
+        NavigationManager.NavigateTo($"/practice/{DeckId}/reading-comprehension");
     }
 
     private void SetChosenWord(Guid senseId, string word)

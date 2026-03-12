@@ -1,0 +1,6 @@
+using Learning.Features.Practice.Models.ReadingComprehension;
+using Shared.Store.Markers;
+
+namespace Learning.Store.Practice.ReadingComprehensionTask.Check.Actions;
+
+public record CheckReadingComprehensionTaskAction(CheckReadingComprehensionExerciseRequest Request) : IApiAction;

@@ -90,10 +90,10 @@ public class GeminiAiLearningService : IAiLearningService
         return (await GenerateInternal<ExampleTextResponse>(prompt))!.Text;
     }
 
-    public async Task<CreateReadingComprehensionExerciseResponse?> GenerateReadingComprehensionExerciseAsync(CreateReadingComprehensionExerciseRequest request)
+    public async Task<CreateReadingComprehensionExerciseResponse?> GenerateReadingComprehensionExerciseAsync(WordForPractice[] wordsForPractice)
     {
         var prompt = _aiLearningPromptsOptions.PromptForGeneratingReadingComprehensionExercise
-            .Replace("{words}", string.Join(',', request.Words), StringComparison.InvariantCulture);
+            .Replace("{WordsForPracticeJson}", JsonSerializer.Serialize(wordsForPractice, Options), StringComparison.InvariantCulture);
 
         return await GenerateInternal<CreateReadingComprehensionExerciseResponse>(prompt);
     }

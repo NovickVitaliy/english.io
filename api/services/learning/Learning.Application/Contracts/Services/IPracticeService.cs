@@ -18,7 +18,7 @@ public interface IPracticeService
     Task<Result<SentenceWithGap[]>> GetSentencesWithGapsAsync(Guid deckId, WordForPractice[] wordsForPractice);
     Task<Result<GetExampleTextResponse>> GetExampleTextAsync(string[] words);
     Task<Result<SaveSessionResultDto>> SaveSessionResultAsync(SaveSessionResultRequest request);
-    Task<Result<CreateReadingComprehensionExerciseResponse>> CreateReadingComprehensionExerciseAsync(CreateReadingComprehensionExerciseRequest request);
+    Task<Result<CreateReadingComprehensionExerciseResponse>> CreateReadingComprehensionExerciseAsync(WordForPractice[] wordsForPractice);
     Task<Result<CheckReadingComprehensionExerciseResponse>> CheckReadingComprehensionExerciseAsync(CheckReadingComprehensionExerciseRequest request);
     Task<Result<GetPracticeSessionsForUserResponse>> GetSessionsForUserAsync(GetSessionsForUserRequest request);
     Task<Result<GetWordsForPracticeResponse>> GetWordsForPracticeAsync(Guid deckId);

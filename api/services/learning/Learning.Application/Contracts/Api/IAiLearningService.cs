@@ -16,7 +16,7 @@ public interface IAiLearningService
     Task<TranslatedWordResult[]?> VerifyWordsTranslations(CheckTranslateWordsTaskRequest taskRequest);
     Task<SentenceWithGap[]?> GenerateSentencesWithGaps(WordForPractice[] wordsForPractice);
     Task<string> GenerateExampleTextAsync(string[] words);
-    Task<CreateReadingComprehensionExerciseResponse?> GenerateReadingComprehensionExerciseAsync(CreateReadingComprehensionExerciseRequest request);
+    Task<CreateReadingComprehensionExerciseResponse?> GenerateReadingComprehensionExerciseAsync(WordForPractice[] wordsForPractice);
     Task<CheckReadingComprehensionExerciseResponse?> CheckReadingComprehensionExerciseAsync(CheckReadingComprehensionExerciseRequest request);
     Task<SentenceWithFilledGapResult[]?> CheckSentencesWithGapsTaskAsync(SentenceWithFilledGap[] requestSentencesWithFilledGaps);
     Task<ContrastTaskUnit[]?> GenerateContrastTaskForWordsAsync(WordForPractice[] wordsForPractice);
