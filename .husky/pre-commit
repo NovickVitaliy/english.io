@@ -2,6 +2,8 @@
 . "$(dirname "$0")/_/husky.sh"
 
 echo "Clean solution"
+echo "Clean solution"
+echo "Clean solution"
 
 #dotnet clean
 #
