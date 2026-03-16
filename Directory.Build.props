@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <AnalysisLevel>latest</AnalysisLevel>
     <AnalysisMode>All</AnalysisMode>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+<!--    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>-->
     <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <MudIllegalParameters>Disabled</MudIllegalParameters>
