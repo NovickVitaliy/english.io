@@ -1,7 +1,12 @@
+using System.Text.RegularExpressions;
 using Fluxor;
+using Fluxor.Blazor.Web.Components;
 using Learning.Features.Practice.Components;
 using Learning.Features.Practice.Models;
 using Learning.Features.Practice.Services;
+using Learning.Store.Practice;
+using Learning.Store.Practice.ExampleText.Get;
+using Learning.Store.Practice.ExampleText.Get.Actions;
 using Learning.Store.PracticeStatus;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -11,57 +16,24 @@ using Shared.Store.User;
 
 namespace Learning.Features.Practice.Pages;
 
-public partial class ExampleTextPage : ComponentBase
+public partial class ExampleTextPage : FluxorComponent
 {
     [Inject] private IStringLocalizer<ExampleTextPage> Localizer { get; init; } = null!;
-    // [Inject] private IState<FIllInTheGapsState> FillInTheGapsState { get; init; } = null!;
-    [Inject] private IState<UserState> UserState { get; init; } = null!;
-    [Inject] private IPracticeService PracticeService { get; init; } = null!;
-    [Inject] private IState<PracticeStatusState> PracticeStatusState { get; init; } = null!;
-    [Inject] private ISnackbar Snackbar { get; init; } = null!;
-    [Inject] private IDialogService DialogService { get; init; } = null!;
-    private string? _exampleText = "";
-    // private const string UsedWordPattern = @"\*(.*?)\*";
-    // private const string Replacement = "<b>$1</b>";
+    [Inject] private IDispatcher Dispatcher { get; init; } = null!;
+    [Inject] private IState<ExampleTextTaskState> ExampleTextTaskState { get; init; } = null!;
+    [Inject] private IState<PracticeState> PracticeState { get; init; } = null!;
+    [Inject] private NavigationManager NavigationManager { get; init; } = null!;
+    private const string UsedWordPattern = @"\*(.*?)\*";
+    private const string Replacement = "<b>$1</b>";
 
-    // protected override async Task OnParametersSetAsync()
-    // {
-    //     if (UserState.Value is not null && FillInTheGapsState.Value is not null)
-    //     {
-    //         var response = await PracticeService.GenerateExampleTextAsync(FillInTheGapsState.Value.Words, UserState.Value.Token);
-    //         _exampleText = Regex.Replace(response.Text, UsedWordPattern, Replacement);
-    //     }
-    // }
-
-    private async Task<IDialogReference> FinishPractice()
+    protected override async Task OnParametersSetAsync()
     {
-        try
-        {
-            var response = await PracticeService.SaveSessionResult(new SaveSessionResultRequest([],
-                PracticeStatusState.Value.FirstTaskPercentageSuccess,
-                PracticeStatusState.Value.SecondTaskPercentageSuccess,
-                PracticeStatusState.Value.ThirdTaskPercentageSuccess,
-                PracticeStatusState.Value.FourthTaskPercentageSuccess),
-                UserState.Value.Token);
+        Dispatcher.Dispatch(new GetExampleTextTaskAction(PracticeState.Value.WordsForPractice));
+    }
 
-            var options = new DialogOptions()
-            {
-                CloseButton = true, CloseOnEscapeKey = true
-            };
-
-            var parameters = new DialogParameters<SessionResultModal>
-            {
-                {
-                    x => x.SaveSessionResultDto, response
-                }
-            };
-
-            return await DialogService.ShowAsync<SessionResultModal>(Localizer["Dialog_Name"], parameters, options);
-        }
-        catch (ApiException)
-        {
-            Snackbar.Add(Localizer["Error_Occured"], Severity.Error);
-            return null!;
-        }
+    private Task FinishPractice()
+    {
+        NavigationManager.NavigateTo("123");
+        return Task.CompletedTask;
     }
 }

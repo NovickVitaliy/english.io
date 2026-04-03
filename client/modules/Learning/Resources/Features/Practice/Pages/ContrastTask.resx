@@ -17,4 +17,7 @@
   <data name="Unknown_Word_Already_Exists">
     You have already added this unknown word
   </data>
+  <data name="Next_Task">
+    Next Task
+  </data>
 </root>

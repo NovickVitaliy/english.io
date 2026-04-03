@@ -8,6 +8,7 @@ using Learning.Store.Practice.UnknownWords;
 using Learning.Store.Practice.UnknownWords.Actions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
+using Microsoft.JSInterop;
 using MudBlazor;
 
 namespace Learning.Features.Practice.Pages;
@@ -22,13 +23,13 @@ public partial class ContrastTask : FluxorComponent
     [Inject] private IStringLocalizer<ContrastTask> Localizer { get; init; } = null!;
     [Inject] private ISnackbar Snackbar { get; init; } = null!;
     [Inject] private NavigationManager NavigationManager { get; init; } = null!;
+    [Inject] private IJSRuntime? JsRuntime { get; init; }
     private bool HasVerified { get; set; } = false;
     private SaveContrastTaskResultRequest _request = null!;
-    private MudStepper? _stepper = null!;
 
     protected override void OnParametersSet()
     {
-        Dispatcher.Dispatch(new GetContrastTaskAction(DeckId, PracticeState.Value.WordsForPractice));
+        // Dispatcher.Dispatch(new GetContrastTaskAction(DeckId, PracticeState.Value.WordsForPractice));
         _request = new SaveContrastTaskResultRequest(DeckId, PracticeState.Value.WordsForPractice);
     }
 
@@ -55,10 +56,11 @@ public partial class ContrastTask : FluxorComponent
         _request.AnswersMap[senseId] = (word == ContrastTaskState.Value.ForSense(senseId), word);
     }
 
-    private void VerifyTask()
+    private async Task VerifyTask()
     {
         HasVerified = true;
         Dispatcher.Dispatch(new SaveContrastTaskResultAction(_request));
+        await JsRuntime.InvokeVoidAsync("scrollToTop");
     }
 }
 

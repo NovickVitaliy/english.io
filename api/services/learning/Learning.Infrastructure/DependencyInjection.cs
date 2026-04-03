@@ -135,7 +135,7 @@ public static class DependencyInjection
             builder.AddRetry(new RetryStrategyOptions()
             {
                 BackoffType = DelayBackoffType.Exponential,
-                Delay = TimeSpan.FromSeconds(2),
+                Delay = TimeSpan.FromSeconds(10),
                 MaxRetryAttempts = 5,
                 ShouldHandle = new PredicateBuilder()
                     .Handle<Exception>()

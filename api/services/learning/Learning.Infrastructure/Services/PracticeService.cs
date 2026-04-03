@@ -284,16 +284,16 @@ public class PracticeService : IPracticeService
             return Result<ContrastTaskUnit[]>.BadRequest("Error while generating response");
         }
 
+        _logger.LogInformation("API Response from GEMINI API: {JsonResponse}", JsonSerializer.Serialize(contrastTask));
+
         foreach (var contrastTaskUnit in contrastTask)
         {
-            var wordForPractice = wordsForPractice.SingleOrDefault(x => x.Word == contrastTaskUnit.CorrectWord);
+            var wordForPractice = wordsForPractice.FirstOrDefault(x => x.Word == contrastTaskUnit.CorrectWord);
             if (wordForPractice is not null && wordForPractice.SenseId != contrastTaskUnit.SenseId)
             {
                 contrastTaskUnit.SenseId = wordForPractice.SenseId;
             }
         }
-
-        _logger.LogInformation("API Response from GEMINI API: {JsonResponse}", JsonSerializer.Serialize(contrastTask));
 
         foreach (var contrastTaskUnit in contrastTask)
         {

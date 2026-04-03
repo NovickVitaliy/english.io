@@ -30,8 +30,8 @@ public interface IPracticeService
     [Post("/practice/save-session-result")]
     Task<SaveSessionResultDto> SaveSessionResult(SaveSessionResultRequest request, [Authorize] string token);
 
-    [Post("/practice/{deckId}/get-reading-comprehension")]
-    Task<ReadingComprehensionExercise> GetReadingComprehensionExercise(Guid deckId, WordForPractice[] wordForPractices, [Authorize] string token);
+    [Post("/practice/get-reading-comprehension")]
+    Task<ReadingComprehensionExercise> GetReadingComprehensionExercise(WordForPractice[] wordForPractices, [Authorize] string token);
 
     [Post("/practice/reading-comprehension-check")]
     Task<CheckReadingComprehensionExerciseResult> CheckReadingComprehensionExercise(CheckReadingComprehensionExerciseRequest request, [Authorize] string token);
@@ -48,6 +48,6 @@ public interface IPracticeService
     [Post("/practice/{deckId}/get-contrast-task")]
     Task<ContrastTaskUnit[]> GetContrastTaskAsync([Query] Guid deckId, WordForPractice[] wordsForPractice, [Authorize] string token);
 
-    [Post("/practice/check-contrast-task")]
+    [Post("/practice/save-contrast-task")]
     Task SaveContrastTaskResultAsync(SaveContrastTaskResultRequest request, [Authorize] string token);
 }

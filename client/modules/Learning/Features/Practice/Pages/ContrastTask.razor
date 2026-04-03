@@ -7,12 +7,12 @@
 <MudContainer MaxWidth="MaxWidth.Medium">
     <MudText Class="mb-3" Align="Align.Center"
              Typo="Typo.h3">@Localizer["Title"]</MudText>
-    @if (_stepper != null && _stepper.IsCompleted)
+    <MudButton Class="w-100 mb-3" Variant="Variant.Filled" OnClick="NextExercise"
+               Color="Color.Primary">Skip</MudButton>
+    @if (HasVerified)
     {
-        <MudButton Class="w-100" OnClick="NextExercise" Color="Color.Primary"
-                   Variant="Variant.Filled">
-            Next exercise
-        </MudButton>
+        <MudButton Class="w-100 mb-3" Variant="Variant.Filled" OnClick="NextExercise"
+                   Color="Color.Primary">@Localizer["Next_Task"]</MudButton>
     }
 
     @if (!ContrastTaskState.Value.IsLoading && ContrastTaskState.Value.ContrastTaskUnits.Length > 0)
@@ -29,8 +29,14 @@
                     <MudText>
                         @beforeGap
                     </MudText>
-                    <MudTextField id Class="ms-3 me-3" T="string" ReadOnly="true"
-                                  Value="@(_request.AnswersMap[taskUnit.SenseId].Word)"></MudTextField>
+                    @if (!string.IsNullOrWhiteSpace(_request.AnswersMap[taskUnit.SenseId].Word))
+                    {
+                        <span class="ms-3 me-3">@_request.AnswersMap[taskUnit.SenseId].Word</span>
+                    }
+                    else
+                    {
+                        <span class="ms-3 me-3">...</span>
+                    }
                     <MudText>
                         @afterGap
                     </MudText>
@@ -42,10 +48,13 @@
                         {
                             <div class="d-flex">
                                 <MudRadio Value="@(synonym)">@synonym</MudRadio>
-                                <MudMenu Icon="@Icons.Material.Filled.QuestionMark">
-                                    <MudMenuItem
-                                        OnClick="@(() => AddUnknownWord(synonym))"> @Localizer["I_Dont_Know_This_Word"] </MudMenuItem>
-                                </MudMenu>
+                                @if (!UnknownWordsState.Value.UnknownWords.Contains(synonym))
+                                {
+                                    <MudMenu Icon="@Icons.Material.Filled.QuestionMark">
+                                        <MudMenuItem
+                                            OnClick="@(() => AddUnknownWord(synonym))"> @Localizer["I_Dont_Know_This_Word"] </MudMenuItem>
+                                    </MudMenu>
+                                }
                             </div>
                         }
                     </MudRadioGroup>
@@ -57,7 +66,7 @@
                         <MudText>@(isCorrect ? "✅" : "❌")</MudText>
                         @if (!isCorrect)
                         {
-                            <MudText>@Localizer["Correct_Answer"]</MudText>
+                            <MudText>@Localizer["Correct_Answer"] @taskUnit.CorrectWord</MudText>
                         }
                     </div>
                 }

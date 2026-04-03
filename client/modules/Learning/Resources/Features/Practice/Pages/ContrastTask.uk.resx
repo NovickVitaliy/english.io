@@ -17,4 +17,7 @@
   <data name="Unknown_Word_Already_Exists">
     Ви вже добавили це невідоме слово
   </data>
+  <data name="Next_Task">
+    Наступне завдання
+  </data>
 </root>

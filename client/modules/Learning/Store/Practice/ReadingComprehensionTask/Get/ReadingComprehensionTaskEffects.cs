@@ -21,7 +21,7 @@ public class ReadingComprehensionTaskEffects : BaseEffects
     public async Task HandleGetReadingComprehesionTaskAction(GetReadingComprehesionTaskAction action, IDispatcher dispatcher)
     {
         await ProcessRefitApiRequest(
-            async () => await _practiceService.GetReadingComprehensionExercise(action.DeckId, action.WordsForPractice, _userState.Value.Token),
+            async () => await _practiceService.GetReadingComprehensionExercise(action.WordsForPractice, _userState.Value.Token),
             response => new GetReadingComprehensionTaskSuccessAction(response),
             em => new GetReadingComprehensionTaskFailureAction(em),
             dispatcher);

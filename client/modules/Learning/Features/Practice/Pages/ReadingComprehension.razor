@@ -1,8 +1,8 @@
 @page "/practice/{deckId:guid}/reading-comprehension"
-@layout EmptyLayout
+@using Learning.Layouts
 @using MudBlazor
-@using Shared.Layout
-
+@layout DashboardLayout
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 <MudContainer MaxWidth="MaxWidth.Medium">
     <MudButton OnClick="NextExercise">
         Skip
@@ -11,11 +11,10 @@
     {
         <MudText Typo="Typo.h5">@Localizer["Loading"]</MudText>
     }
-    else if (!ReadingComprehensionTaskState.Value.IsLoading
-             && ReadingComprehensionTaskState.Value.ReadingComprehensionExercise is not null
-             && _checkReadingComprehensionExerciseRequest is not null)
+    else if (!ReadingComprehensionTaskState.Value.IsLoading && ReadingComprehensionTaskState.Value.ReadingComprehensionExercise is not null)
     {
-        <MudText Typo="Typo.h5">@Localizer["Header"]</MudText>
+        <MudText Class="mb-3" Align="Align.Center"
+                 Typo="Typo.h3">@Localizer["Header"]</MudText>
         <MudPaper Class="p-3 mb-3">
             <MudText>@ReadingComprehensionTaskState.Value.ReadingComprehensionExercise.Text</MudText>
         </MudPaper>
@@ -27,8 +26,8 @@
                 <div class="d-flex justify-content-start align-items-center">
                     @if (ReadingComprehensionTaskResultState.Value.Result is not null && !ReadingComprehensionTaskResultState.Value.IsLoading)
                     {
-                        var checkAnswerResult = ReadingComprehensionTaskResultState.Value.Result.AnswersResults[i];
-                        <MudText>@(checkAnswerResult.IsCorrect ? "✅" : "❌")</MudText>
+                        @* var checkAnswerResult = ReadingComprehensionTaskResultState.Value.Result.AnswersResults[i]; *@
+                        @* <MudText>@(checkAnswerResult.IsCorrect ? "✅" : "❌")</MudText> *@
                     }
                     <MudText>@question</MudText>
                 </div>
@@ -54,6 +53,7 @@
         </div>
     }
 </MudContainer>
-<MudOverlay Visible="ReadingComprehensionTaskState.Value.IsLoading" DarkBackground="true">
+
+<MudOverlay Visible="@(ReadingComprehensionTaskState.Value.IsLoading || ReadingComprehensionTaskResultState.Value.IsLoading)" DarkBackground="true">
     <MudProgressCircular Color="Color.Secondary" Indeterminate="true"/>
 </MudOverlay>

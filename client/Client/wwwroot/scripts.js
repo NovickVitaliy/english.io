@@ -16,3 +16,7 @@ window.playAudio = (audioElement, audioSrc) => {
     audioElement.play()
         .catch(error => console.log(`Error while playing audio: ${error}`));
 };
+
+window.scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}

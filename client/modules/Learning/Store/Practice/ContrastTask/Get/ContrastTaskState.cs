@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Fluxor;
 using Learning.Features.Practice.Models.ContrastTask;
 
@@ -13,6 +14,7 @@ public record ContrastTaskState(ContrastTaskUnit[] ContrastTaskUnits, bool IsLoa
 
     public string? ForSense(Guid senseId)
     {
-        return ContrastTaskUnits.SingleOrDefault(x => x.SenseId == senseId)?.CorrectWord;
+        Console.WriteLine(JsonSerializer.Serialize(ContrastTaskUnits));
+        return ContrastTaskUnits.FirstOrDefault(x => x.SenseId == senseId)?.CorrectWord;
     }
 }

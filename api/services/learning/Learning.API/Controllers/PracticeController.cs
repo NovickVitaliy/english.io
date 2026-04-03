@@ -78,7 +78,7 @@ public class PracticeController : ControllerBase
         return (await _practiceService.SaveSessionResultAsync(request)).ToApiResponse();
     }
 
-    [HttpGet("get-reading-comprehension")]
+    [HttpPost("get-reading-comprehension")]
     public async Task<IActionResult> GetReadingComprehensionExercise(WordForPractice[] wordsForPractice)
     {
         return (await _practiceService.CreateReadingComprehensionExerciseAsync(wordsForPractice)).ToApiResponse();

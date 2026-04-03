@@ -1,4 +1,5 @@
 using Fluxor;
+using Fluxor.Blazor.Web.Components;
 using Learning.Features.Practice.Models.ReadingComprehension;
 using Learning.Store.Practice;
 using Learning.Store.Practice.ReadingComprehensionTask.Check;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.Localization;
 
 namespace Learning.Features.Practice.Pages;
 
-public partial class ReadingComprehension : ComponentBase
+public partial class ReadingComprehension : FluxorComponent
 {
     [Parameter] public Guid DeckId { get; init; }
     [Inject] private IStringLocalizer<ReadingComprehension> Localizer { get; init; } = null!;
@@ -23,14 +24,14 @@ public partial class ReadingComprehension : ComponentBase
 
     protected override void OnParametersSet()
     {
-        Dispatcher.Dispatch(new GetReadingComprehesionTaskAction(DeckId, PracticeState.Value.WordsForPractice));
+        Dispatcher.Dispatch(new GetReadingComprehesionTaskAction(PracticeState.Value.WordsForPractice));
+        _checkReadingComprehensionExerciseRequest = new CheckReadingComprehensionExerciseRequest(new List<string>(), 10, string.Empty);
         ReadingComprehensionTaskState.StateChanged += (_, _) =>
         {
             if (ReadingComprehensionTaskState.Value.ReadingComprehensionExercise is not null)
             {
-                _checkReadingComprehensionExerciseRequest =
-                    new CheckReadingComprehensionExerciseRequest(ReadingComprehensionTaskState.Value.ReadingComprehensionExercise.Questions,
-                        ReadingComprehensionTaskState.Value.ReadingComprehensionExercise.Text);
+                _checkReadingComprehensionExerciseRequest.Text = ReadingComprehensionTaskState.Value.ReadingComprehensionExercise.Text;
+                _checkReadingComprehensionExerciseRequest.Questions = new List<string>(ReadingComprehensionTaskState.Value.ReadingComprehensionExercise.Questions);
             }
         };
     }

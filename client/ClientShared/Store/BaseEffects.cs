@@ -15,7 +15,7 @@ public abstract class BaseEffects
     {
         try
         {
-             var apiResponse = await apiCall();
+            var apiResponse = await apiCall();
             var successAction = successActionFactory(apiResponse);
             dispatcher.Dispatch(successAction);
         }
