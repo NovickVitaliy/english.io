@@ -15,10 +15,10 @@ public static class AutheticationConfiguration
 
         services.AddSingleton<JwtSettings>(_ => new JwtSettings()
         {
-            Audience = Env.GetString(JwtSettings.AudienceKey),
-            Issuer = Env.GetString(JwtSettings.IssuerKey),
-            Secret = Env.GetString(JwtSettings.SecretKey),
-            LifetimeInMinutes = Env.GetInt(JwtSettings.LifetimeInMinutesKey),
+            Audience = "english-io",
+            Issuer = "english-io",
+            Secret = "AB56EC03-8577-43B6-AD6E-84DE08B1A07D",
+            LifetimeInMinutes = 10800,
         });
 
         services.AddAuthentication(options =>
@@ -32,11 +32,11 @@ public static class AutheticationConfiguration
                 options.MapInboundClaims = false;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidAudience = Env.GetString(JwtSettings.AudienceKey),
-                    ValidIssuer = Env.GetString(JwtSettings.IssuerKey),
+                    ValidAudience = "english-io",
+                    ValidIssuer = "english-io",
                     ValidateAudience = true,
                     ValidateIssuer = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Env.GetString(JwtSettings.SecretKey))),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("AB56EC03-8577-43B6-AD6E-84DE08B1A07D")),
                     ClockSkew = TimeSpan.Zero
                 };
 
