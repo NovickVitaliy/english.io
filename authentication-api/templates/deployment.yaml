@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: authentication-api
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          ports:
+            - containerPort: {{ .Values.containerPort }}
+
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: {{ .Values.env.ASPNETCORE_ENVIRONMENT | quote }}
+
+            - name: ASPNETCORE_HTTP_PORTS
+              value: {{ .Values.env.ASPNETCORE_HTTP_PORTS | quote }}
+
+            - name: ConnectionStrings__Default
+              value: "Host={{ .Values.env.connection.host }};Port={{ .Values.env.connection.port }};Database={{ .Values.env.connection.database }};Username={{ .Values.env.connection.username }};Password={{ .Values.env.connection.password }}"
+
+            - name: NotificationsApi__Http
+              value: {{ .Values.env.notifications.http | quote }}
+
+            - name: NotificationsApi__Https
+              value: {{ .Values.env.notifications.https | quote }}
+
+            - name: NotificationsApi__IsHttps
+              value: {{ .Values.env.notifications.isHttps | quote }}
+
+            - name: NotificationsApi__Key
+              value: {{ .Values.env.notifications.key | quote }}
+
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.probes.liveness.path }}
+              port: {{ .Values.containerPort }}
+            initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
+
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.probes.readiness.path }}
+              port: {{ .Values.containerPort }}
+            initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
