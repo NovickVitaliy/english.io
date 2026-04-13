@@ -1,0 +1,46 @@
+replicaCount: 10
+
+image:
+  repository: authentication.api
+  tag: latest
+  pullPolicy: Never
+
+service:
+  type: NodePort
+  port: 80
+  targetPort: 8080
+
+containerPort: 8080
+
+env:
+  ASPNETCORE_ENVIRONMENT: Development
+  ASPNETCORE_HTTP_PORTS: "8080"
+
+  connection:
+    host: auth-db-postgresql
+    port: "5432"
+    database: authdb
+    username: postgres
+    password: postgres
+
+  notifications:
+    http: http://notifications-api:8080/
+    https: https://notifications-api:8081/
+    isHttps: "false"
+    key: "8F48AA5F-9B1C-4285-9BDC-46052AC176CF"
+
+probes:
+  liveness:
+    path: /health
+    initialDelaySeconds: 10
+    periodSeconds: 10
+
+  readiness:
+    path: /health
+    initialDelaySeconds: 5
+    periodSeconds: 5
+
+rabbitmq:
+  host: rabbitmq
+  user: english.io
+  password: 92D4D403-E935-46C1-9865-AE626EF3BC50
