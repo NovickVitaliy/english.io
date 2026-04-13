@@ -25,10 +25,10 @@ public static class MessageBusConfiguration
 
             configurator.UsingRabbitMq((context, factoryConfigurator) =>
             {
-                factoryConfigurator.Host(new Uri(Env.GetString("MESSAGE_BROKER_HOST")), hostConfigurator =>
+                factoryConfigurator.Host(new Uri("amqp://rabbitmq"), hostConfigurator =>
                 {
-                    hostConfigurator.Username(Env.GetString("MESSAGE_BROKER_USERNAME"));
-                    hostConfigurator.Password(Env.GetString("MESSAGE_BROKER_PASSWORD"));
+                    hostConfigurator.Username("english.io");
+                    hostConfigurator.Password("92D4D403-E935-46C1-9865-AE626EF3BC50");
                 });
 
                 factoryConfigurator.ConfigureEndpoints(context);

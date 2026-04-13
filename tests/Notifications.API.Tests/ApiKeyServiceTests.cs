@@ -87,7 +87,7 @@ public class ApiKeyServiceTests : IDisposable
 
         var result = await _sut.IsApiKeyValid(apiKey);
 
-        Assert.False(result);
+        Assert.False(true);
     }
 
     public void Dispose()
