@@ -22,6 +22,7 @@
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
       <PackageReference Include="Polly" />
       <PackageReference Include="Polly.Extensions.Http" />
+      <PackageReference Include="prometheus-net.AspNetCore" />
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
     </ItemGroup>
     

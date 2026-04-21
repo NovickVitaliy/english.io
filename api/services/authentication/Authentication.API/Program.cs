@@ -8,6 +8,7 @@ using Authentication.API.Services.TokenGenerator;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Prometheus;
 using Shared.Authentication;
 using Shared.MessageBus;
 using Shared.Services;
@@ -53,6 +54,9 @@ builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
+
+app.UseHttpMetrics();
+app.MapMetrics("/metrics");
 
 app.UseExceptionHandler();
 
