@@ -48,7 +48,7 @@
                         {
                             <div class="d-flex">
                                 <MudRadio Value="@(synonym)">@synonym</MudRadio>
-                                @if (!UnknownWordsState.Value.UnknownWords.Contains(synonym))
+                                @if (!UnknownWordsState.Value.UnknownWords.Select(x => x.Word).Contains(synonym))
                                 {
                                     <MudMenu Icon="@Icons.Material.Filled.QuestionMark">
                                         <MudMenuItem

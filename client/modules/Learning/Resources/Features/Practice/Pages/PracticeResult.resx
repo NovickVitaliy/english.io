@@ -1,0 +1,23 @@
+<root>
+  <data name="Header">
+    Congratulations, you've finished a practice session
+  </data>
+  <data name="Unknown_Words_Header">
+    Unknown words you have added
+  </data>
+  <data name="Dialog_Name">
+    Save unknown word
+  </data>
+  <data name="No_Unknown_Words_Found">
+    No unknown words found
+  </data>
+  <data name="Add">
+    Add
+  </data>
+  <data name="To_Decks">
+    To Decks
+  </data>
+  <data name="Word_Already_Exists_In_Deck">
+    Word already exists in the deck
+  </data>
+</root>

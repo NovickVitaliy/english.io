@@ -168,7 +168,7 @@ services:
       - ME_CONFIG_BASICAUTH=${MONGO_UI_AUTH}
 
   rabbitmq-broker:
-    image: rabbitmq:latest
+    image: rabbitmq:3.13-management
     container_name: rabbitmq-broker
     restart: always
     hostname: english-io

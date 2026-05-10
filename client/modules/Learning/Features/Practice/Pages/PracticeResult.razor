@@ -1,0 +1,52 @@
+@page "/practice/result"
+@using MudBlazor
+@using Learning.Layouts
+@layout DashboardLayout
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+<MudContainer>
+    <MudPaper class="p-4 d-flex justify-content-center align-items-center flex-column">
+        <MudText Class="mb-3" Align="Align.Center"
+                 Typo="Typo.h3">@Localizer["Header"]</MudText>
+
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ToDecks">@Localizer["To_Decks"]</MudButton>
+    </MudPaper>
+
+    <MudPaper Class="p-4">
+        <MudText Class="mb-3" Align="Align.Center"
+                 Typo="Typo.h3">@Localizer["Unknown_Words_Header"]</MudText>
+
+        @if (UnknownWordsState.Value.UnknownWords.Length == 0)
+        {
+            <MudText>@Localizer["No_Unknown_Words_Found"]</MudText>
+        }
+        else
+        {
+            <MudGrid>
+                @foreach (var word in UnknownWordsState.Value.UnknownWords)
+                {
+                    <MudItem xs="12" sm="6" md="4">
+                        <MudCard Class="pa-2">
+                            <MudCardContent>
+                                <MudText Typo="Typo.h6">@word.Word</MudText>
+                            </MudCardContent>
+
+                            <MudCardActions>
+                                <MudButton Variant="Variant.Filled"
+                                           Color="Color.Primary"
+                                           OnClick="@(() => OpenAddToDeckModal(word))"
+                                           Disabled="@word.IsSaved">
+                                    @Localizer["Add"]
+                                </MudButton>
+                            </MudCardActions>
+                        </MudCard>
+                    </MudItem>
+                }
+            </MudGrid>
+        }
+    </MudPaper>
+</MudContainer>
+
+<MudOverlay Visible="@(UnknownWordsState.Value.IsSaving)" DarkBackground="true">
+    <MudProgressCircular Color="Color.Secondary" Indeterminate="true"/>
+</MudOverlay>

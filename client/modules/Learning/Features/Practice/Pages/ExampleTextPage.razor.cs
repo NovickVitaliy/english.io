@@ -33,7 +33,7 @@ public partial class ExampleTextPage : FluxorComponent
 
     private Task FinishPractice()
     {
-        NavigationManager.NavigateTo("123");
+        NavigationManager.NavigateTo("/practice/result");
         return Task.CompletedTask;
     }
 }

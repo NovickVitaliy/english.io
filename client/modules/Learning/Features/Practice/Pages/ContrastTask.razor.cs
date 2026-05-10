@@ -29,13 +29,13 @@ public partial class ContrastTask : FluxorComponent
 
     protected override void OnParametersSet()
     {
-        // Dispatcher.Dispatch(new GetContrastTaskAction(DeckId, PracticeState.Value.WordsForPractice));
+        Dispatcher.Dispatch(new GetContrastTaskAction(DeckId, PracticeState.Value.WordsForPractice));
         _request = new SaveContrastTaskResultRequest(DeckId, PracticeState.Value.WordsForPractice);
     }
 
     private void AddUnknownWord(string word)
     {
-        if (!UnknownWordsState.Value.UnknownWords.Contains(word))
+        if (!UnknownWordsState.Value.UnknownWords.Select(x => x.Word).Contains(word))
         {
             Dispatcher.Dispatch(new AddUnknownWordAction(word));
             Snackbar.Add(Localizer["Unknown_Word_Added"], Severity.Info);

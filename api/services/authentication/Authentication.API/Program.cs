@@ -43,7 +43,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddNotificationsServiceHttpClient();
 builder.Services.ConfigureJwtAuthentication();
 builder.Services.AddAuthorization();
-// builder.Services.ConfigureRabbitMq(Assembly.GetExecutingAssembly());
+builder.Services.ConfigureRabbitMq(Assembly.GetExecutingAssembly());
 builder.Services.AddDbContext<AuthDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString(AuthDbContext.DefaultConnectionStringPosition));

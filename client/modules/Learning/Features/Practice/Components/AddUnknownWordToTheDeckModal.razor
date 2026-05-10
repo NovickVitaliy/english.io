@@ -1,0 +1,46 @@
+@using MudBlazor
+
+<MudDialog>
+    <DialogContent>
+        <MudStack Spacing="3">
+            <MudText>
+                Selected word:
+                <strong>@SelectedWord</strong>
+            </MudText>
+
+            @if (IsLoading)
+            {
+                <MudProgressCircular Indeterminate="true" />
+            }
+            else
+            {
+                <MudSelect T="Guid?"
+                           Label="Choose deck"
+                           @bind-Value="SelectedDeckId">
+
+                    @foreach (var deck in Decks)
+                    {
+                        <MudSelectItem T="Guid?" Value="@deck.DeckId">
+                            @deck.DeckName
+                        </MudSelectItem>
+                    }
+
+                </MudSelect>
+            }
+        </MudStack>
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton Variant="Variant.Text"
+                   OnClick="Cancel">
+            @Localizer["Cancel"]
+        </MudButton>
+
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   Disabled="@(!SelectedDeckId.HasValue)"
+                   OnClick="Save">
+            @Localizer["Save"]
+        </MudButton>
+    </DialogActions>
+</MudDialog>

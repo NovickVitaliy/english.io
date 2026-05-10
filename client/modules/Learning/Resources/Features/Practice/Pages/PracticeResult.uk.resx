@@ -1,0 +1,23 @@
+<root>
+  <data name="Header">
+    Вітаємо, ви закінчили сесію з практики
+  </data>
+  <data name="Unknown_Words_Header">
+    Невідомі слова, які ви зберегли
+  </data>
+  <data name="Dialog_Name">
+    Зберегти невідоме слово
+  </data>
+  <data name="No_Unknown_Words_Found">
+    Невідомих слів не знайдено
+  </data>
+  <data name="Add">
+    Додати
+  </data>
+  <data name="To_Decks">
+    До колод
+  </data>
+  <data name="Word_Already_Exists_In_Deck">
+    Слово вже існує в колоді
+  </data>
+</root>

@@ -111,6 +111,12 @@
       <EmbeddedResource Update="Resources\Features\Practice\Pages\ContrastTask.uk.resx">
         <DependentUpon>ContrastTask.resx</DependentUpon>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Practice\Pages\PracticeResult.uk.resx">
+        <DependentUpon>PracticeResult.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Features\Practice\Components\AddUnknownWordToTheDeckModal.uk.resx">
+        <DependentUpon>AddUnknownWordToTheDeckModal.resx</DependentUpon>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

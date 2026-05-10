@@ -1,0 +1,11 @@
+<root>
+  <data name="Cancel">
+    Скасувати
+  </data>
+  <data name="Save">
+    Зберегти
+  </data>
+  <data name="Saved">
+    Слово було успішно збережено
+  </data>
+</root>

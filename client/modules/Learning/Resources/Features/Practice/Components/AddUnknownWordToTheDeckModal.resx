@@ -1,0 +1,11 @@
+<root>
+  <data name="Cancel">
+    Cancel
+  </data>
+  <data name="Save">
+    Save
+  </data>
+  <data name="Saved">
+    Word has been succesfully saved
+  </data>
+</root>
