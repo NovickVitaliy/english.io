@@ -1,3 +1,4 @@
+using Learning.Features.DashboardLayout.Components;
 using Learning.Features.Practice.Services;
 using Learning.Features.PreferenceConfiguring.Options;
 using Learning.Features.PreferenceConfiguring.Services;
@@ -23,6 +24,12 @@ public static class DependencyInjection
         services.ConfigureApiService<IAuthenticationSettingsService>(configuration, IAuthenticationSettingsService.ApiUrlKey);
         services.ConfigureApiService<ITextToSpeechService>(configuration, ITextToSpeechService.ApiUrlKey);
         services.ConfigureApiService<IPracticeService>(configuration, IPracticeService.ApiUrlKey);
+
+        services.AddHttpClient<AiChatService>(client =>
+        {
+            client.BaseAddress = new Uri(configuration.GetSection("Services")[IUserPreferencesService.ApiUrlKey]
+                                         ?? throw new NotImplementedException());
+        });
 
         services.AddOptions<PreferencesConfiguringHubOptions>()
             .BindConfiguration(PreferencesConfiguringHubOptions.Key)

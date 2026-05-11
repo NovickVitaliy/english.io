@@ -1,0 +1,15 @@
+.markdown-content ul {
+    padding-left: 20px;
+}
+
+.markdown-content li {
+    margin-bottom: 4px;
+}
+
+.markdown-content strong {
+    font-weight: 600;
+}
+
+.markdown-content p {
+    margin: 6px 0;
+}

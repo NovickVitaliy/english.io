@@ -23,6 +23,115 @@
             <MudIcon Icon="@Icons.Material.Filled.Settings" Title="Settings"/>
             <MudText Typo="Typo.subtitle2">@Localizer["Footer_Settings"]</MudText>
         </MudLink>
-
     </div>
 </MudPaper>
+
+<MudFab StartIcon="@Icons.Material.Filled.SmartToy"
+        Color="Color.Primary"
+        Style="position:fixed; bottom:24px; right:24px; z-index:1300;"
+        OnClick="ToggleDrawer" />
+
+<MudDrawer @bind-Open="_drawerOpen"
+           Anchor="Anchor.Right"
+           Variant="DrawerVariant.Temporary"
+           Elevation="10"
+           Width="650px"
+           Class="pa-4">
+
+    <div class="d-flex flex-column h-100">
+
+        <!-- Header -->
+        <div class="d-flex justify-space-between align-center mb-4">
+            <MudText Typo="Typo.h5">AI Assistant</MudText>
+
+            <MudIconButton Icon="@Icons.Material.Filled.Close"
+                           OnClick="ToggleDrawer" />
+        </div>
+
+        <!-- Suggestions -->
+        @if (_messages.Count == 0)
+        {
+            <MudText Typo="Typo.subtitle2" Class="mb-2">
+                Suggestions
+            </MudText>
+
+            <div class="d-flex flex-wrap gap-2 mb-4">
+                @foreach (var suggestion in _randomSuggestions)
+                {
+                    <MudChip T="string"
+                             Color="Color.Primary"
+                             Variant="Variant.Outlined"
+                             Clickable="true"
+                             OnClick="() => UseSuggestion(suggestion)">
+                        @suggestion
+                    </MudChip>
+                }
+            </div>
+        }
+
+        <!-- Chat -->
+        <MudPaper Class="flex-grow-1 pa-3 overflow-y-auto mb-3"
+                  Style="background-color: var(--mud-palette-background-grey);">
+
+            @foreach (var message in _messages)
+            {
+                <div class="d-flex mb-3 @(message.Role == "user" ? "justify-end" : "justify-start")">
+
+                    <MudPaper Class="pa-3"
+                              Style="@GetMessageStyle(message.Role == "user")">
+
+                        @if (message.Role == "assistant")
+                        {
+                            <div class="mud-typography-body1 markdown-content">
+                                @RenderMarkdown(message.Text)
+                            </div>
+                        }
+                        else
+                        {
+                            <MudText Typo="Typo.body1">
+                                @message.Text
+                            </MudText>
+                        }
+
+                    </MudPaper>
+
+                </div>
+            }
+
+            @if (_isLoading)
+            {
+                <div class="d-flex justify-start mt-2">
+                    <MudPaper Class="pa-3 d-flex align-center gap-2">
+                        <MudProgressCircular Indeterminate="true"
+                                             Size="Size.Small"
+                                             Color="Color.Primary" />
+
+                        <MudText>AI is thinking...</MudText>
+                    </MudPaper>
+                </div>
+            }
+
+        </MudPaper>
+
+        <!-- Input -->
+        <div class="d-flex gap-2">
+
+            <MudTextField @bind-Value="_message"
+                          Placeholder="Ask something..."
+                          Variant="Variant.Outlined"
+                          Immediate="true"
+                          Class="flex-grow-1"
+                          OnKeyDown="HandleKeyDown" />
+
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       Disabled="@(_isLoading && _messages.Any() && _messages.Last().Role == "user")"
+                       OnClick="SendMessage">
+                Send
+            </MudButton>
+
+        </div>
+
+    </div>
+
+</MudDrawer>

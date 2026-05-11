@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+using Learning.Application.DTOs.Chat;
 using Learning.Application.DTOs.Practice.ContrastTask;
 using Learning.Application.DTOs.Practice.FillInTheGaps;
 using Learning.Application.DTOs.Practice.GetWordsForPractice;
@@ -20,4 +22,5 @@ public interface IAiLearningService
     Task<CheckReadingComprehensionExerciseResponse?> CheckReadingComprehensionExerciseAsync(CheckReadingComprehensionExerciseRequest request);
     Task<SentenceWithFilledGapResult[]?> CheckSentencesWithGapsTaskAsync(SentenceWithFilledGap[] requestSentencesWithFilledGaps);
     Task<ContrastTaskUnit[]?> GenerateContrastTaskForWordsAsync(WordForPractice[] wordsForPractice);
+    IAsyncEnumerable<string> GenerateChatResponseAsync(List<ChatMessageDto> messages, CancellationToken ct = default);
 }

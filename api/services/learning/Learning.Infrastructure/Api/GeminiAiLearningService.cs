@@ -1,7 +1,9 @@
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Google.GenAI;
 using Google.GenAI.Types;
 using Learning.Application.Contracts.Api;
+using Learning.Application.DTOs.Chat;
 using Learning.Application.DTOs.Decks;
 using Learning.Application.DTOs.Practice.ContrastTask;
 using Learning.Application.DTOs.Practice.FillInTheGaps;
@@ -122,6 +124,52 @@ public class GeminiAiLearningService : IAiLearningService
             .Replace("{WordForPracticeJson}", JsonSerializer.Serialize(wordsForPractice, Options), StringComparison.InvariantCulture);
 
         return await GenerateInternal<ContrastTaskUnit[]>(prompt);
+    }
+
+    private const string SystemPrompt = """
+                                        You are an English learning assistant.
+
+                                        Rules:
+                                        - Never return raw JSON unless explicitly asked
+                                        - Always format answers clearly
+                                        - When creating quizzes, use clean bullet points
+                                        - Be concise but educational
+                                        """;
+
+    public async IAsyncEnumerable<string> GenerateChatResponseAsync(
+        List<ChatMessageDto> messages,
+        [EnumeratorCancellation] CancellationToken ct = default)
+    {
+        var contents = messages.Select(m =>
+            new Content()
+            {
+                Role = m.Role == "assistant" ? "model" : "user",
+                Parts = [
+                    new Part()
+                    {
+                        Text = m.Content
+                    }
+                ]
+            }).ToList();
+
+        var stream = _client.Models.GenerateContentStreamAsync(
+            _geminiOptions.Model,
+            contents,
+            new GenerateContentConfig()
+            {
+                SystemInstruction = new Content
+                {
+                    Parts = new List<Part> {
+                        new Part {Text = SystemPrompt}
+                    }
+                },
+            });
+
+        await foreach (var chunk in stream.WithCancellation(ct))
+        {
+            if (!string.IsNullOrWhiteSpace(chunk.Candidates[0].Content.Parts[0].Text))
+                yield return chunk.Candidates[0].Content.Parts[0].Text;
+        }
     }
 
     private async Task<T?> GenerateInternal<T>(string prompt, CancellationToken cancellationToken = default)
