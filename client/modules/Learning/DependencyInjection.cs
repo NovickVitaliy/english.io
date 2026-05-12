@@ -1,4 +1,5 @@
 using Learning.Features.DashboardLayout.Components;
+using Learning.Features.GrammarChecker.Services;
 using Learning.Features.Practice.Services;
 using Learning.Features.PreferenceConfiguring.Options;
 using Learning.Features.PreferenceConfiguring.Services;
@@ -26,6 +27,12 @@ public static class DependencyInjection
         services.ConfigureApiService<IPracticeService>(configuration, IPracticeService.ApiUrlKey);
 
         services.AddHttpClient<AiChatService>(client =>
+        {
+            client.BaseAddress = new Uri(configuration.GetSection("Services")[IUserPreferencesService.ApiUrlKey]
+                                         ?? throw new NotImplementedException());
+        });
+
+        services.AddHttpClient<GrammarCheckerService>(client =>
         {
             client.BaseAddress = new Uri(configuration.GetSection("Services")[IUserPreferencesService.ApiUrlKey]
                                          ?? throw new NotImplementedException());

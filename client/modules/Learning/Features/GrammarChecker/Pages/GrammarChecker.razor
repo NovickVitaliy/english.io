@@ -1,0 +1,133 @@
+@page "/grammar-checker"
+
+@using Learning.Layouts
+@using MudBlazor
+
+@layout DashboardLayout
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-8">
+
+    <MudPaper Class="pa-6">
+
+        <MudText Typo="Typo.h4" Class="mb-4">
+            AI Grammar Checker
+        </MudText>
+
+        <MudTextField T="string"
+                      Label="Write your text"
+                      Variant="Variant.Outlined"
+                      Lines="12"
+                      AutoGrow="true"
+                      FullWidth="true"
+                      Immediate="true"
+                      @bind-Value="_text" />
+
+        <div class="d-flex gap-2 mt-4">
+
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       Disabled="@(_loading || string.IsNullOrWhiteSpace(_text))"
+                       OnClick="AnalyzeText">
+                Analyze Text
+            </MudButton>
+
+            <MudButton Variant="Variant.Outlined"
+                       Color="Color.Secondary"
+                       Disabled="@(_issues.Count == 0)"
+                       OnClick="ApplyAllFixes">
+                Apply All Fixes
+            </MudButton>
+
+        </div>
+
+        @if (_loading)
+        {
+            <div class="d-flex align-center mt-4 gap-2">
+
+                <MudProgressCircular Indeterminate="true"
+                                     Color="Color.Primary" />
+
+                <MudText>
+                    AI is analyzing your text...
+                </MudText>
+
+            </div>
+        }
+
+        @if (!_loading && !_hasAnalyzed)
+        {
+            <MudText Class="mt-4" Color="Color.Secondary">
+                Write text and run analysis to detect grammar issues.
+            </MudText>
+        }
+
+        @if (!_loading && _hasAnalyzed && _issues.Count == 0)
+        {
+            <MudPaper Class="pa-6 mt-4 text-center">
+
+                <MudIcon Icon="@Icons.Material.Filled.CheckCircle"
+                         Color="Color.Success"
+                         Size="Size.Large" />
+
+                <MudText Typo="Typo.h6" Class="mt-2">
+                    No issues found
+                </MudText>
+
+                <MudText Color="Color.Secondary">
+                    Your text looks clean and well structured.
+                </MudText>
+
+            </MudPaper>
+        }
+
+        @if (!_loading && _issues.Count > 0)
+        {
+            <MudPaper Class="pa-6 mt-4">
+
+                <MudText Typo="Typo.h5" Class="mb-4">
+                    Suggestions
+                </MudText>
+
+                @foreach (var issue in _issues)
+                {
+                    <MudPaper Class="pa-4 mb-4" Outlined="true">
+
+                        <div class="d-flex justify-space-between align-start">
+
+                            <div>
+
+                                <MudChip T="string" Color="@GetColor(issue.Category)">
+                                    @issue.Category
+                                </MudChip>
+
+                                <MudText Class="mt-2">
+                                    <b>Original:</b> @issue.Original
+                                </MudText>
+
+                                <MudText>
+                                    <b>Suggestion:</b> @issue.Suggested
+                                </MudText>
+
+                                <MudText>
+                                    <b>Reason:</b> @issue.Explanation
+                                </MudText>
+
+                            </div>
+
+                            <MudButton Variant="Variant.Filled"
+                                       Color="Color.Success"
+                                       OnClick="() => ApplyFix(issue)">
+                                Apply
+                            </MudButton>
+
+                        </div>
+
+                    </MudPaper>
+                }
+
+            </MudPaper>
+        }
+
+    </MudPaper>
+
+</MudContainer>

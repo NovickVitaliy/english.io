@@ -5,6 +5,7 @@ using Google.GenAI.Types;
 using Learning.Application.Contracts.Api;
 using Learning.Application.DTOs.Chat;
 using Learning.Application.DTOs.Decks;
+using Learning.Application.DTOs.Grammar;
 using Learning.Application.DTOs.Practice.ContrastTask;
 using Learning.Application.DTOs.Practice.FillInTheGaps;
 using Learning.Application.DTOs.Practice.GetWordsForPractice;
@@ -13,6 +14,7 @@ using Learning.Application.DTOs.Practice.ReadingComprehension.Create;
 using Learning.Application.DTOs.Practice.TranslateWords;
 using Learning.Domain.Models;
 using Learning.Infrastructure.Options;
+using Learning.Infrastructure.Services;
 using Microsoft.Extensions.Options;
 using Polly.Registry;
 using JsonSerializer = System.Text.Json.JsonSerializer;
@@ -170,6 +172,26 @@ public class GeminiAiLearningService : IAiLearningService
             if (!string.IsNullOrWhiteSpace(chunk.Candidates[0].Content.Parts[0].Text))
                 yield return chunk.Candidates[0].Content.Parts[0].Text;
         }
+    }
+
+    public async Task<AnalyzeTextResponse?> AnalyzeTextAsync(AnalyzeTextRequest request)
+    {
+        var prompt = PromptBuilder.BuildGrammarPrompt(request.Text);
+
+        var response = await GenerateInternal<GeminiIssuesResponse>(prompt);
+
+        return new AnalyzeTextResponse(
+            request.Text,
+            response?.Issues
+                .Select(x => new TextIssue(
+                    Guid.NewGuid(),
+                    x.Original,
+                    x.Suggested,
+                    x.Explanation,
+                    x.Category,
+                    x.StartIndex,
+                    x.Length))
+                .ToArray() ?? []);
     }
 
     private async Task<T?> GenerateInternal<T>(string prompt, CancellationToken cancellationToken = default)

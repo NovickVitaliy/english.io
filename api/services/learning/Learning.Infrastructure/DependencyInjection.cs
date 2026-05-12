@@ -142,6 +142,8 @@ public static class DependencyInjection
             });
         });
 
+        services.AddHttpClient<IGrammarCheckerService, GrammarCheckerService>();
+
         return services;
     }
 }

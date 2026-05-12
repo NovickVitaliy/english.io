@@ -16,6 +16,14 @@
             <MudText Typo="Typo.subtitle2">@Localizer["Footer_Decks"]</MudText>
         </MudLink>
 
+        <MudLink Color="@(Location.StartsWith("/grammar-checker", StringComparison.InvariantCulture) ? Color.Primary : Color.Default)"
+                 Href="/grammar-checker"
+                 Underline="Underline.None"
+                 class="d-flex justify-center align-center flex-column p-2 rounded-lg">
+            <MudIcon Icon="@Icons.Material.Filled.AutoFixNormal" Title="Grammar"/>
+            <MudText Typo="Typo.subtitle2">Grammar</MudText>
+        </MudLink>
+
         <MudLink Color="@(Location.StartsWith("/learning/settings", StringComparison.InvariantCulture) ? Color.Primary : Color.Default)"
                  Href="/learning/settings"
                  Underline="Underline.None"
