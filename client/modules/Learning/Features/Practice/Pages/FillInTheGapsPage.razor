@@ -4,26 +4,42 @@
 @layout DashboardLayout
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
-<MudContainer MaxWidth="MaxWidth.Medium">
-    <MudText Class="mb-3" Align="Align.Center"
-             Typo="Typo.h3">@Localizer["Title"]</MudText>
-    <MudButton OnClick="NextExercise">
-        Skip
-    </MudButton>
-    <div>
-        @if (FillInTheGapsState.Value.IsLoading)
-        {
-            <MudText>@Localizer["Loading_Sentences"]...</MudText>
-        }
-        @if (FillInTheGapsState.Value.SentencesWithGap.Length > 0 && !FillInTheGapsState.Value.IsLoading)
-        {
+<MudContainer MaxWidth="MaxWidth.Medium" Class="py-8">
+
+    <MudStack AlignItems="AlignItems.Center" Class="mb-8">
+        <MudText Typo="Typo.overline" Color="Color.Primary" Style="letter-spacing: 0.15em;">
+            Fill in the Gaps
+        </MudText>
+        <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight: 700;">
+            @Localizer["Title"]
+        </MudText>
+    </MudStack>
+
+    @if (FillInTheGapsState.Value.SentencesWithGap.Length > 0 && !FillInTheGapsState.Value.IsLoading)
+    {
+        <MudStack Row="true" Spacing="3" Class="mb-6">
+            <MudButton FullWidth="true"
+                       Variant="Variant.Outlined"
+                       Color="Color.Default"
+                       StartIcon="@Icons.Material.Filled.SkipNext"
+                       OnClick="NextExercise"
+                       Style="border-radius: 12px; text-transform: none; font-weight: 600;">
+                Skip
+            </MudButton>
             @if (HasVerified)
             {
-                <div class="d-flex justify-content-end">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                               OnClick="NextExercise">@Localizer["Next_Exercise"]</MudButton>
-                </div>
+                <MudButton FullWidth="true"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           EndIcon="@Icons.Material.Filled.ArrowForward"
+                           OnClick="NextExercise"
+                           Style="border-radius: 12px; text-transform: none; font-weight: 600;">
+                    @Localizer["Next_Exercise"]
+                </MudButton>
             }
+        </MudStack>
+
+        <MudStack Spacing="4">
             @for (var i = 0; i < FillInTheGapsState.Value.SentencesWithGap.Length; i++)
             {
                 var sentence = FillInTheGapsState.Value.SentencesWithGap[i];
@@ -36,44 +52,77 @@
                 _request.SentencesWithFilledGaps[index].CorrectWord = sentence.CorrectWord;
                 _request.SentencesWithFilledGaps[index].Sentence = sentence.Sentence;
 
-                <div class="d-flex w-100 gap-3 align-items-center justify-content-start">
-                    <MudPaper Class="w-100 mb-5 p-3">
-                        <div class="d-flex mb-3 text-nowrap">
-                            <MudText>
+                var result = HasVerified ? FillInTheGapsTaskResultState.Value.ForWord(sentence.SenseId) : null;
+                var isCorrect = result?.IsCorrect == true;
+                var isWrong = result?.IsCorrect == false;
+
+                <MudPaper Elevation="0"
+                          Style="@($"border-radius: 16px; border: 1.5px solid {(isCorrect ? "var(--mud-palette-success)" : isWrong ? "var(--mud-palette-error)" : "var(--mud-palette-lines-default)")}; overflow: hidden;")">
+
+                    <div style="padding: 16px 20px;">
+                        <div class="d-flex align-items-center" style="gap: 8px; flex-wrap: wrap;">
+                            <MudText Typo="Typo.body1" Style="line-height: 1.8; white-space: nowrap;">
                                 @beforeGap
                             </MudText>
-                            <MudTextField Class="ms-3 me-3" T="string"
-                                          @bind-Value="_request!.SentencesWithFilledGaps[index].FilledInWord"></MudTextField>
-                            <MudText>
+                            <div class="inline-input">
+                                <MudTextField T="string"
+                                              @bind-Value="_request!.SentencesWithFilledGaps[index].FilledInWord"
+                                              Variant="Variant.Outlined"
+                                              Margin="Margin.Dense"
+                                              Style="min-width: 120px; max-width: 180px;"
+                                              Disabled="HasVerified" />
+                            </div>
+                            <MudText Typo="Typo.body1" Style="line-height: 1.8; white-space: nowrap;">
                                 @afterGap
                             </MudText>
                         </div>
-                        @if (HasVerified)
-                        {
-                            var fillInTheGapsResult = FillInTheGapsTaskResultState.Value.ForWord(sentence.SenseId);
-                            if (fillInTheGapsResult is not null)
-                            {
-                                <div class="d-flex gap-1">
-                                    <MudText>@(fillInTheGapsResult.IsCorrect ? "✅" : "❌")</MudText>
-                                    @if (!fillInTheGapsResult.IsCorrect)
-                                    {
-                                        <MudText>@Localizer["Correct_Answer"]: @fillInTheGapsResult.CorrectWord</MudText>
-                                    }
-                                </div>
-                            }
-                        }
-                    </MudPaper>
+                    </div>
 
-                </div>
+                    @if (HasVerified && result is not null)
+                    {
+                        <div style="@($"border-top: 1.5px solid {(isCorrect ? "var(--mud-palette-success)" : "var(--mud-palette-error)")}; padding: 12px 20px;")">
+                            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                                <MudIcon Icon="@(isCorrect ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Cancel)"
+                                         Color="@(isCorrect ? Color.Success : Color.Error)"
+                                         Size="Size.Small" />
+                                @if (isCorrect)
+                                {
+                                    <MudText Typo="Typo.body2" Color="Color.Success" Style="font-weight: 600;">
+                                        Correct!
+                                    </MudText>
+                                }
+                                else
+                                {
+                                    <MudText Typo="Typo.body2" Color="Color.Error">
+                                        <strong>@Localizer["Correct_Answer"]:</strong> @result.CorrectWord
+                                    </MudText>
+                                }
+                            </MudStack>
+                        </div>
+                    }
+
+                </MudPaper>
             }
+        </MudStack>
 
-            <MudButton Class="w-100" Disabled="HasVerified" OnClick="VerifySentences" Variant="Variant.Filled"
-                       Color="Color.Primary">@Localizer["Verify_Sentences"]</MudButton>
-        }
-    </div>
+        <MudButton Disabled="HasVerified"
+                   FullWidth="true"
+                   Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   Size="Size.Large"
+                   StartIcon="@Icons.Material.Filled.Spellcheck"
+                   OnClick="VerifySentences"
+                   Class="mt-6"
+                   Style="border-radius: 14px; text-transform: none; font-weight: 700; font-size: 1rem; padding: 14px;">
+            @Localizer["Verify_Sentences"]
+        </MudButton>
+    }
+
 </MudContainer>
 
 <MudOverlay Visible="@(FillInTheGapsState.Value.IsLoading || FillInTheGapsTaskResultState.Value.IsLoading)" DarkBackground="true">
-    <MudProgressCircular Color="Color.Secondary" Indeterminate="true"/>
+    <MudStack AlignItems="AlignItems.Center" Spacing="3">
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+        <MudText Typo="Typo.body2" Style="color: white; opacity: 0.8;">Loading exercise…</MudText>
+    </MudStack>
 </MudOverlay>
-

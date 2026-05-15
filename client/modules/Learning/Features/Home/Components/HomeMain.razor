@@ -1,15 +1,21 @@
 @using MudBlazor
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
-<MudContainer Class="d-flex justify-center align-center flex-column">
-    <MudText Class="w-100 mt-2" Typo="Typo.h4" Align="Align.Center">
-        @Localizer["Home_Welcome", UserState.Value.Username]
-    </MudText>
-    <MudGrid Justify="Justify.Center">
-        <MudItem Class="mt-5" xs="8" sm="8" md="4">
-            <MudButton Href="/learning/decks" Color="Color.Primary" Variant="Variant.Filled" FullWidth="true">
-                <MudText class="w-100 p-2 text-wrap" Typo="Typo.button"
-                         Align="Align.Center">@Localizer["Home_Prompt"]</MudText>
-            </MudButton>
-        </MudItem>
-    </MudGrid>
-</MudContainer>
+
+<div style="padding: 48px 0 32px 0;">
+    <MudStack AlignItems="AlignItems.Center" Spacing="4">
+        <MudText Typo="Typo.overline" Color="Color.Primary" Style="letter-spacing: 0.15em;">
+            Dashboard
+        </MudText>
+        <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight: 700;">
+            @Localizer["Home_Welcome", UserState.Value.Username]
+        </MudText>
+        <MudButton Href="/learning/decks"
+                   Color="Color.Primary"
+                   Variant="Variant.Filled"
+                   Size="Size.Large"
+                   EndIcon="@Icons.Material.Filled.ArrowForward"
+                   Style="border-radius: 14px; text-transform: none; font-weight: 700; font-size: 1rem; padding: 14px 28px;">
+            @Localizer["Home_Prompt"]
+        </MudButton>
+    </MudStack>
+</div>

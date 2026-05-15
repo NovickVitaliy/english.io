@@ -1,4 +1,24 @@
 @using MudBlazor
-<MudContainer Class="d-flex justify-center align-center h-100" MaxWidth="MaxWidth.ExtraExtraLarge">
-    <MudText Class="fst-italic" Typo="Typo.subtitle2" Align="Align.Center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. At consectetur consequatur cupiditate deleniti eos est molestias necessitatibus officia pariatur, reprehenderit. Architecto, autem blanditiis cupiditate dolorem minus nobis voluptatem voluptates voluptatum?</MudText>
-</MudContainer>
+
+<MudPaper Elevation="0"
+          Style="border-radius: 16px; border: 1.5px solid var(--mud-palette-lines-default); overflow: hidden; height: 400px; display: flex; flex-direction: column;">
+
+    <div style="padding: 16px 20px; border-bottom: 1.5px solid var(--mud-palette-lines-default); background: var(--mud-palette-background-grey);">
+        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+            <MudIcon Icon="@Icons.Material.Outlined.FormatQuote" Color="Color.Primary" Size="Size.Small" />
+            <MudText Typo="Typo.overline" Color="Color.Primary" Style="letter-spacing: 0.15em;">
+                Daily Motivation
+            </MudText>
+        </MudStack>
+    </div>
+
+    <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px;">
+        <MudText Typo="Typo.body1"
+                 Align="Align.Center"
+                 Style="font-style: italic; line-height: 1.8; opacity: 0.8;">
+            @* @Localizer["Motivational_Phrase"] *@
+            Hello
+        </MudText>
+    </div>
+
+</MudPaper>

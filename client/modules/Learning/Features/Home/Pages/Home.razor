@@ -6,20 +6,18 @@
 @layout DashboardLayout
 @attribute [Authorize]
 
-<MudContainer MaxWidth="MaxWidth.Large">
-    <HomeMain></HomeMain>
-    <Statistics></Statistics>
-    <MudGrid Justify="Justify.Center" class="d-block d-md-flex mt-5 mb-5">
+<MudContainer MaxWidth="MaxWidth.Large" Class="py-8">
+    <HomeMain />
+    <Statistics />
+    <MudGrid Justify="Justify.Center" Class="mt-4">
         <MudItem xs="12" md="4">
-            <QuickAccess></QuickAccess>
+            <QuickAccess />
         </MudItem>
-
         <MudItem xs="12" md="4">
-            <RandomMotivationalPhrase></RandomMotivationalPhrase>
+            <RandomMotivationalPhrase />
         </MudItem>
-
         <MudItem xs="12" md="4">
-            <WordOfTheDay></WordOfTheDay>
+            <WordOfTheDay />
         </MudItem>
     </MudGrid>
 </MudContainer>

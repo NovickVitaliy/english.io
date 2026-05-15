@@ -4,49 +4,110 @@
 @layout DashboardLayout
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
-<MudContainer>
-    <MudPaper class="p-4 d-flex justify-content-center align-items-center flex-column">
-        <MudText Class="mb-3" Align="Align.Center"
-                 Typo="Typo.h3">@Localizer["Header"]</MudText>
+<MudContainer MaxWidth="MaxWidth.Medium" Class="py-8">
 
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ToDecks">@Localizer["To_Decks"]</MudButton>
+    <MudPaper Elevation="0"
+              Style="border-radius: 16px; border: 1.5px solid var(--mud-palette-lines-default); overflow: hidden; margin-bottom: 24px;">
+        <div style="padding: 32px 24px;">
+            <MudStack AlignItems="AlignItems.Center" Spacing="4">
+                <MudText Typo="Typo.overline" Color="Color.Primary" Style="letter-spacing: 0.15em;">
+                    Practice Complete
+                </MudText>
+                <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight: 700;">
+                    @Localizer["Header"]
+                </MudText>
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           Size="Size.Large"
+                           EndIcon="@Icons.Material.Filled.LibraryBooks"
+                           OnClick="ToDecks"
+                           Style="border-radius: 14px; text-transform: none; font-weight: 700; font-size: 1rem; padding: 14px 28px;">
+                    @Localizer["To_Decks"]
+                </MudButton>
+            </MudStack>
+        </div>
     </MudPaper>
 
-    <MudPaper Class="p-4">
-        <MudText Class="mb-3" Align="Align.Center"
-                 Typo="Typo.h3">@Localizer["Unknown_Words_Header"]</MudText>
+    <MudPaper Elevation="0"
+              Style="border-radius: 16px; border: 1.5px solid var(--mud-palette-lines-default); overflow: hidden;">
 
-        @if (UnknownWordsState.Value.UnknownWords.Length == 0)
-        {
-            <MudText>@Localizer["No_Unknown_Words_Found"]</MudText>
-        }
-        else
-        {
-            <MudGrid>
-                @foreach (var word in UnknownWordsState.Value.UnknownWords)
-                {
-                    <MudItem xs="12" sm="6" md="4">
-                        <MudCard Class="pa-2">
-                            <MudCardContent>
-                                <MudText Typo="Typo.h6">@word.Word</MudText>
-                            </MudCardContent>
+        <div style="padding: 20px 24px; border-bottom: 1.5px solid var(--mud-palette-lines-default);">
+            <MudStack AlignItems="AlignItems.Center" Spacing="1">
+                <MudText Typo="Typo.overline" Color="Color.Primary" Style="letter-spacing: 0.15em;">
+                    Review
+                </MudText>
+                <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight: 700;">
+                    @Localizer["Unknown_Words_Header"]
+                </MudText>
+            </MudStack>
+        </div>
 
-                            <MudCardActions>
-                                <MudButton Variant="Variant.Filled"
-                                           Color="Color.Primary"
-                                           OnClick="@(() => OpenAddToDeckModal(word))"
-                                           Disabled="@word.IsSaved">
-                                    @Localizer["Add"]
-                                </MudButton>
-                            </MudCardActions>
-                        </MudCard>
-                    </MudItem>
-                }
-            </MudGrid>
-        }
+        <div style="padding: 20px 24px;">
+            @if (UnknownWordsState.Value.UnknownWords.Length == 0)
+            {
+                <MudStack AlignItems="AlignItems.Center" Spacing="2" Style="padding: 24px 0;">
+                    <MudIcon Icon="@Icons.Material.Outlined.CheckCircle"
+                             Color="Color.Success"
+                             Style="font-size: 2.5rem;" />
+                    <MudText Typo="Typo.body1" Align="Align.Center" Style="font-weight: 600;">
+                        @Localizer["No_Unknown_Words_Found"]
+                    </MudText>
+                </MudStack>
+            }
+            else
+            {
+                <MudGrid Spacing="3">
+                    @foreach (var word in UnknownWordsState.Value.UnknownWords)
+                    {
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudPaper Elevation="0"
+                                      Style="@($"border-radius: 12px; border: 1.5px solid {(word.IsSaved ? "var(--mud-palette-success)" : "var(--mud-palette-lines-default)")}; overflow: hidden; height: 100%;")">
+
+                                <div style="padding: 16px 16px 12px 16px;">
+                                    <MudText Typo="Typo.body1" Style="font-weight: 700;">
+                                        @word.Word
+                                    </MudText>
+                                </div>
+
+                                <div style="border-top: 1.5px solid var(--mud-palette-lines-default); padding: 10px 16px;">
+                                    @if (word.IsSaved)
+                                    {
+                                        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+                                            <MudIcon Icon="@Icons.Material.Filled.CheckCircle"
+                                                     Color="Color.Success"
+                                                     Size="Size.Small" />
+                                            <MudText Typo="Typo.body2" Color="Color.Success" Style="font-weight: 600;">
+                                                Saved
+                                            </MudText>
+                                        </MudStack>
+                                    }
+                                    else
+                                    {
+                                        <MudButton Variant="Variant.Filled"
+                                                   Color="Color.Primary"
+                                                   Size="Size.Small"
+                                                   StartIcon="@Icons.Material.Filled.Add"
+                                                   OnClick="@(() => OpenAddToDeckModal(word))"
+                                                   Style="border-radius: 10px; text-transform: none; font-weight: 600;">
+                                            @Localizer["Add"]
+                                        </MudButton>
+                                    }
+                                </div>
+
+                            </MudPaper>
+                        </MudItem>
+                    }
+                </MudGrid>
+            }
+        </div>
+
     </MudPaper>
+
 </MudContainer>
 
 <MudOverlay Visible="@(UnknownWordsState.Value.IsSaving)" DarkBackground="true">
-    <MudProgressCircular Color="Color.Secondary" Indeterminate="true"/>
+    <MudStack AlignItems="AlignItems.Center" Spacing="3">
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+        <MudText Typo="Typo.body2" Style="color: white; opacity: 0.8;">Saving…</MudText>
+    </MudStack>
 </MudOverlay>

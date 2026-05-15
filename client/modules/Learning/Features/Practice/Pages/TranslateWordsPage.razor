@@ -4,59 +4,124 @@
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 @layout DashboardLayout
 
-<MudContainer MaxWidth="MaxWidth.Large">
-    <MudText Class="mb-3" Align="Align.Center"
-             Typo="Typo.h3">@Localizer["Title", OriginalLanguage, TranslateLanguage]</MudText>
-    <MudButton OnClick="NextExercise">Skip</MudButton>
-    <div class="d-flex justify-content-start mb-5">
-        @if (TranslateWordsTaskResultState.Value.Results.Length > 0 && !TranslateWordsTaskResultState.Value.IsLoading)
-        {
-            <MudButton Class="w-100" OnClick="NextExercise" Color="Color.Primary"
-                       Variant="Variant.Filled">@Localizer["Next_Exercise"]</MudButton>
-        }
-    </div>
+<MudContainer MaxWidth="MaxWidth.Medium" Class="py-8">
+
+    <MudStack AlignItems="AlignItems.Center" Class="mb-8">
+        <MudText Typo="Typo.overline" Color="Color.Primary" Style="letter-spacing: 0.15em;">
+            Translate Words
+        </MudText>
+        <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight: 700;">
+            @Localizer["Title", OriginalLanguage, TranslateLanguage]
+        </MudText>
+    </MudStack>
+
     <MudForm Model="_taskRequest">
-        @if (TranslateWordsState.Value is { Words.Length: > 0})
+        @if (TranslateWordsState.Value is { Words.Length: > 0 })
         {
-            @for (var i = 0; i < TranslateWordsState.Value.Words.Length; i++)
-            {
-                var word = TranslateWordsState.Value.Words[i];
-                var label = word.Word + (string.IsNullOrWhiteSpace(word.Definition) ? "" : $" ({word.Definition})");
-                var index = i;
-                _taskRequest.TranslatedWords[index].OriginalWord = word.Word;
-                _taskRequest.TranslatedWords[index].Definition = word.Definition;
-                _taskRequest.TranslatedWords[index].SenseId = word.SenseId;
-                <MudPaper Class="d-flex flex-column gap-3 p-2 mb-3 justify-content-between">
-                    <MudText Align="Align.Center" Class="w-100 text-center me-3" Typo="Typo.h6">
-                        @label
-                    </MudText>
-                    <MudTextField T="string" @bind-Value="_taskRequest.TranslatedWords[index].Translated"></MudTextField>
-                    @if (TranslateWordsTaskResultState.Value.Results.Length > 0 && !TranslateWordsTaskResultState.Value.IsLoading)
-                    {
-                        var wordTranslationResult = TranslateWordsTaskResultState.Value.ForWord(word.SenseId);
-                        if (wordTranslationResult is not null)
+            var hasResults = TranslateWordsTaskResultState.Value.Results.Length > 0 && !TranslateWordsTaskResultState.Value.IsLoading;
+
+            <MudStack Row="true" Spacing="3" Class="mb-6">
+                <MudButton FullWidth="true"
+                           Variant="Variant.Outlined"
+                           Color="Color.Default"
+                           StartIcon="@Icons.Material.Filled.SkipNext"
+                           OnClick="NextExercise"
+                           Style="border-radius: 12px; text-transform: none; font-weight: 600;">
+                    Skip
+                </MudButton>
+                @if (hasResults)
+                {
+                    <MudButton FullWidth="true"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               EndIcon="@Icons.Material.Filled.ArrowForward"
+                               OnClick="NextExercise"
+                               Style="border-radius: 12px; text-transform: none; font-weight: 600;">
+                        @Localizer["Next_Exercise"]
+                    </MudButton>
+                }
+            </MudStack>
+
+            <MudStack Spacing="4">
+                @for (var i = 0; i < TranslateWordsState.Value.Words.Length; i++)
+                {
+                    var word = TranslateWordsState.Value.Words[i];
+                    var label = word.Word + (string.IsNullOrWhiteSpace(word.Definition) ? "" : $" ({word.Definition})");
+                    var index = i;
+
+                    _taskRequest.TranslatedWords[index].OriginalWord = word.Word;
+                    _taskRequest.TranslatedWords[index].Definition = word.Definition;
+                    _taskRequest.TranslatedWords[index].SenseId = word.SenseId;
+
+                    var result = hasResults ? TranslateWordsTaskResultState.Value.ForWord(word.SenseId) : null;
+                    var isCorrect = result?.IsCorrect == true;
+                    var isWrong = result?.IsCorrect == false;
+
+                    <MudPaper Elevation="0"
+                              Style="@($"border-radius: 16px; border: 1.5px solid {(isCorrect ? "var(--mud-palette-success)" : isWrong ? "var(--mud-palette-error)" : "var(--mud-palette-lines-default)")}; overflow: hidden;")">
+
+                        <div style="padding: 16px 20px; border-bottom: 1.5px solid var(--mud-palette-lines-default);">
+                            <MudText Typo="Typo.body1" Align="Align.Center" Style="font-weight: 700;">
+                                @label
+                            </MudText>
+                        </div>
+
+                        <div style="padding: 16px 20px;">
+                            <MudTextField T="string"
+                                          @bind-Value="_taskRequest.TranslatedWords[index].Translated"
+                                          Variant="Variant.Outlined"
+                                          Margin="Margin.Dense"
+                                          Placeholder="Your translation…"
+                                          Disabled="hasResults"
+                                          FullWidth="true" />
+                        </div>
+
+                        @if (hasResults && result is not null)
                         {
-                            <div class="d-flex">
-                                <MudText Class="me-3">@(wordTranslationResult.IsCorrect ? "✅" : "❌")</MudText>
-                                @if (!wordTranslationResult.IsCorrect)
-                                {
-                                    <MudText>@Localizer["Correct_Translation"] @(wordTranslationResult.CorrectTranslation)</MudText>
-                                }
+                            <div style="@($"border-top: 1.5px solid {(isCorrect ? "var(--mud-palette-success)" : "var(--mud-palette-error)")}; padding: 12px 20px;")">
+                                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                                    <MudIcon Icon="@(isCorrect ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Cancel)"
+                                             Color="@(isCorrect ? Color.Success : Color.Error)"
+                                             Size="Size.Small" />
+                                    @if (isCorrect)
+                                    {
+                                        <MudText Typo="Typo.body2" Color="Color.Success" Style="font-weight: 600;">
+                                            Correct!
+                                        </MudText>
+                                    }
+                                    else
+                                    {
+                                        <MudText Typo="Typo.body2" Color="Color.Error">
+                                            <strong>@Localizer["Correct_Translation"]:</strong> @result.CorrectTranslation
+                                        </MudText>
+                                    }
+                                </MudStack>
                             </div>
                         }
-                    }
-                </MudPaper>
-            }
 
-            <MudButton Disabled="@(TranslateWordsTaskResultState.Value.Results.Length > 0 && !TranslateWordsTaskResultState.Value.IsLoading)" Class="mb-3" Color="Color.Primary" Variant="Variant.Filled"
-                       OnClick="VerifyTranslatedWords">
+                    </MudPaper>
+                }
+            </MudStack>
+
+            <MudButton Disabled="hasResults"
+                       FullWidth="true"
+                       Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       Size="Size.Large"
+                       StartIcon="@Icons.Material.Filled.Spellcheck"
+                       OnClick="VerifyTranslatedWords"
+                       Class="mt-6"
+                       Style="border-radius: 14px; text-transform: none; font-weight: 700; font-size: 1rem; padding: 14px;">
                 @Localizer["Verify_Words"]
             </MudButton>
         }
     </MudForm>
+
 </MudContainer>
 
 <MudOverlay Visible="TranslateWordsTaskResultState.Value.IsLoading" DarkBackground="true">
-    <MudProgressCircular Color="Color.Secondary" Indeterminate="true"/>
+    <MudStack AlignItems="AlignItems.Center" Spacing="3">
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+        <MudText Typo="Typo.body2" Style="color: white; opacity: 0.8;">Loading exercise…</MudText>
+    </MudStack>
 </MudOverlay>
-

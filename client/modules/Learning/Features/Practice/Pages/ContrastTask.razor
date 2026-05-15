@@ -4,80 +4,143 @@
 @layout DashboardLayout
 @page "/practice/{DeckId:guid}/contrast-task"
 
-<MudContainer MaxWidth="MaxWidth.Medium">
-    <MudText Class="mb-3" Align="Align.Center"
-             Typo="Typo.h3">@Localizer["Title"]</MudText>
-    <MudButton Class="w-100 mb-3" Variant="Variant.Filled" OnClick="NextExercise"
-               Color="Color.Primary">Skip</MudButton>
-    @if (HasVerified)
-    {
-        <MudButton Class="w-100 mb-3" Variant="Variant.Filled" OnClick="NextExercise"
-                   Color="Color.Primary">@Localizer["Next_Task"]</MudButton>
-    }
+<MudContainer MaxWidth="MaxWidth.Medium" Class="py-8">
+
+    <MudStack AlignItems="AlignItems.Center" Class="mb-8">
+        <MudText Typo="Typo.overline" Color="Color.Primary" Style="letter-spacing: 0.15em;">
+            Contrast Task
+        </MudText>
+        <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight: 700;">
+            @Localizer["Title"]
+        </MudText>
+    </MudStack>
 
     @if (!ContrastTaskState.Value.IsLoading && ContrastTaskState.Value.ContrastTaskUnits.Length > 0)
     {
-        @for (var index = 0; index < ContrastTaskState.Value.ContrastTaskUnits.Length; index++)
-        {
-            var taskUnit = ContrastTaskState.Value.ContrastTaskUnits[index];
-            var splitSentence = taskUnit.Sentence.Split("*****");
-            var beforeGap = splitSentence[0];
-            var afterGap = splitSentence[1];
+        <MudStack Row="true" Spacing="3" Class="mb-6">
+            <MudButton FullWidth="true"
+                       Variant="Variant.Outlined"
+                       Color="Color.Default"
+                       StartIcon="@Icons.Material.Filled.SkipNext"
+                       OnClick="NextExercise"
+                       Style="border-radius: 12px; text-transform: none; font-weight: 600;">
+                Skip
+            </MudButton>
+            @if (HasVerified)
+            {
+                <MudButton FullWidth="true"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           EndIcon="@Icons.Material.Filled.ArrowForward"
+                           OnClick="NextExercise"
+                           Style="border-radius: 12px; text-transform: none; font-weight: 600;">
+                    @Localizer["Next_Task"]
+                </MudButton>
+            }
+        </MudStack>
 
-            <MudPaper Class="mb-3 p-3">
-                <div class="w-100 d-flex mb-1 align-items-center">
-                    <MudText>
-                        @beforeGap
-                    </MudText>
-                    @if (!string.IsNullOrWhiteSpace(_request.AnswersMap[taskUnit.SenseId].Word))
-                    {
-                        <span class="ms-3 me-3">@_request.AnswersMap[taskUnit.SenseId].Word</span>
-                    }
-                    else
-                    {
-                        <span class="ms-3 me-3">...</span>
-                    }
-                    <MudText>
-                        @afterGap
-                    </MudText>
-                </div>
-                <div>
-                    <MudRadioGroup Name="@(taskUnit.SenseId.ToString())" T="string"
-                                   ValueChanged="@((choice) => SetChosenWord(taskUnit.SenseId, choice))">
-                        @foreach (var synonym in taskUnit.PossibleChoices)
-                        {
-                            <div class="d-flex">
-                                <MudRadio Value="@(synonym)">@synonym</MudRadio>
-                                @if (!UnknownWordsState.Value.UnknownWords.Select(x => x.Word).Contains(synonym))
-                                {
-                                    <MudMenu Icon="@Icons.Material.Filled.QuestionMark">
-                                        <MudMenuItem
-                                            OnClick="@(() => AddUnknownWord(synonym))"> @Localizer["I_Dont_Know_This_Word"] </MudMenuItem>
-                                    </MudMenu>
-                                }
-                            </div>
-                        }
-                    </MudRadioGroup>
-                </div>
-                @if (HasVerified)
-                {
-                    var isCorrect = _request.AnswersMap[taskUnit.SenseId].IsCorrect;
-                    <div class="d-flex gap-3">
-                        <MudText>@(isCorrect ? "✅" : "❌")</MudText>
-                        @if (!isCorrect)
-                        {
-                            <MudText>@Localizer["Correct_Answer"] @taskUnit.CorrectWord</MudText>
-                        }
+        <MudStack Spacing="4">
+            @for (var index = 0; index < ContrastTaskState.Value.ContrastTaskUnits.Length; index++)
+            {
+                var taskUnit = ContrastTaskState.Value.ContrastTaskUnits[index];
+                var splitSentence = taskUnit.Sentence.Split("*****");
+                var beforeGap = splitSentence[0];
+                var afterGap = splitSentence[1];
+                var isCorrect = HasVerified && _request.AnswersMap[taskUnit.SenseId].IsCorrect;
+                var isWrong = HasVerified && !_request.AnswersMap[taskUnit.SenseId].IsCorrect;
+
+                <MudPaper Elevation="0"
+                          Style="@($"border-radius: 16px; border: 1.5px solid {(isCorrect ? "var(--mud-palette-success)" : isWrong ? "var(--mud-palette-error)" : "var(--mud-palette-lines-default)")}; overflow: hidden;")">
+
+                    <div style="padding: 16px 20px;">
+                        <MudText Typo="Typo.body1" Style="line-height: 1.8;">
+                            @beforeGap
+                            <span style="@($"display: inline-block; margin: 0 6px; padding: 2px 12px; border-radius: 6px; font-weight: 700; background: {(HasVerified ? (isCorrect ? "var(--mud-palette-success)" : "var(--mud-palette-error)") : "var(--mud-palette-primary)")}; color: white; min-width: 60px; text-align: center;")">
+                                @(string.IsNullOrWhiteSpace(_request.AnswersMap[taskUnit.SenseId].Word) ? "___" : _request.AnswersMap[taskUnit.SenseId].Word)
+                            </span>
+                            @afterGap
+                        </MudText>
                     </div>
-                }
-            </MudPaper>
-        }
 
-        <MudButton Disabled="HasVerified" Class="w-100" Variant="Variant.Filled" OnClick="VerifyTask"
-                   Color="Color.Primary">@Localizer["Verify_Task"]</MudButton>
+                    <MudDivider />
+
+                    <div style="padding: 12px 20px;">
+                        <MudRadioGroup Name="@(taskUnit.SenseId.ToString())" T="string"
+                                       ValueChanged="@((choice) => SetChosenWord(taskUnit.SenseId, choice))">
+                            <MudStack Spacing="1">
+                                @foreach (var synonym in taskUnit.PossibleChoices)
+                                {
+                                    <div class="d-flex align-center"
+                                         style="padding: 6px 10px; border-radius: 8px; transition: background 0.15s;"
+                                         onmouseover="this.style.background='var(--mud-palette-action-hover)'"
+                                         onmouseout="this.style.background='transparent'">
+                                        <MudRadio Value="@(synonym)" Color="Color.Primary">
+                                            <MudText Typo="Typo.body2" Style="font-weight: 500;">@synonym</MudText>
+                                        </MudRadio>
+                                        @if (!UnknownWordsState.Value.UnknownWords.Select(x => x.Word).Contains(synonym))
+                                        {
+                                            <MudTooltip Text="@Localizer["I_Dont_Know_This_Word"]" Placement="Placement.Right">
+                                                <MudMenu Icon="@Icons.Material.Outlined.HelpOutline"
+                                                         Size="Size.Small"
+                                                         Color="Color.Default"
+                                                         Style="opacity: 0.5;">
+                                                    <MudMenuItem OnClick="@(() => AddUnknownWord(synonym))">
+                                                        @Localizer["I_Dont_Know_This_Word"]
+                                                    </MudMenuItem>
+                                                </MudMenu>
+                                            </MudTooltip>
+                                        }
+                                    </div>
+                                }
+                            </MudStack>
+                        </MudRadioGroup>
+                    </div>
+
+                    @if (HasVerified)
+                    {
+                        <div style="@($"border-top: 1.5px solid {(isCorrect ? "var(--mud-palette-success)" : "var(--mud-palette-error)")}; padding: 12px 20px;")">
+                            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                                <MudIcon Icon="@(isCorrect ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Cancel)"
+                                         Color="@(isCorrect ? Color.Success : Color.Error)"
+                                         Size="Size.Small" />
+                                @if (isCorrect)
+                                {
+                                    <MudText Typo="Typo.body2" Color="Color.Success" Style="font-weight: 600;">
+                                        Correct!
+                                    </MudText>
+                                }
+                                else
+                                {
+                                    <MudText Typo="Typo.body2" Color="Color.Error">
+                                        <strong>@Localizer["Correct_Answer"]</strong> @taskUnit.CorrectWord
+                                    </MudText>
+                                }
+                            </MudStack>
+                        </div>
+                    }
+
+                </MudPaper>
+            }
+        </MudStack>
+
+        <MudButton Disabled="HasVerified"
+                   FullWidth="true"
+                   Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   Size="Size.Large"
+                   StartIcon="@Icons.Material.Filled.Spellcheck"
+                   OnClick="VerifyTask"
+                   Class="mt-6"
+                   Style="border-radius: 14px; text-transform: none; font-weight: 700; font-size: 1rem; padding: 14px;">
+            @Localizer["Verify_Task"]
+        </MudButton>
     }
+
 </MudContainer>
 
 <MudOverlay Visible="ContrastTaskState.Value.IsLoading" DarkBackground="true">
-    <MudProgressCircular Color="Color.Secondary" Indeterminate="true"/>
+    <MudStack AlignItems="AlignItems.Center" Spacing="3">
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+        <MudText Typo="Typo.body2" Style="color: white; opacity: 0.8;">Loading exercise…</MudText>
+    </MudStack>
 </MudOverlay>

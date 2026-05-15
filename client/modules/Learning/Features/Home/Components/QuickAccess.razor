@@ -1,24 +1,60 @@
+@using Fluxor
+@using Learning.Store.RecentDeck
 @using MudBlazor
-<MudPaper Class="overflow-scroll position-relative" Height="400px" Width="100%">
-    <MudText Align="Align.Center" Class="p-2 sticky-top border-bottom" Style="background-color: var(--mud-palette-background)" Color="Color.Default" Typo="Typo.h5">@Localizer["Quick_Access_Header"]</MudText>
-    <MudList Class="mt-2" T="string">
-        <MudListItem>1</MudListItem>
-        <MudDivider></MudDivider>
-        <MudListItem>2</MudListItem>
-        <MudDivider></MudDivider>
-        <MudListItem>3</MudListItem>
-        <MudDivider></MudDivider>
-        <MudListItem>4</MudListItem>
-        <MudDivider></MudDivider>
-        <MudListItem>4</MudListItem>
-        <MudDivider></MudDivider>
-        <MudListItem>4</MudListItem>
-        <MudDivider></MudDivider>
-        <MudListItem>4</MudListItem>
-        <MudDivider></MudDivider>
-        <MudListItem>4</MudListItem>
-        <MudDivider></MudDivider>
-        <MudListItem>4</MudListItem>
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@inject IState<RecentDecksState> RecentDecksState
 
-    </MudList>
+<MudPaper Elevation="0"
+          Style="border-radius: 16px; border: 1.5px solid var(--mud-palette-lines-default); overflow: hidden; height: 400px; display: flex; flex-direction: column;">
+
+    <div style="padding: 16px 20px; border-bottom: 1.5px solid var(--mud-palette-lines-default); background: var(--mud-palette-background-grey);">
+        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+            <MudIcon Icon="@Icons.Material.Outlined.History" Color="Color.Primary" Size="Size.Small" />
+            <MudText Typo="Typo.overline" Color="Color.Primary" Style="letter-spacing: 0.15em;">
+                @Localizer["Quick_Access_Header"]
+            </MudText>
+        </MudStack>
+    </div>
+
+    <div style="overflow-y: auto; flex: 1;">
+        @if (RecentDecksState.Value.RecentDecks.Count == 0)
+        {
+        <MudStack AlignItems="AlignItems.Center" Spacing="2" Style="padding: 32px 20px;">
+            <MudIcon Icon="@Icons.Material.Outlined.LayersClear"
+                     Style="font-size: 2rem; opacity: 0.35;" />
+            <MudText Typo="Typo.body2" Align="Align.Center" Style="opacity: 0.5;">
+                No recently accessed decks
+            </MudText>
+        </MudStack>
+        }
+        else
+        {
+        <MudList T="string" Dense="true" DisablePadding="true">
+            @foreach (var deck in RecentDecksState.Value.RecentDecks)
+            {
+            <MudListItem Href="@($"/learning/decks/{deck.Id}")"
+                         Style="padding: 12px 20px;">
+                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="3" Style="width: 100%;">
+                    <MudIcon Icon="@Icons.Material.Outlined.Style"
+                             Color="Color.Primary"
+                             Size="Size.Small" />
+                    <MudStack Spacing="0" Style="flex: 1; min-width: 0;">
+                        <MudText Typo="Typo.body2" Style="font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            @deck.Name
+                        </MudText>
+                        <MudText Typo="Typo.caption" Style="opacity: 0.5;">
+                            @deck.AccessedAt.ToString("MMM d, HH:mm")
+                        </MudText>
+                    </MudStack>
+                    <MudIcon Icon="@Icons.Material.Filled.ChevronRight"
+                             Size="Size.Small"
+                             Style="opacity: 0.35;" />
+                </MudStack>
+            </MudListItem>
+            <MudDivider />
+            }
+        </MudList>
+        }
+    </div>
+
 </MudPaper>

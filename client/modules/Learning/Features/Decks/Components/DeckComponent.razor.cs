@@ -4,6 +4,7 @@ using Learning.Features.Decks.Models;
 using Learning.LearningShared.Services;
 using Learning.Store.Deck;
 using Learning.Store.Deck.Actions.Fetch;
+using Learning.Store.RecentDeck.Actions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
@@ -24,6 +25,10 @@ public partial class DeckComponent : FluxorComponent
     protected override void OnInitialized()
     {
         UserState.StateChanged += (_, _) => { GetDeckFromApi(); };
+        DeckState.StateChanged += (_, _) =>
+        {
+            Dispatcher.Dispatch(new AccessDeckAction(DeckId, DeckState.Value.DeckWithWordsDto!.Topic));
+        };
         base.OnInitialized();
     }
 

@@ -5,6 +5,7 @@ using Learning.Store.Practice;
 using Learning.Store.Practice.FillInTheGapsTask.Check;
 using Learning.Store.Practice.FillInTheGapsTask.Check.Actions;
 using Learning.Store.Practice.FillInTheGapsTask.Get;
+using Learning.Store.Practice.FillInTheGapsTask.Get.Actions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
@@ -23,7 +24,7 @@ public partial class FillInTheGapsPage : FluxorComponent
 
     protected override Task OnParametersSetAsync()
     {
-        // Dispatcher.Dispatch(new GetFillInTheGapsTaskAction(DeckId, PracticeState.Value.WordsForPractice));
+        Dispatcher.Dispatch(new GetFillInTheGapsTaskAction(DeckId, PracticeState.Value.WordsForPractice));
         _request = new CheckFillInTheGapsTaskRequest(DeckId, PracticeState.Value.WordsForPractice.Length);
         base.OnInitialized();
         return Task.CompletedTask;

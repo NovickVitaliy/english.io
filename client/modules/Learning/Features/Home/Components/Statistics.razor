@@ -1,18 +1,61 @@
 @using MudBlazor
-<MudGrid Class="d-block d-md-flex mt-5" Justify="Justify.Center">
+
+<MudGrid Justify="Justify.Center" Class="mb-4">
     <MudItem xs="12" md="4">
-        <MudPaper Height="200px" Width="100%">
-            <MudText Class="pt-3" Align="Align.Center" Typo="Typo.h4">First stat</MudText>
+        <MudPaper Elevation="0"
+                  Style="border-radius: 16px; border: 1.5px solid var(--mud-palette-lines-default); overflow: hidden; height: 100%;">
+            <div style="padding: 28px 24px;">
+                <MudStack AlignItems="AlignItems.Center" Spacing="2">
+                    <MudIcon Icon="@Icons.Material.Outlined.MenuBook"
+                             Color="Color.Primary"
+                             Style="font-size: 2rem;" />
+                    <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight: 700;">
+                        —
+                    </MudText>
+                    <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Default"
+                             Style="opacity: 0.65; font-weight: 500;">
+                        Words Learned
+                    </MudText>
+                </MudStack>
+            </div>
         </MudPaper>
     </MudItem>
     <MudItem xs="12" md="4">
-        <MudPaper Height="200px" Width="100%">
-            <MudText Class="pt-3" Align="Align.Center" Typo="Typo.h4">Second stat</MudText>
+        <MudPaper Elevation="0"
+                  Style="border-radius: 16px; border: 1.5px solid var(--mud-palette-lines-default); overflow: hidden; height: 100%;">
+            <div style="padding: 28px 24px;">
+                <MudStack AlignItems="AlignItems.Center" Spacing="2">
+                    <MudIcon Icon="@Icons.Material.Outlined.LocalFireDepartment"
+                             Color="Color.Primary"
+                             Style="font-size: 2rem;" />
+                    <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight: 700;">
+                        —
+                    </MudText>
+                    <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Default"
+                             Style="opacity: 0.65; font-weight: 500;">
+                        Day Streak
+                    </MudText>
+                </MudStack>
+            </div>
         </MudPaper>
     </MudItem>
     <MudItem xs="12" md="4">
-        <MudPaper Height="200px" Width="100%">
-            <MudText Class="pt-3" Align="Align.Center" Typo="Typo.h4">Third stat</MudText>
+        <MudPaper Elevation="0"
+                  Style="border-radius: 16px; border: 1.5px solid var(--mud-palette-lines-default); overflow: hidden; height: 100%;">
+            <div style="padding: 28px 24px;">
+                <MudStack AlignItems="AlignItems.Center" Spacing="2">
+                    <MudIcon Icon="@Icons.Material.Outlined.EmojiEvents"
+                             Color="Color.Primary"
+                             Style="font-size: 2rem;" />
+                    <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight: 700;">
+                        —
+                    </MudText>
+                    <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Default"
+                             Style="opacity: 0.65; font-weight: 500;">
+                        Exercises Completed
+                    </MudText>
+                </MudStack>
+            </div>
         </MudPaper>
     </MudItem>
 </MudGrid>

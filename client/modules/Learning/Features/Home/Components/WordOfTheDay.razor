@@ -1,13 +1,32 @@
 @using MudBlazor
-<MudPaper Height="100%" Width="100%">
-    <MudText Class="border-bottom p-2" Typo="Typo.h5"
-             Align="Align.Center">@Localizer["Word_Of_The_Day_Header"]</MudText>
-    <div class="d-flex justify-center align-center flex-column gap-4 h-75">
-        <MudPaper Class="mud-theme-primary d-flex justify-center align-center" Height="50px" Width="150px">
-            <MudText Align="Align.Center" Typo="Typo.h5">World</MudText>
+
+<MudPaper Elevation="0"
+          Style="border-radius: 16px; border: 1.5px solid var(--mud-palette-lines-default); overflow: hidden; height: 400px; display: flex; flex-direction: column;">
+
+    <div style="padding: 16px 20px; border-bottom: 1.5px solid var(--mud-palette-lines-default); background: var(--mud-palette-background-grey);">
+        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+            <MudIcon Icon="@Icons.Material.Outlined.Star" Color="Color.Primary" Size="Size.Small" />
+            <MudText Typo="Typo.overline" Color="Color.Primary" Style="letter-spacing: 0.15em;">
+                @Localizer["Word_Of_The_Day_Header"]
+            </MudText>
+        </MudStack>
+    </div>
+
+    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; padding: 24px;">
+        <MudPaper Elevation="0"
+                  Style="border-radius: 12px; border: 1.5px solid var(--mud-palette-primary); padding: 16px 32px;">
+            <MudText Typo="Typo.h5" Align="Align.Center" Style="font-weight: 700;" Color="Color.Primary">
+                World
+            </MudText>
         </MudPaper>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary">
+
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   Size="Size.Large"
+                   StartIcon="@Icons.Material.Filled.Add"
+                   Style="border-radius: 14px; text-transform: none; font-weight: 700; padding: 12px 28px;">
             Add to deck
         </MudButton>
     </div>
+
 </MudPaper>

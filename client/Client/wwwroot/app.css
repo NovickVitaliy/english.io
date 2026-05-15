@@ -53,3 +53,7 @@ h1:focus {
 .bg-themed {
     background-color: var(--mud-palette-background);
 }
+
+.inline-input .mud-input-control {
+    max-width: min-content !important;
+}

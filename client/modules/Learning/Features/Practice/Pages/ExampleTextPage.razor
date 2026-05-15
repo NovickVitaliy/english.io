@@ -5,25 +5,52 @@
 @layout DashboardLayout
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
-<MudContainer MaxWidth="MaxWidth.Medium">
-    <MudText Class="mb-3" Align="Align.Center"
-             Typo="Typo.h3">@Localizer["Title"]</MudText>
+<MudContainer MaxWidth="MaxWidth.Medium" Class="py-8">
+
+    <MudStack AlignItems="AlignItems.Center" Class="mb-8">
+        <MudText Typo="Typo.overline" Color="Color.Primary" Style="letter-spacing: 0.15em;">
+            Example Text
+        </MudText>
+        <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight: 700;">
+            @Localizer["Title"]
+        </MudText>
+    </MudStack>
+
     @if (!ExampleTextTaskState.Value.IsLoading)
     {
         var text = new MarkupString(Regex.Replace(ExampleTextTaskState.Value.Text, UsedWordPattern, Replacement));
-        <MudPaper Class="p-3">
-            <MudText Typo="Typo.body1">
-                @text
-            </MudText>
-            <div class="mt-3 d-flex justify-content-center align-items-center">
-                <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="FinishPractice">
+
+        <MudPaper Elevation="0"
+                  Style="border-radius: 16px; border: 1.5px solid var(--mud-palette-lines-default); overflow: hidden;">
+
+            <div style="padding: 20px 24px;">
+                <MudText Typo="Typo.body1" Style="line-height: 1.8;">
+                    @text
+                </MudText>
+            </div>
+
+            <MudDivider />
+
+            <div style="padding: 16px 24px;">
+                <MudButton FullWidth="true"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           Size="Size.Large"
+                           EndIcon="@Icons.Material.Filled.CheckCircle"
+                           OnClick="FinishPractice"
+                           Style="border-radius: 14px; text-transform: none; font-weight: 700; font-size: 1rem; padding: 14px;">
                     @Localizer["Finish_Practice"]
                 </MudButton>
             </div>
+
         </MudPaper>
     }
+
 </MudContainer>
 
 <MudOverlay Visible="@(ExampleTextTaskState.Value.IsLoading)" DarkBackground="true">
-    <MudProgressCircular Color="Color.Secondary" Indeterminate="true"/>
+    <MudStack AlignItems="AlignItems.Center" Spacing="3">
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+        <MudText Typo="Typo.body2" Style="color: white; opacity: 0.8;">Loading exercise…</MudText>
+    </MudStack>
 </MudOverlay>

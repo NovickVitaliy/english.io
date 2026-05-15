@@ -3,57 +3,144 @@
 @using MudBlazor
 @layout DashboardLayout
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
-<MudContainer MaxWidth="MaxWidth.Medium">
-    <MudButton OnClick="NextExercise">
-        Skip
-    </MudButton>
-    @if (ReadingComprehensionTaskState.Value.IsLoading)
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="py-8">
+
+    <MudStack AlignItems="AlignItems.Center" Class="mb-8">
+        <MudText Typo="Typo.overline" Color="Color.Primary" Style="letter-spacing: 0.15em;">
+            Reading Comprehension
+        </MudText>
+        <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight: 700;">
+            @Localizer["Header"]
+        </MudText>
+    </MudStack>
+
+    @if (!ReadingComprehensionTaskState.Value.IsLoading &&
+         ReadingComprehensionTaskState.Value.ReadingComprehensionExercise is not null)
     {
-        <MudText Typo="Typo.h5">@Localizer["Loading"]</MudText>
-    }
-    else if (!ReadingComprehensionTaskState.Value.IsLoading && ReadingComprehensionTaskState.Value.ReadingComprehensionExercise is not null)
-    {
-        <MudText Class="mb-3" Align="Align.Center"
-                 Typo="Typo.h3">@Localizer["Header"]</MudText>
-        <MudPaper Class="p-3 mb-3">
-            <MudText>@ReadingComprehensionTaskState.Value.ReadingComprehensionExercise.Text</MudText>
-        </MudPaper>
-        @for (var index = 0; index < ReadingComprehensionTaskState.Value.ReadingComprehensionExercise.Questions.Length; index++)
-        {
-            var i = index;
-            var question = ReadingComprehensionTaskState.Value.ReadingComprehensionExercise.Questions[index];
-            <MudPaper Class="p-3 mb-3">
-                <div class="d-flex justify-content-start align-items-center">
-                    @if (ReadingComprehensionTaskResultState.Value.Result is not null && !ReadingComprehensionTaskResultState.Value.IsLoading)
-                    {
-                        @* var checkAnswerResult = ReadingComprehensionTaskResultState.Value.Result.AnswersResults[i]; *@
-                        @* <MudText>@(checkAnswerResult.IsCorrect ? "✅" : "❌")</MudText> *@
-                    }
-                    <MudText>@question</MudText>
-                </div>
-                <MudInput @bind-Value="_checkReadingComprehensionExerciseRequest!.Answers[i]"></MudInput>
-                @if (ReadingComprehensionTaskResultState.Value.Result is not null)
-                {
-                    var checkAnswerResult = ReadingComprehensionTaskResultState.Value.Result.AnswersResults[i];
-                    @if (!checkAnswerResult.IsCorrect)
-                    {
-                        <MudText>@Localizer["Correct_Answer"] @checkAnswerResult.CorrectAnswer</MudText>
-                    }
-                }
-            </MudPaper>
-        }
-        <div class="d-flex justify-content-start gap-3">
-            <MudButton OnClick="CheckReadingComprehension" Color="Color.Primary"
-                       Variant="Variant.Filled">@Localizer["Check_Button"]</MudButton>
-            @if (ReadingComprehensionTaskResultState.Value.Result is not null)
+        var exercise = ReadingComprehensionTaskState.Value.ReadingComprehensionExercise;
+        var hasResult = ReadingComprehensionTaskResultState.Value.Result is not null;
+
+        <MudStack Row="true" Spacing="3" Class="mb-6">
+            <MudButton FullWidth="true"
+                       Variant="Variant.Outlined"
+                       Color="Color.Default"
+                       StartIcon="@Icons.Material.Filled.SkipNext"
+                       OnClick="NextExercise"
+                       Style="border-radius: 12px; text-transform: none; font-weight: 600;">
+                Skip
+            </MudButton>
+            @if (hasResult)
             {
-                <MudButton OnClick="NextExercise" Color="Color.Primary"
-                           Variant="Variant.Filled">@Localizer["Next_Exercise_Button"]</MudButton>
+                <MudButton FullWidth="true"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           EndIcon="@Icons.Material.Filled.ArrowForward"
+                           OnClick="NextExercise"
+                           Style="border-radius: 12px; text-transform: none; font-weight: 600;">
+                    @Localizer["Next_Exercise_Button"]
+                </MudButton>
             }
-        </div>
+        </MudStack>
+
+        <MudPaper Elevation="0"
+                  Style="border-radius: 16px; border: 1.5px solid var(--mud-palette-lines-default); overflow: hidden; margin-bottom: 24px;">
+            <div style="padding: 16px 20px; border-bottom: 1.5px solid var(--mud-palette-lines-default);">
+                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                    <MudIcon Icon="@Icons.Material.Outlined.MenuBook"
+                             Color="Color.Primary"
+                             Size="Size.Small" />
+                    <MudText Typo="Typo.overline" Color="Color.Primary" Style="letter-spacing: 0.12em;">
+                        Passage
+                    </MudText>
+                </MudStack>
+            </div>
+            <div style="padding: 20px 24px;">
+                <MudText Typo="Typo.body1" Style="line-height: 1.8;">
+                    @exercise.Text
+                </MudText>
+            </div>
+        </MudPaper>
+
+        <MudStack Spacing="4">
+            @for (var index = 0; index < exercise.Questions.Length; index++)
+            {
+                var i = index;
+                var question = exercise.Questions[index];
+                var result = hasResult ? ReadingComprehensionTaskResultState.Value.Result.AnswersResults[i] : null;
+                var isCorrect = result?.IsCorrect == true;
+                var isWrong = result?.IsCorrect == false;
+
+                <MudPaper Elevation="0"
+                          Style="@($"border-radius: 16px; border: 1.5px solid {(isCorrect ? "var(--mud-palette-success)" : isWrong ? "var(--mud-palette-error)" : "var(--mud-palette-lines-default)")}; overflow: hidden;")">
+
+                    <div style="padding: 16px 20px; border-bottom: 1.5px solid var(--mud-palette-lines-default);">
+                        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                            <MudText Typo="Typo.caption"
+                                     Style="font-weight: 700; color: var(--mud-palette-primary); background: var(--mud-palette-primary-lighten); border-radius: 6px; padding: 2px 8px;">
+                                Q@(i + 1)
+                            </MudText>
+                            <MudText Typo="Typo.body1" Style="font-weight: 600;">
+                                @question
+                            </MudText>
+                        </MudStack>
+                    </div>
+
+                    <div style="padding: 16px 20px;">
+                        <MudTextField T="string"
+                                      @bind-Value="_checkReadingComprehensionExerciseRequest!.Answers[i]"
+                                      Variant="Variant.Outlined"
+                                      Margin="Margin.Dense"
+                                      Placeholder="Your answer…"
+                                      Disabled="hasResult"
+                                      FullWidth="true" />
+                    </div>
+
+                    @if (hasResult && result is not null)
+                    {
+                        <div style="@($"border-top: 1.5px solid {(isCorrect ? "var(--mud-palette-success)" : "var(--mud-palette-error)")}; padding: 12px 20px;")">
+                            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                                <MudIcon Icon="@(isCorrect ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Cancel)"
+                                         Color="@(isCorrect ? Color.Success : Color.Error)"
+                                         Size="Size.Small" />
+                                @if (isCorrect)
+                                {
+                                    <MudText Typo="Typo.body2" Color="Color.Success" Style="font-weight: 600;">
+                                        Correct!
+                                    </MudText>
+                                }
+                                else
+                                {
+                                    <MudText Typo="Typo.body2" Color="Color.Error">
+                                        <strong>@Localizer["Correct_Answer"]:</strong> @result.CorrectAnswer
+                                    </MudText>
+                                }
+                            </MudStack>
+                        </div>
+                    }
+
+                </MudPaper>
+            }
+        </MudStack>
+
+        <MudButton Disabled="hasResult"
+                   FullWidth="true"
+                   Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   Size="Size.Large"
+                   StartIcon="@Icons.Material.Filled.Spellcheck"
+                   OnClick="CheckReadingComprehension"
+                   Class="mt-6"
+                   Style="border-radius: 14px; text-transform: none; font-weight: 700; font-size: 1rem; padding: 14px;">
+            @Localizer["Check_Button"]
+        </MudButton>
     }
+
 </MudContainer>
 
 <MudOverlay Visible="@(ReadingComprehensionTaskState.Value.IsLoading || ReadingComprehensionTaskResultState.Value.IsLoading)" DarkBackground="true">
-    <MudProgressCircular Color="Color.Secondary" Indeterminate="true"/>
+    <MudStack AlignItems="AlignItems.Center" Spacing="3">
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+        <MudText Typo="Typo.body2" Style="color: white; opacity: 0.8;">Loading exercise…</MudText>
+    </MudStack>
 </MudOverlay>
