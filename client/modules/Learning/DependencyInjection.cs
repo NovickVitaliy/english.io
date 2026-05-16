@@ -1,5 +1,6 @@
 using Learning.Features.DashboardLayout.Components;
 using Learning.Features.GrammarChecker.Services;
+using Learning.Features.Home.Services;
 using Learning.Features.Practice.Services;
 using Learning.Features.PreferenceConfiguring.Options;
 using Learning.Features.PreferenceConfiguring.Services;
@@ -25,6 +26,7 @@ public static class DependencyInjection
         services.ConfigureApiService<IAuthenticationSettingsService>(configuration, IAuthenticationSettingsService.ApiUrlKey);
         services.ConfigureApiService<ITextToSpeechService>(configuration, ITextToSpeechService.ApiUrlKey);
         services.ConfigureApiService<IPracticeService>(configuration, IPracticeService.ApiUrlKey);
+        services.ConfigureApiService<IStatisticsApi>(configuration, IStatisticsApi.ApiUrlKey);
 
         services.AddHttpClient<AiChatService>(client =>
         {

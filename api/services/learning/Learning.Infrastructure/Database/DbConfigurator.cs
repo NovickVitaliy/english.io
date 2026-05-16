@@ -1,4 +1,6 @@
 using Learning.Domain.Models;
+using Learning.Infrastructure.Database.Statistics;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MongoDB.Bson;
@@ -14,6 +16,16 @@ public static class DbConfigurator
     {
         ConfigureConventions();
         await ConfigureIndexes(host);
+        await ConfigureStatisticsDatabase(host);
+    }
+
+    private static async Task ConfigureStatisticsDatabase(IHost host)
+    {
+        await using var scope = host.Services.CreateAsyncScope();
+        var services = scope.ServiceProvider;
+
+        var dbContext = services.GetRequiredService<StatisticsDbContext>();
+        await dbContext.Database.MigrateAsync();
     }
 
     private static async Task ConfigureIndexes(IHost host)

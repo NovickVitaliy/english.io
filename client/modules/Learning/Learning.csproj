@@ -21,7 +21,6 @@
 
     <ItemGroup>
       <Folder Include="Features\Home\Models\" />
-      <Folder Include="Features\Home\Services\" />
     </ItemGroup>
 
     <ItemGroup>

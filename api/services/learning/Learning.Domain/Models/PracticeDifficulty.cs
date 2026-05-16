@@ -18,5 +18,6 @@ public enum PracticeTask
     TranslateFromEnglishToUkrainian,
     TranslateFromUkrainianToEnglish,
     FillInTheGaps,
-    ContrastTask
+    ContrastTask,
+    ReadingComprehension
 }

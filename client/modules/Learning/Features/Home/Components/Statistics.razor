@@ -1,4 +1,5 @@
 @using MudBlazor
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
 <MudGrid Justify="Justify.Center" Class="mb-4">
     <MudItem xs="12" md="4">
@@ -9,17 +10,25 @@
                     <MudIcon Icon="@Icons.Material.Outlined.MenuBook"
                              Color="Color.Primary"
                              Style="font-size: 2rem;" />
-                    <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight: 700;">
-                        —
-                    </MudText>
+                    @if (StatisticsState.Value.IsLoading)
+                    {
+                        <MudSkeleton SkeletonType="SkeletonType.Text" Width="60px" Height="40px" />
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight: 700;">
+                            @(StatisticsState.Value.Statistics?.TotalWordsPracticed.ToString() ?? "—")
+                        </MudText>
+                    }
                     <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Default"
                              Style="opacity: 0.65; font-weight: 500;">
-                        Words Learned
+                        Words Practiced
                     </MudText>
                 </MudStack>
             </div>
         </MudPaper>
     </MudItem>
+
     <MudItem xs="12" md="4">
         <MudPaper Elevation="0"
                   Style="border-radius: 16px; border: 1.5px solid var(--mud-palette-lines-default); overflow: hidden; height: 100%;">
@@ -28,9 +37,16 @@
                     <MudIcon Icon="@Icons.Material.Outlined.LocalFireDepartment"
                              Color="Color.Primary"
                              Style="font-size: 2rem;" />
-                    <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight: 700;">
-                        —
-                    </MudText>
+                    @if (StatisticsState.Value.IsLoading)
+                    {
+                        <MudSkeleton SkeletonType="SkeletonType.Text" Width="60px" Height="40px" />
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight: 700;">
+                            @(StatisticsState.Value.Statistics?.CurrentStreak.ToString() ?? "—")
+                        </MudText>
+                    }
                     <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Default"
                              Style="opacity: 0.65; font-weight: 500;">
                         Day Streak
@@ -39,6 +55,7 @@
             </div>
         </MudPaper>
     </MudItem>
+
     <MudItem xs="12" md="4">
         <MudPaper Elevation="0"
                   Style="border-radius: 16px; border: 1.5px solid var(--mud-palette-lines-default); overflow: hidden; height: 100%;">
@@ -47,9 +64,16 @@
                     <MudIcon Icon="@Icons.Material.Outlined.EmojiEvents"
                              Color="Color.Primary"
                              Style="font-size: 2rem;" />
-                    <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight: 700;">
-                        —
-                    </MudText>
+                    @if (StatisticsState.Value.IsLoading)
+                    {
+                        <MudSkeleton SkeletonType="SkeletonType.Text" Width="60px" Height="40px" />
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight: 700;">
+                            @(StatisticsState.Value.Statistics?.TotalExercisesCompleted.ToString() ?? "—")
+                        </MudText>
+                    }
                     <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Default"
                              Style="opacity: 0.65; font-weight: 500;">
                         Exercises Completed
@@ -58,4 +82,56 @@
             </div>
         </MudPaper>
     </MudItem>
+
+    @if (StatisticsState.Value.Statistics is not null && !StatisticsState.Value.IsLoading)
+    {
+        <MudItem xs="12" md="4">
+            <MudPaper Elevation="0"
+                      Style="border-radius: 16px; border: 1.5px solid var(--mud-palette-lines-default); overflow: hidden; height: 100%;">
+                <div style="padding: 28px 24px;">
+                    <MudStack AlignItems="AlignItems.Center" Spacing="2">
+                        <MudIcon Icon="@Icons.Material.Outlined.TrendingUp"
+                                 Color="Color.Primary"
+                                 Style="font-size: 2rem;" />
+                        <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight: 700;">
+                            @($"{StatisticsState.Value.Statistics.OverallAccuracy * 100:F0}%")
+                        </MudText>
+                        <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Default"
+                                 Style="opacity: 0.65; font-weight: 500;">
+                            Overall Accuracy
+                        </MudText>
+                    </MudStack>
+                </div>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="4">
+            <MudPaper Elevation="0"
+                      Style="border-radius: 16px; border: 1.5px solid var(--mud-palette-lines-default); overflow: hidden; height: 100%;">
+                <div style="padding: 28px 24px;">
+                    <MudStack AlignItems="AlignItems.Center" Spacing="2">
+                        <MudIcon Icon="@Icons.Material.Outlined.EmojiEvents"
+                                 Color="Color.Primary"
+                                 Style="font-size: 2rem;" />
+                        <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight: 700;">
+                            @(StatisticsState.Value.Statistics.LongestStreak)
+                        </MudText>
+                        <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Default"
+                                 Style="opacity: 0.65; font-weight: 500;">
+                            Longest Streak
+                        </MudText>
+                    </MudStack>
+                </div>
+            </MudPaper>
+        </MudItem>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(StatisticsState.Value.ErrorMessage))
+    {
+        <MudItem xs="12">
+            <MudAlert Severity="Severity.Error" Dense="true" Style="border-radius: 12px;">
+                @StatisticsState.Value.ErrorMessage
+            </MudAlert>
+        </MudItem>
+    }
 </MudGrid>

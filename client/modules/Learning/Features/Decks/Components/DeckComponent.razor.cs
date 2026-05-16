@@ -24,12 +24,25 @@ public partial class DeckComponent : FluxorComponent
 
     protected override void OnInitialized()
     {
-        UserState.StateChanged += (_, _) => { GetDeckFromApi(); };
-        DeckState.StateChanged += (_, _) =>
-        {
-            Dispatcher.Dispatch(new AccessDeckAction(DeckId, DeckState.Value.DeckWithWordsDto!.Topic));
-        };
+        UserState.StateChanged += OnUserStateChanged;
+        DeckState.StateChanged += OnDeckStateChanged;
+
         base.OnInitialized();
+    }
+
+    private void OnUserStateChanged(object? sender, EventArgs e)
+    {
+        GetDeckFromApi();
+    }
+
+    private void OnDeckStateChanged(object? sender, EventArgs e)
+    {
+        var deck = DeckState.Value.DeckWithWordsDto;
+
+        if (deck is null)
+            return;
+
+        Dispatcher.Dispatch(new AccessDeckAction(DeckId, deck.Topic));
     }
 
     protected override Task OnParametersSetAsync()

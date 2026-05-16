@@ -25,7 +25,7 @@ public partial class ReadingComprehension : FluxorComponent
     protected override void OnParametersSet()
     {
         Dispatcher.Dispatch(new GetReadingComprehesionTaskAction(PracticeState.Value.WordsForPractice));
-        _checkReadingComprehensionExerciseRequest = new CheckReadingComprehensionExerciseRequest(new List<string>(), 10, string.Empty);
+        _checkReadingComprehensionExerciseRequest = new CheckReadingComprehensionExerciseRequest(new List<string>(), 10, string.Empty, DeckId);
         ReadingComprehensionTaskState.StateChanged += (_, _) =>
         {
             if (ReadingComprehensionTaskState.Value.ReadingComprehensionExercise is not null)

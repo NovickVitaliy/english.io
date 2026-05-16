@@ -7,16 +7,16 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["notifications/Notifications.API/Notifications.API.csproj", "notifications/Notifications.API/"]
+COPY ["api/services/notifications/Notifications.API/Notifications.API.csproj", "api/services/notifications/Notifications.API/"]
 COPY ["shared/Shared/Shared.csproj", "shared/Shared/"]
-RUN dotnet restore "notifications/Notifications.API/Notifications.API.csproj"
+RUN dotnet restore "api/services/notifications/Notifications.API/Notifications.API.csproj"
 COPY . .
-WORKDIR "/src/notifications/Notifications.API"
-RUN dotnet build "Notifications.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/api/services/notifications/Notifications.API"
+RUN dotnet build "./Notifications.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "Notifications.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Notifications.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

@@ -3,6 +3,7 @@ using Shared.Requests;
 namespace Learning.Application.DTOs.Practice.ReadingComprehension.Check;
 
 public record CheckReadingComprehensionExerciseRequest(
+    Guid DeckId,
     string Text,
     string[] Questions,
     string[] Answers) : IBaseRequest

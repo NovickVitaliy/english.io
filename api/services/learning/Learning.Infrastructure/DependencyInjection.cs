@@ -6,6 +6,7 @@ using Learning.Application.Contracts.Repositories;
 using Learning.Application.Contracts.Services;
 using Learning.Infrastructure.Api;
 using Learning.Infrastructure.Database;
+using Learning.Infrastructure.Database.Statistics;
 using Learning.Infrastructure.Jobs;
 using Learning.Infrastructure.Options;
 using Learning.Infrastructure.Persistence;
@@ -14,6 +15,8 @@ using Learning.Infrastructure.Providers.DeckExporter.JsonExporter;
 using Learning.Infrastructure.Providers.DeckImporter;
 using Learning.Infrastructure.Repositories;
 using Learning.Infrastructure.Services;
+using Learning.Infrastructure.Services.Statistics;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -143,6 +146,15 @@ public static class DependencyInjection
         });
 
         services.AddHttpClient<IGrammarCheckerService, GrammarCheckerService>();
+
+        services.AddDbContext<StatisticsDbContext>(options =>
+        {
+            options.UseNpgsql(configuration.GetConnectionString("StatisticsDatabase"), builder =>
+                builder.UseNodaTime());
+        });
+
+        services.AddScoped<IStatisticsRepository, StatisticsRepository>();
+        services.AddScoped<IStatisticsService, StatisticsService>();
 
         return services;
     }

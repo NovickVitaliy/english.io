@@ -14,6 +14,7 @@ using Learning.Application.DTOs.Practice.Sessions;
 using Learning.Application.DTOs.Practice.TranslateWords;
 using Learning.Domain.Models;
 using Learning.Infrastructure.DTOs;
+using Learning.Infrastructure.Services.Statistics;
 using Microsoft.Extensions.Logging;
 using Shared;
 using Shared.ErrorHandling;
@@ -29,6 +30,7 @@ public class PracticeService : IPracticeService
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IDecksRepository _decksRepository;
     private readonly IWordUnitService _wordUnitService;
+    private readonly IStatisticsService _statisticsService;
     private readonly ILogger<PracticeService> _logger;
 
     public PracticeService(
@@ -37,6 +39,7 @@ public class PracticeService : IPracticeService
         ICurrentUserAccessor currentUserAccessor,
         IDecksRepository decksRepository,
         IWordUnitService wordUnitService,
+        IStatisticsService statisticsService,
         ILogger<PracticeService> logger)
     {
         _aiLearningService = aiLearningService;
@@ -44,6 +47,7 @@ public class PracticeService : IPracticeService
         _currentUserAccessor = currentUserAccessor;
         _decksRepository = decksRepository;
         _wordUnitService = wordUnitService;
+        _statisticsService = statisticsService;
         _logger = logger;
     }
 
@@ -56,7 +60,6 @@ public class PracticeService : IPracticeService
         }
 
         var response = await _aiLearningService.VerifyWordsTranslations(taskRequest);
-
         if (response is null)
         {
             return Result<TranslateWordsResponse>.BadRequest("Something went wrong");
@@ -65,28 +68,42 @@ public class PracticeService : IPracticeService
         var joined = response.Join(taskRequest.TranslatedWords,
             a => a.SenseId,
             b => b.SenseId,
-            (a, b) => new
-            {
-                a, b
-            });
+            (a, b) => new { a, b });
 
         var tasks = joined.Select(async obj =>
         {
             var wordSenseFullInfo = await _wordUnitService.GetWordSenseFullInfo(obj.b.SenseId);
-
             return obj.a with
             {
-                CorrectTranslation = taskRequest.OriginalLanguage == GlobalConstants.Languages.English ? wordSenseFullInfo!.UkrainianTranslation : wordSenseFullInfo!.EnglishWord,
+                CorrectTranslation = taskRequest.OriginalLanguage == GlobalConstants.Languages.English
+                    ? wordSenseFullInfo!.UkrainianTranslation
+                    : wordSenseFullInfo!.EnglishWord,
                 SenseId = wordSenseFullInfo.SenseId
             };
         });
 
         response = await Task.WhenAll(tasks);
 
-        await UpdateWordsProgress(
-            taskRequest.DeckId,
-            response.Select(x => new WordSenseTaskResult(x.SenseId, x.IsCorrect)).ToArray(),
-            taskRequest.OriginalLanguage == GlobalConstants.Languages.English ? PracticeTask.TranslateFromEnglishToUkrainian : PracticeTask.TranslateFromUkrainianToEnglish);
+        var practiceTask = taskRequest.OriginalLanguage == GlobalConstants.Languages.English
+            ? PracticeTask.TranslateFromEnglishToUkrainian
+            : PracticeTask.TranslateFromUkrainianToEnglish;
+
+        var wordResults = response
+            .Select(x => new WordSenseTaskResult(x.SenseId, x.IsCorrect))
+            .ToArray();
+
+        await UpdateWordsProgress(taskRequest.DeckId, wordResults, practiceTask);
+
+        var accuracy = CalculateAccuracy(wordResults);
+
+        await _statisticsService.RecordPracticeSessionAsync(new RecordSessionStatisticsRequest(
+            UserEmail: _currentUserAccessor.GetEmail()!,
+            DeckId: taskRequest.DeckId,
+            WordsPracticed: wordResults.Length,
+            TaskAccuracies: [new PracticeTaskAccuracy(practiceTask, accuracy)],
+            WordResults: wordResults,
+            UnknownWordsMarked: 0
+        ));
 
         return Result<TranslateWordsResponse>.Ok(new TranslateWordsResponse(response));
     }
@@ -100,7 +117,6 @@ public class PracticeService : IPracticeService
         }
 
         var sentencesWithGaps = await _aiLearningService.GenerateSentencesWithGaps(wordsForPractice);
-
         if (sentencesWithGaps is null)
         {
             return Result<SentenceWithGap[]>.BadRequest("Something went wrong");
@@ -118,7 +134,6 @@ public class PracticeService : IPracticeService
         }
 
         var result = await _aiLearningService.GenerateExampleTextAsync(words);
-
         return Result<GetExampleTextResponse>.Ok(new GetExampleTextResponse(result));
     }
 
@@ -130,7 +145,7 @@ public class PracticeService : IPracticeService
             return Result<SaveSessionResultDto>.BadRequest(validationResult.ErrorMessage);
         }
 
-        var sessionResult = new SessionResult()
+        var sessionResult = new SessionResult
         {
             Words = request.Words,
             UserEmail = _currentUserAccessor.GetEmail()!,
@@ -143,8 +158,14 @@ public class PracticeService : IPracticeService
 
         var id = await _practiceRepository.CreateSessionResultAsync(sessionResult);
 
-        var dto = new SaveSessionResultDto(sessionResult.Words, sessionResult.FirstTaskPercentageSuccess, sessionResult.SecondTaskPercentageSuccess,
-            sessionResult.ThirdTaskPercentageSuccess, sessionResult.FourthTaskPercentageSuccess, sessionResult.PracticeDate);
+        var dto = new SaveSessionResultDto(
+            sessionResult.Words,
+            sessionResult.FirstTaskPercentageSuccess,
+            sessionResult.SecondTaskPercentageSuccess,
+            sessionResult.ThirdTaskPercentageSuccess,
+            sessionResult.FourthTaskPercentageSuccess,
+            sessionResult.PracticeDate);
+
         return Result<SaveSessionResultDto>.Created($"/api/session-results/{id}", dto);
     }
 
@@ -152,7 +173,7 @@ public class PracticeService : IPracticeService
     {
         if (wordsForPractice.Length == 0)
         {
-            return Result<CreateReadingComprehensionExerciseResponse>.BadRequest("Invalid reqeust");
+            return Result<CreateReadingComprehensionExerciseResponse>.BadRequest("Invalid request");
         }
 
         var readingComprehension = await _aiLearningService.GenerateReadingComprehensionExerciseAsync(wordsForPractice);
@@ -178,6 +199,21 @@ public class PracticeService : IPracticeService
             return Result<CheckReadingComprehensionExerciseResponse>.BadRequest("Something went wrong");
         }
 
+        var wordResults = response.AnswersResults
+            .Select(x => new WordSenseTaskResult(Guid.Empty, x.IsCorrect))
+            .ToArray();
+
+        var accuracy = CalculateAccuracy(wordResults);
+
+        await _statisticsService.RecordPracticeSessionAsync(new RecordSessionStatisticsRequest(
+            UserEmail: _currentUserAccessor.GetEmail()!,
+            DeckId: request.DeckId,
+            WordsPracticed: wordResults.Length,
+            TaskAccuracies: [new PracticeTaskAccuracy(PracticeTask.ReadingComprehension, accuracy)],
+            WordResults: wordResults,
+            UnknownWordsMarked: 0
+        ));
+
         return Result<CheckReadingComprehensionExerciseResponse>.Ok(response);
     }
 
@@ -191,7 +227,12 @@ public class PracticeService : IPracticeService
         var (results, count) = await _practiceRepository.GetSessionsResultsForUserAsync(request);
 
         return Result<GetPracticeSessionsForUserResponse>.Ok(new GetPracticeSessionsForUserResponse(
-            results.Select(x => new SessionDto(x.Words, x.FirstTaskPercentageSuccess, x.SecondTaskPercentageSuccess, x.ThirdTaskPercentageSuccess, x.FourthTaskPercentageSuccess,
+            results.Select(x => new SessionDto(
+                x.Words,
+                x.FirstTaskPercentageSuccess,
+                x.SecondTaskPercentageSuccess,
+                x.ThirdTaskPercentageSuccess,
+                x.FourthTaskPercentageSuccess,
                 x.PracticeDate)).ToArray(),
             count));
     }
@@ -232,12 +273,11 @@ public class PracticeService : IPracticeService
             return Result<IReadOnlyCollection<WordForTranslationPractice>>.NotFound(deckId);
         }
 
-        List<WordForTranslationPractice> words = [];
+        var words = new List<WordForTranslationPractice>();
 
         foreach (var wordForPractice in request.WordsForPractice)
         {
             var wordSenseFullInfo = await _wordUnitService.GetWordSenseFullInfo(wordForPractice.SenseId);
-
             if (wordSenseFullInfo is not null)
             {
                 words.Add(request.OriginalLanguage == GlobalConstants.Languages.English
@@ -262,10 +302,23 @@ public class PracticeService : IPracticeService
         {
             return Result<SentenceWithFilledGapResult[]>.BadRequest("Could not get response from the API");
         }
-        await UpdateWordsProgress(
-            request.DeckId,
-            response.Select(x => new WordSenseTaskResult(x.SenseId, x.IsCorrect)).ToArray(),
-            PracticeTask.FillInTheGaps);
+
+        var wordResults = response
+            .Select(x => new WordSenseTaskResult(x.SenseId, x.IsCorrect))
+            .ToArray();
+
+        await UpdateWordsProgress(request.DeckId, wordResults, PracticeTask.FillInTheGaps);
+
+        var accuracy = CalculateAccuracy(wordResults);
+
+        await _statisticsService.RecordPracticeSessionAsync(new RecordSessionStatisticsRequest(
+            UserEmail: _currentUserAccessor.GetEmail()!,
+            DeckId: request.DeckId,
+            WordsPracticed: wordResults.Length,
+            TaskAccuracies: [new PracticeTaskAccuracy(PracticeTask.FillInTheGaps, accuracy)],
+            WordResults: wordResults,
+            UnknownWordsMarked: 0
+        ));
 
         return Result<SentenceWithFilledGapResult[]>.Ok(response);
     }
@@ -311,12 +364,30 @@ public class PracticeService : IPracticeService
             return Result<bool>.NotFound(request.DeckId);
         }
 
-        await UpdateWordsProgress(
-            request.DeckId,
-            [.. request.AnswersMap.Select(a => new WordSenseTaskResult(a.Key, a.Value.IsCorrect))],
-            PracticeTask.ContrastTask);
+        var wordResults = request.AnswersMap
+            .Select(a => new WordSenseTaskResult(a.Key, a.Value.IsCorrect))
+            .ToArray();
+
+        await UpdateWordsProgress(request.DeckId, wordResults, PracticeTask.ContrastTask);
+
+        var accuracy = CalculateAccuracy(wordResults);
+
+        await _statisticsService.RecordPracticeSessionAsync(new RecordSessionStatisticsRequest(
+            UserEmail: _currentUserAccessor.GetEmail()!,
+            DeckId: request.DeckId,
+            WordsPracticed: wordResults.Length,
+            TaskAccuracies: [new PracticeTaskAccuracy(PracticeTask.ContrastTask, accuracy)],
+            WordResults: wordResults,
+            UnknownWordsMarked: 0
+        ));
 
         return Result<bool>.NoContent();
+    }
+
+    private static float CalculateAccuracy(WordSenseTaskResult[] results)
+    {
+        if (results.Length == 0) return 0f;
+        return (float)results.Count(x => x.IsCorrect) / results.Length;
     }
 
     private static List<DeckEntry> SelectPracticeBatch(List<DeckEntry> deckEntries, int? countOfWordsForPractice, string? practiceDifficulty)
@@ -334,14 +405,12 @@ public class PracticeService : IPracticeService
 
             var forgettingFactor = Constants.GetForgettingFactor(Enum.Parse<PracticeDifficulty>(practiceDifficulty!));
             float adjustedProgress = de.ProgressScore * (float)Math.Pow(forgettingFactor, totalDays);
-
-            float weight = (1 - adjustedProgress);
+            float weight = 1 - adjustedProgress;
 
             weightedDeck.Add((de, weight));
         }
 
         var session = new List<DeckEntry>();
-
         float totalWeight = weightedDeck.Sum(x => x.Weight);
 
         while (session.Count < countOfWordsForPractice && weightedDeck.Count > 0)
@@ -356,7 +425,6 @@ public class PracticeService : IPracticeService
                 {
                     var selected = weightedDeck[i].DeckEntry;
                     session.Add(selected);
-
                     totalWeight -= weightedDeck[i].Weight;
                     weightedDeck.RemoveAt(i);
                     break;
@@ -385,8 +453,7 @@ public class PracticeService : IPracticeService
 
         foreach (var result in wordSenseTaskResults)
         {
-            var deckEntry = deck!.DeckEntries.SingleOrDefault(x => x.WordSenseId == result.SenseId);
-
+            var deckEntry = deck.DeckEntries.FirstOrDefault(x => x.WordSenseId == result.SenseId);
             if (deckEntry is not null)
             {
                 var taskEffect = Constants.BaseLearningRate * taskWeight * difficultyMultiplier;
@@ -407,7 +474,6 @@ public class PracticeService : IPracticeService
                 }
 
                 deckEntry.ProgressScore *= (float)Math.Pow(forgettingFactor, daysSinceLastPractice);
-
                 deckEntry.ProgressScore = (float)Math.Round(Math.Clamp(deckEntry.ProgressScore, 0f, 1f), 2);
                 deckEntry.LastTimePracticed = now;
             }

@@ -45,6 +45,7 @@ services:
       - GeminiOptions__Model=${GEMINIOPTIONS__MODEL}
       - ConnectionStrings__RedisCache=redis-cache:6379
       - ConnectionStrings__SchedulingDatabase=${SCHEDULE_DATABASE_CONNECTION_STRING}
+      - ConnectionStrings__StatisticsDatabase=${STATISTICS_DATABASE_CONNECTION_STRING}
       - NotificationsApi__Key=${LEARNING_NOTIFICATIONS_API_KEY}
       - NotificationsApi__Http=${LEARNING_NOTIFICATIONS_HTTP}
       - NotificationsApi__Https=${LEARNING_NOTIFICATIONS_HTTPS}
@@ -96,6 +97,19 @@ services:
       - LANG=${LANG:-en}
     restart: unless-stopped
 
+  statistics.db:
+    image: postgres
+    container_name: statistics.db
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=${STATISTICS_POSTGRES_PASSWORD}
+      - POSTGRES_USER=${STATISTICS_POSTGRES_USER}
+      - POSTGRES_DB=${STATISTICS_POSTGRES_DB}
+    ports:
+      - "${STATISTICS_POSTGRES_PORT}:5432"
+    volumes:
+      - ${STATISTICS_AUTH_DB_VOLUME}:/var/lib/postgresql
+
   auth.db:
     image: postgres
     container_name: auth.db
@@ -112,8 +126,8 @@ services:
   client.app:
     image: client.app
     build:
-      context: client/Client
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: client/Client/Dockerfile
     container_name: client.app
     restart: always
     ports:
@@ -236,3 +250,4 @@ volumes:
   notifications.db.volume:
   telegram.bot.db.volume:
   english.io.schedule.database.volume:
+  statistics.db.volume:
